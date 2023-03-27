@@ -1,4 +1,4 @@
-package almroth.kim.gamendo_user_api.auth.data;
+package almroth.kim.gamendo_user_api.auth.dto;
 
 import lombok.Builder;
 import lombok.Data;

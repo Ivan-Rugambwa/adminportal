@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @EnableConfigurationProperties(NotionConfigProperties.class)
 @EnableAsync
-public class GamendoUserApi {
+public class ApendoSeatUserApi {
 
     public static void main(String[] args) {
-        SpringApplication.run(GamendoUserApi.class, args);
+        SpringApplication.run(ApendoSeatUserApi.class, args);
     }
 
 }
