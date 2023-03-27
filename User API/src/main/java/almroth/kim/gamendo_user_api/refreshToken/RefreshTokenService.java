@@ -36,20 +36,13 @@ public class RefreshTokenService {
 
     public RefreshToken createRefreshToken(UUID accountUUID) {
         var account = accountRepository.findById(accountUUID).orElseThrow(() -> new UsernameNotFoundException("No user with that email"));
-        var refreshToken = RefreshToken
-                .builder()
-                .expirationDateInMilliSeconds(Instant.now().plusMillis(TimeUnit.DAYS.toMillis(90)))
-                .account(account)
-                .token(UUID.randomUUID().toString())
-                .build();
-        refreshTokenRepository.save(refreshToken);
-        return refreshToken;
+        return createRefreshToken(account);
     }
 
     public RefreshToken createRefreshToken(Account account) {
         var refreshToken = RefreshToken
                 .builder()
-                .expirationDateInMilliSeconds(Instant.now().plusMillis(TimeUnit.DAYS.toMillis(30)))
+                .expirationDateInMilliSeconds(Instant.now().plusMillis(TimeUnit.DAYS.toMillis(100)))
                 .account(account)
                 .token(UUID.randomUUID().toString())
                 .build();
