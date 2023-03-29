@@ -2,7 +2,7 @@ package almroth.kim.gamendo_user_api.auth;
 
 import almroth.kim.gamendo_user_api.account.AccountRepository;
 import almroth.kim.gamendo_user_api.account.model.Account;
-import almroth.kim.gamendo_user_api.auth.data.*;
+import almroth.kim.gamendo_user_api.auth.dto.*;
 import almroth.kim.gamendo_user_api.config.JwtService;
 import almroth.kim.gamendo_user_api.config.NotionConfigProperties;
 import almroth.kim.gamendo_user_api.error.customException.DataBadCredentialsException;
@@ -26,6 +26,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+
 public class AuthenticationService {
     private final AccountRepository accountRepository;
     private final RoleService roleService;
@@ -40,12 +41,14 @@ public class AuthenticationService {
             System.out.println("Email already taken");
             throw new EmailAlreadyTakenException("Email already taken");
         }
+        var encodedPassword = passwordEncoder.encode((request.getPassword()));
+        System.out.println(encodedPassword.length());
         var account = Account
                 .builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
-                .password(passwordEncoder.encode((request.getPassword())))
+                .password(encodedPassword)
                 .build();
 
         account.setRoles(Set.of(roleService.getRoleByName(RoleType.USER)));
@@ -82,6 +85,7 @@ public class AuthenticationService {
         }
         return AuthenticationResponse.builder()
                 .accessToken(jwt)
+                .refreshToken(account.getRefreshToken().getToken())
                 .build();
 
     }

@@ -1,24 +1,25 @@
 package almroth.kim.gamendo_user_api.auth;
 
-import almroth.kim.gamendo_user_api.auth.data.AuthenticationRequest;
-import almroth.kim.gamendo_user_api.auth.data.RefreshTokenRequest;
-import almroth.kim.gamendo_user_api.auth.data.RegisterRequest;
-import almroth.kim.gamendo_user_api.auth.data.ValidateRequest;
+import almroth.kim.gamendo_user_api.auth.dto.AuthenticationRequest;
+import almroth.kim.gamendo_user_api.auth.dto.RefreshTokenRequest;
+import almroth.kim.gamendo_user_api.auth.dto.RegisterRequest;
+import almroth.kim.gamendo_user_api.auth.dto.ValidateRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Validated
 //@PreAuthorize("hasAnyAuthority('Admin', 'User')")
 public class AuthenticationController {
     private final AuthenticationService service;
@@ -40,7 +41,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
         return ResponseEntity.ok(service.register(request));
     }
 
