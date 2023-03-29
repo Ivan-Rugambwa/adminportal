@@ -16,5 +16,4 @@ public class SimpleResponse {
     private String firstName;
     private String lastName;
     private Set<Role> roles;
-    private String refreshToken;
 }

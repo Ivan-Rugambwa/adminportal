@@ -4,11 +4,10 @@ import almroth.kim.gamendo_user_api.refreshToken.model.RefreshToken;
 import almroth.kim.gamendo_user_api.role.Role;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,6 +21,8 @@ import java.util.*;
 @Entity
 @Table
 @Data
+@Getter
+@Setter
 public class Account implements UserDetails {
     @Id
     @GeneratedValue
@@ -33,7 +34,7 @@ public class Account implements UserDetails {
     private String email;
 
     @NotBlank(message = "Password is mandatory")
-    @Size(min = 60,max = 60, message = "Password needs to be 60 characters.")
+    @Size(min = 60, max = 60, message = "Password needs to be 60 characters.")
     private String password;
 
     @NotBlank(message = "First name is mandatory")
@@ -49,11 +50,12 @@ public class Account implements UserDetails {
             },
             inverseJoinColumns = {
                     @JoinColumn(name = "ROLE_ID")})
+    @JsonManagedReference
     private Set<Role> roles;
 
-    @OneToOne(mappedBy = "account")
+    @OneToMany(mappedBy = "account", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private RefreshToken refreshToken;
+    private Set<RefreshToken> refreshTokens = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -86,4 +88,5 @@ public class Account implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @Data
+
 public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final AccountRepository accountRepository;
@@ -34,34 +35,49 @@ public class RefreshTokenService {
         return refreshTokenRepository.findRefreshTokenByToken(token).orElseThrow(() -> new NoSuchTokenException("Invalid token: " + token));
     }
 
-    public RefreshToken createRefreshToken(UUID accountUUID) {
-        var account = accountRepository.findById(accountUUID).orElseThrow(() -> new UsernameNotFoundException("No user with that email"));
-        return createRefreshToken(account);
-    }
-
     public RefreshToken createRefreshToken(Account account) {
+
+        expireAllRefreshTokens(account);
+        var tokens = account.getRefreshTokens();
+        var expireDate = (tokens.isEmpty()) ?
+                Instant.now().plusMillis(TimeUnit.DAYS.toMillis(100)) :
+                account.getRefreshTokens().iterator().next().getExpirationDateInMilliSeconds();
+
         var refreshToken = RefreshToken
                 .builder()
-                .expirationDateInMilliSeconds(Instant.now().plusMillis(TimeUnit.DAYS.toMillis(100)))
+                .expirationDateInMilliSeconds(expireDate)
                 .account(account)
+                .isExpiredByNewToken(false)
                 .token(UUID.randomUUID().toString())
                 .build();
         refreshTokenRepository.save(refreshToken);
         return refreshToken;
     }
 
-    public RefreshToken verifyRefreshToken(RefreshToken token) {
+    public void verifyRefreshToken(RefreshToken token) {
+
+        if (token.isExpiredByNewToken()) {
+            deleteAllRefreshTokens(token.getAccount());
+            throw new RefreshTokenException("Refresh token has expired. DELETE Please log in again.");
+        }
 
         if (token.getExpirationDateInMilliSeconds().compareTo(Instant.now()) < 0) {
-            refreshTokenRepository.delete(token);
+            expireAllRefreshTokens(token.getAccount());
             throw new RefreshTokenException("Refresh token has expired. Please log in again.");
         }
-        return createRefreshToken(token.getAccount());
+    }
+
+    private void expireAllRefreshTokens(Account account) {
+        var refreshToken = refreshTokenRepository.findRefreshTokenByAccountAndIsExpiredByNewTokenIsFalse(account);
+        if (refreshToken.isEmpty()) return;
+        refreshToken.get().setExpiredByNewToken(true);
+        refreshTokenRepository.save(refreshToken.get());
     }
 
     @Transactional
-    public int deleteRefreshTokenByUserId(UUID accountId) {
-        return refreshTokenRepository.deleteByAccount(accountRepository.findById(accountId).get());
+    public void deleteAllRefreshTokens(Account account) {
+        account.getRefreshTokens().clear();
+        accountRepository.save(account);
     }
 
 }

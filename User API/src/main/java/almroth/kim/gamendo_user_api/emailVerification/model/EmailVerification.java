@@ -1,14 +1,5 @@
 //package almroth.kim.gamendo_user_api.emailVerification.model;
 
-import almroth.kim.gamendo_user_api.account.model.Account;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.Instant;
-
 //@Data
 //@Builder
 //@AllArgsConstructor
