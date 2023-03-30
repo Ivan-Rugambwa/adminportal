@@ -8,23 +8,16 @@ import almroth.kim.gamendo_user_api.error.dto.BadCredentialsResponse;
 import almroth.kim.gamendo_user_api.error.dto.ErrorResponse;
 import almroth.kim.gamendo_user_api.error.dto.ValidationErrorResponse;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @ControllerAdvice
 public class MyExceptionHandler {
@@ -40,7 +33,7 @@ public class MyExceptionHandler {
     }
 
     @ExceptionHandler(DataBadCredentialsException.class)
-    public ResponseEntity<ErrorResponse> badCredentials(DataBadCredentialsException ex, WebRequest req) {
+    public ResponseEntity<ErrorResponse> badCredentials(DataBadCredentialsException ex) {
         BadCredentialsResponse error = new BadCredentialsResponse();
         error.setDate(LocalDateTime.now());
         error.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -52,7 +45,7 @@ public class MyExceptionHandler {
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ErrorResponse> userNotFound(Exception ex, WebRequest req) {
+    public ResponseEntity<ErrorResponse> userNotFound(Exception ex) {
         ErrorResponse error = new ErrorResponse();
         error.setDate(LocalDateTime.now());
         error.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -62,7 +55,7 @@ public class MyExceptionHandler {
     }
 
     @ExceptionHandler(NoSuchTokenException.class)
-    public ResponseEntity<ErrorResponse> noSuchRefreshToken(Exception ex, WebRequest req) {
+    public ResponseEntity<ErrorResponse> noSuchRefreshToken(Exception ex) {
         ErrorResponse error = new ErrorResponse();
         error.setDate(LocalDateTime.now());
         error.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -72,7 +65,7 @@ public class MyExceptionHandler {
     }
 
     @ExceptionHandler(RefreshTokenException.class)
-    public ResponseEntity<ErrorResponse> RefreshTokenException(RefreshTokenException ex, WebRequest req) {
+    public ResponseEntity<ErrorResponse> RefreshTokenException(RefreshTokenException ex) {
         ErrorResponse error = new ErrorResponse();
         error.setDate(LocalDateTime.now());
         error.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -82,7 +75,7 @@ public class MyExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> ConstraintViolationException (MethodArgumentNotValidException ex, WebRequest req) {
+    public ResponseEntity<ErrorResponse> ConstraintViolationException(MethodArgumentNotValidException ex) {
         ValidationErrorResponse errorResponse = new ValidationErrorResponse();
         errorResponse.setDate(LocalDateTime.now());
         errorResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -96,8 +89,9 @@ public class MyExceptionHandler {
 
         return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
     }
+
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<ErrorResponse> HttpRequestMethodNotSupportedException (HttpRequestMethodNotSupportedException ex, WebRequest req) {
+    public ResponseEntity<ErrorResponse> HttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
         ErrorResponse error = new ErrorResponse();
         error.setDate(LocalDateTime.now());
 

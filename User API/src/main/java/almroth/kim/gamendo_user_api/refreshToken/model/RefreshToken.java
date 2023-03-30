@@ -3,29 +3,31 @@ package almroth.kim.gamendo_user_api.refreshToken.model;
 import almroth.kim.gamendo_user_api.account.model.Account;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.Instant;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
+@Table(name = "refresh_token")
 @Entity
 public class RefreshToken {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column
     private String token;
     @Column
     private Instant expirationDateInMilliSeconds;
-    @OneToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "uuid")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ACCOUNT_UUID", nullable = false)
     @JsonBackReference
     private Account account;
+    @Column
+    private boolean isExpiredByNewToken;
+
+
 }

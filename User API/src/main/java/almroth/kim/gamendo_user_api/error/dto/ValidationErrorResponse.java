@@ -11,7 +11,7 @@ import java.util.ArrayList;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ValidationErrorResponse extends ErrorResponse{
+public class ValidationErrorResponse extends ErrorResponse {
     private ArrayList<String> errors = new ArrayList<>();
 
 }

@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
     Optional<RefreshToken> findRefreshTokenByToken(String token);
 
-    int deleteByAccount(Account account);
+    @SuppressWarnings("SpringDataMethodInconsistencyInspection")
+    Optional<RefreshToken> findRefreshTokenByAccountAndIsExpiredByNewTokenIsFalse(Account account);
 }

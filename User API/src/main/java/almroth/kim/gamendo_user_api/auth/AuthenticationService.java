@@ -11,7 +11,6 @@ import almroth.kim.gamendo_user_api.refreshToken.RefreshTokenService;
 import almroth.kim.gamendo_user_api.role.RoleService;
 import almroth.kim.gamendo_user_api.role.RoleType;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -79,15 +78,14 @@ public class AuthenticationService {
         } catch (BadCredentialsException ex) {
             throw new DataBadCredentialsException("Wrong username or password", request.getEmail(), request.getPassword());
         }
+
         var jwt = jwtService.generateToken(account);
-        if (account.getRefreshToken() == null) {
-            refreshTokenService.createRefreshToken(account);
-        }
+        var refreshToken = refreshTokenService.createRefreshToken(account);
+
         return AuthenticationResponse.builder()
                 .accessToken(jwt)
-                .refreshToken(account.getRefreshToken().getToken())
+                .refreshToken(refreshToken.getToken())
                 .build();
-
     }
 
     public ValidateResponse validateAccessToken(ValidateRequest validateRequest) {
@@ -95,7 +93,7 @@ public class AuthenticationService {
         var secret = Base64.getDecoder().decode(env.secret().getBytes());
 
         try {
-            DecodedJWT decodedJWT = com.auth0.jwt.JWT.require(Algorithm.HMAC512(secret)).build().verify(validateRequest.getToken());
+            com.auth0.jwt.JWT.require(Algorithm.HMAC512(secret)).build().verify(validateRequest.getToken());
         } catch (Exception e) {
             return ValidateResponse
                     .builder()
@@ -114,9 +112,8 @@ public class AuthenticationService {
 
     public AuthenticationResponse refreshToken(String token) {
         var refreshToken = refreshTokenService.GetRefreshTokenByToken(token);
-        refreshToken = refreshTokenService.verifyRefreshToken(refreshToken);
+        refreshTokenService.verifyRefreshToken(refreshToken);
 
-        refreshTokenService.deleteRefreshTokenByUserId(refreshToken.getAccount().getUuid());
         var newToken = refreshTokenService.createRefreshToken(refreshToken.getAccount());
 
         return AuthenticationResponse
