@@ -80,6 +80,7 @@ public class AuthenticationService {
         }
 
         var jwt = jwtService.generateToken(account);
+        refreshTokenService.deleteAllRefreshTokens(account);
         var refreshToken = refreshTokenService.createRefreshToken(account);
 
         return AuthenticationResponse.builder()
