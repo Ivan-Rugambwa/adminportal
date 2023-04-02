@@ -1,7 +1,7 @@
 package almroth.kim.gamendo_user_api.account;
 
-import almroth.kim.gamendo_user_api.account.data.LoginRequest;
-import almroth.kim.gamendo_user_api.account.data.SimpleResponse;
+import almroth.kim.gamendo_user_api.account.dto.LoginRequest;
+import almroth.kim.gamendo_user_api.account.dto.SimpleResponse;
 import almroth.kim.gamendo_user_api.account.model.Account;
 import almroth.kim.gamendo_user_api.mapper.AccountMapper;
 import com.password4j.BcryptFunction;

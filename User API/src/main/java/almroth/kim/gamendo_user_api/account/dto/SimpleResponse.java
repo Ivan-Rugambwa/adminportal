@@ -1,6 +1,6 @@
-package almroth.kim.gamendo_user_api.account.data;
+package almroth.kim.gamendo_user_api.account.dto;
 
-import almroth.kim.gamendo_user_api.role.Role;
+import almroth.kim.gamendo_user_api.role.model.Role;
 import lombok.*;
 
 import java.util.Set;

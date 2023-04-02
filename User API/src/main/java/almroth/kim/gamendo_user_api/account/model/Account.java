@@ -1,7 +1,8 @@
 package almroth.kim.gamendo_user_api.account.model;
 
+import almroth.kim.gamendo_user_api.accountProfile.model.AccountProfile;
 import almroth.kim.gamendo_user_api.refreshToken.model.RefreshToken;
-import almroth.kim.gamendo_user_api.role.Role;
+import almroth.kim.gamendo_user_api.role.model.Role;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -42,6 +43,8 @@ public class Account implements UserDetails {
 
     @NotBlank(message = "Last name is mandatory")
     private String lastName;
+    @OneToOne
+    private AccountProfile profile;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "ACCOUNT_ROLES",

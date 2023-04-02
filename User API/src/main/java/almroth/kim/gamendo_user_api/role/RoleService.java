@@ -1,5 +1,6 @@
 package almroth.kim.gamendo_user_api.role;
 
+import almroth.kim.gamendo_user_api.role.model.Role;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

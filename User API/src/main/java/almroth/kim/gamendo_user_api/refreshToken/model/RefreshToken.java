@@ -1,6 +1,7 @@
 package almroth.kim.gamendo_user_api.refreshToken.model;
 
 import almroth.kim.gamendo_user_api.account.model.Account;
+import almroth.kim.gamendo_user_api.config.ColumnEncryptor;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,8 +18,9 @@ import java.time.Instant;
 public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column
+    @Convert(converter = ColumnEncryptor.class)
     private String token;
     @Column
     private Instant expirationDateInMilliSeconds;

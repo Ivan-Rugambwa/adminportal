@@ -1,5 +1,6 @@
 package almroth.kim.gamendo_user_api.role;
 
+import almroth.kim.gamendo_user_api.role.model.Role;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,11 +22,7 @@ public class RoleConfig {
                     .name(RoleType.ADMIN)
                     .description("Site administrator")
                     .build();
-            Role role3 = Role.builder()
-                    .name(RoleType.SUPPORT)
-                    .description("Support for users")
-                    .build();
-            repository.saveAll(List.of(role1, role2, role3));
+            repository.saveAll(List.of(role1, role2));
         };
     }
 }
