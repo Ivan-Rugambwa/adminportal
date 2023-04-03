@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
@@ -19,12 +20,11 @@ import java.util.UUID;
 public class AccountProfile {
     @Id
     @GeneratedValue
+    @UuidGenerator
     private UUID uuid;
-
     @ManyToOne
     private Business business;
-
-    @OneToOne(mappedBy = "profile")
+    @OneToOne()
     private Account account;
 
 }

@@ -12,5 +12,7 @@ import java.util.UUID;
 @Repository
 public interface BusinessRepository extends JpaRepository<Business, UUID> {
 
+    boolean existsBusinessByName(String name);
+    Optional<Business> findBusinessByName(String name);
 
 }

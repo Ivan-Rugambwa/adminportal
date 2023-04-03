@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,9 +21,11 @@ import java.util.UUID;
 public class Business {
     @Id
     @GeneratedValue
+    @UuidGenerator
     private UUID uuid;
+    @Column(unique = true)
     private String name;
-    @OneToMany
-    private Set<AccountProfile> accountProfiles;
+    @OneToMany(mappedBy = "business")
+    private Set<AccountProfile> accountProfiles = new HashSet<>();
 
 }

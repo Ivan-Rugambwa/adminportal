@@ -22,8 +22,6 @@ import java.util.*;
 @Entity
 @Table
 @Data
-@Getter
-@Setter
 public class Account implements UserDetails {
     @Id
     @GeneratedValue
@@ -43,7 +41,8 @@ public class Account implements UserDetails {
 
     @NotBlank(message = "Last name is mandatory")
     private String lastName;
-    @OneToOne
+
+    @OneToOne(mappedBy = "account")
     private AccountProfile profile;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
