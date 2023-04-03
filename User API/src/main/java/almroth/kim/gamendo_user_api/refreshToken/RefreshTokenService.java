@@ -39,7 +39,7 @@ public class RefreshTokenService {
 
         expireAllRefreshTokens(account);
         var tokens = account.getRefreshTokens();
-        var expireDate = (tokens.isEmpty()) ?
+        var expireDate = (tokens == null || tokens.isEmpty()) ?
                 Instant.now().plusMillis(TimeUnit.DAYS.toMillis(100)) :
                 account.getRefreshTokens().iterator().next().getExpirationDateInMilliSeconds();
 
