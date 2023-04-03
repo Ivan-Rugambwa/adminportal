@@ -26,6 +26,10 @@ public class AccountController {
     public List<SimpleResponse> getAccounts() {
         return accountService.getAccounts();
     }
+    @GetMapping("/users/only")
+    public List<SimpleResponse> getUserAccounts() {
+        return accountService.getUserAccounts();
+    }
 
     @GetMapping(path = {"{accountId}"})
     public Account getAccountById(@PathVariable("accountId") String uuid) {

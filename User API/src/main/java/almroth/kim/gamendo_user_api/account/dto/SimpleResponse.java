@@ -15,5 +15,4 @@ public class SimpleResponse {
     private String email;
     private String firstName;
     private String lastName;
-    private Set<Role> roles;
 }
