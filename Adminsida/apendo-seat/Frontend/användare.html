@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <nav>
+        <ul>
+          <li><a href="/adminportal.html">Hem</a></li>
+          <li><a href="/kund.html">Hantera kunder</a></li>
+          <li><a href="/användare.html">Hantera användare</a></li>
+          <li><a href="#">Godkänn ansökningar</a></li>
+          <li><a href="/inlogg.html">Logga ut</a></li>
+        </ul>
+      </nav>
+    <section>
+        <h2>Hantera användare</h2>
+        <table id="myTable">
+            <thead>
+                <tr>
+                    <th>Användarnamn</th>
+                    <th>Epostadress</th>
+                    <th>Företag</th>
+                    <th>Kundseat</th>
+                    <th>Åtgärder</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>admin</td>
+                    <td>Email</td>
+                    <td>Företag</td>
+                    <td>Seats</td>
+                    <td>
+                        <form action="" method="post">
+                            <input type="hidden" name="action" value="edit">
+                            <input type="hidden" name="user_id" value="1">
+                            <input type="submit" value="Redigera">
+                            <button type="button" onclick="myFunction()">Try it</button>
+        </table>
+
+        <script>
+            function myFunction() {
+                var table = document.getElementById("myTable");
+                var row = table.insertRow(2);
+                var Användarnamn = row.insertCell();
+                var  Epostadress = row.insertCell();
+                var  Företag = row.insertCell();
+                var Seats = row.insertCell();
+                var  Åtgärder = row.insertCell();
+                Användarnamn.innerHTML = "Ivan Rugambwa"
+                Epostadress.innerHTML = "ivan.rugambwa@apendo.se";
+                Seats.innerHTML = "55";
+               
+            }
+        </script>
+</body>
+
+</html>

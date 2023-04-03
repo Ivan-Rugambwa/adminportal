@@ -1,0 +1,32 @@
+.demo-main-cont.demo-comp-listview { padding: 0; }
+.demo-comp-listview .demo-note { margin: 10px; }
+
+.md-master-detail-demo,
+.md-master-detail-demo .mbsc-row {
+    height: 100%;
+}
+
+.md-master-detail-demo .mbsc-grid {
+    height: 100%;
+}
+
+.md-master-detail-demo .md-col-border {
+    overflow: auto;
+    height: 100%;
+    min-height: 800px;
+    border-left: 1px solid #ccc;
+}
+
+.md-master-detail-demo .mbsc-ms-c {
+    border-top: 0;
+}
+
+.md-master-tab,
+.md-master-item {
+    display: none;
+}
+
+.md-master-tab-sel,
+.md-master-item-sel {
+    display: block;
+}

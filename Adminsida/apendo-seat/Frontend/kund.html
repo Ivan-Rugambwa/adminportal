@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <ul>
+          <li><a href="#">Hem</a></li>
+          <li><a href="/kund.html">Hantera kunder</a></li>
+          <li><a href="/användare.html">Hantera användare</a></li>
+          <li><a href="#">Godkänn ansökningar</a></li>
+          <li><a href="/inlogg.html">Logga ut</a></li>
+        </ul>
+      </nav>
+      <br>
+    <form>
+        <label for="firstName">Firstnamn:</label>
+        <input type="text" id="firstName" name="firstName"><br><br>
+        <label for="lastName">Lastnamn:</label>
+        <input type="text" id="lastName" name="lastName"><br><br>
+        <label for="email">E-postadress:</label>
+        <input type="email" id="email" name="email"><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+        <input type="button" value="Uppdatera kundinformation" onclick="sendFormData()">
+    </form>
+    <script src="script.js"></script>
+</body>
+</html>
