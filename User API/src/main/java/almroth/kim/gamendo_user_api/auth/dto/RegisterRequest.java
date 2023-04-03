@@ -27,4 +27,6 @@ public class RegisterRequest {
 
     @NotBlank(message = "Last name is mandatory")
     private String lastName;
+    @NotBlank(message = "Business name is required")
+    private String business;
 }

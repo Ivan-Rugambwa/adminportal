@@ -2,7 +2,13 @@ package almroth.kim.gamendo_user_api.auth;
 
 import almroth.kim.gamendo_user_api.account.AccountRepository;
 import almroth.kim.gamendo_user_api.account.model.Account;
+import almroth.kim.gamendo_user_api.accountProfile.AccountProfileRepository;
+import almroth.kim.gamendo_user_api.accountProfile.AccountProfileService;
+import almroth.kim.gamendo_user_api.accountProfile.model.AccountProfile;
 import almroth.kim.gamendo_user_api.auth.dto.*;
+import almroth.kim.gamendo_user_api.business.BusinessRepository;
+import almroth.kim.gamendo_user_api.business.BusinessService;
+import almroth.kim.gamendo_user_api.business.model.Business;
 import almroth.kim.gamendo_user_api.config.JwtService;
 import almroth.kim.gamendo_user_api.config.NotionConfigProperties;
 import almroth.kim.gamendo_user_api.error.customException.DataBadCredentialsException;
@@ -19,6 +25,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Base64;
 import java.util.Set;
@@ -30,11 +37,14 @@ public class AuthenticationService {
     private final AccountRepository accountRepository;
     private final RoleService roleService;
     private final RefreshTokenService refreshTokenService;
+    private final AccountProfileService profileService;
+    private final BusinessService businessService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final NotionConfigProperties env;
 
+    @Transactional
     public RegisterResponse register(RegisterRequest request) {
         if (accountRepository.findByEmail(request.getEmail()).isPresent()) {
             System.out.println("Email already taken");
@@ -50,18 +60,28 @@ public class AuthenticationService {
                 .password(encodedPassword)
                 .build();
 
+        businessService.Create(request.getBusiness());
 
         if (account.getEmail().contains("@test.com")) {
             account.setRoles(Set.of(roleService.getRoleByName(RoleType.ADMIN)));
         } else account.setRoles(Set.of(roleService.getRoleByName(RoleType.USER)));
 
-        var jwt = jwtService.generateToken(account);
         accountRepository.save(account);
-        refreshTokenService.createRefreshToken(account);
+
+        var profile = AccountProfile.builder()
+                .account(account)
+                .business(businessService.Get(request.getBusiness()))
+                .build();
+
+        profileService.Create(profile);
+
+        var jwt = jwtService.generateToken(account);
+        var refreshToken = refreshTokenService.createRefreshToken(account);
         return RegisterResponse.builder()
                 .message("Account registration successful")
                 .token(jwt)
                 .username(account.getUsername())
+                .refreshToken(refreshToken.getToken())
                 .build();
     }
 

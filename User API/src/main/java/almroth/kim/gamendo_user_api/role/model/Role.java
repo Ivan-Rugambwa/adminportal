@@ -1,6 +1,7 @@
-package almroth.kim.gamendo_user_api.role;
+package almroth.kim.gamendo_user_api.role.model;
 
 import almroth.kim.gamendo_user_api.account.model.Account;
+import almroth.kim.gamendo_user_api.role.RoleType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -18,7 +19,7 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
-    private long id;
+    private Long id;
 
     @Column(unique = true)
     @Enumerated(EnumType.STRING)

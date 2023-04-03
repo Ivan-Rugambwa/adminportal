@@ -9,4 +9,5 @@ public class RegisterResponse {
     private String message;
     private String username;
     private String token;
+    private String refreshToken;
 }

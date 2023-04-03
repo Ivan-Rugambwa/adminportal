@@ -1,7 +1,7 @@
 package almroth.kim.gamendo_user_api.account;
 
-import almroth.kim.gamendo_user_api.account.data.LoginRequest;
-import almroth.kim.gamendo_user_api.account.data.SimpleResponse;
+import almroth.kim.gamendo_user_api.account.dto.LoginRequest;
+import almroth.kim.gamendo_user_api.account.dto.SimpleResponse;
 import almroth.kim.gamendo_user_api.account.model.Account;
 import almroth.kim.gamendo_user_api.mapper.AccountMapper;
 import almroth.kim.gamendo_user_api.role.RoleType;
@@ -94,18 +94,6 @@ public class AccountService {
         accountRepository.save(accountFromDb);
     }
 
-    public Account login(LoginRequest accountIn) {
-        Optional<Account> accountFromDb = accountRepository.findByEmail(accountIn.getEmail());
-        if (accountFromDb.isEmpty()) {
-            throw new IllegalStateException("No user with email: " + accountIn.getEmail());
-        }
-        var hashedPassword = accountFromDb.get().getPassword();
-        if (!checkPassword(accountIn.getPassword(), hashedPassword)) {
-            throw new IllegalStateException("Password does not match");
-        }
-        return accountFromDb.get();
-
-    }
 
     private boolean isNotNullOrEmptyOrEqual(String newValue, String currentValue) {
         return newValue != null && newValue.length() != 0 && !newValue.equals(currentValue);
@@ -115,7 +103,4 @@ public class AccountService {
         return Password.hash(password).with(bcrypt).getResult();
     }
 
-    private boolean checkPassword(String password, String hashedPassword) {
-        return Password.check(password, hashedPassword).with(bcrypt);
-    }
 }

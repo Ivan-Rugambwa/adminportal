@@ -1,6 +1,6 @@
 package almroth.kim.gamendo_user_api.mapper;
 
-import almroth.kim.gamendo_user_api.account.data.SimpleResponse;
+import almroth.kim.gamendo_user_api.account.dto.SimpleResponse;
 import almroth.kim.gamendo_user_api.account.model.Account;
 import org.mapstruct.Mapper;
 
