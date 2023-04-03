@@ -4,6 +4,7 @@ import almroth.kim.gamendo_user_api.account.data.LoginRequest;
 import almroth.kim.gamendo_user_api.account.data.SimpleResponse;
 import almroth.kim.gamendo_user_api.account.model.Account;
 import almroth.kim.gamendo_user_api.mapper.AccountMapper;
+import almroth.kim.gamendo_user_api.role.RoleType;
 import com.password4j.BcryptFunction;
 import com.password4j.Password;
 import com.password4j.types.Bcrypt;
@@ -31,6 +32,15 @@ public class AccountService {
 
     public List<SimpleResponse> getAccounts() {
         var accounts = accountRepository.findAll();
+        ArrayList<SimpleResponse> simpleData = new ArrayList<>();
+        for (Account acc : accounts) {
+            simpleData.add(mapper.SIMPLE_RESPONSE(acc));
+        }
+        return simpleData;
+    }
+
+    public List<SimpleResponse> getUserAccounts(){
+        var accounts = accountRepository.findAllByRoles(RoleType.USER).orElseThrow(() -> new IllegalArgumentException("No users with role user"));
         ArrayList<SimpleResponse> simpleData = new ArrayList<>();
         for (Account acc : accounts) {
             simpleData.add(mapper.SIMPLE_RESPONSE(acc));

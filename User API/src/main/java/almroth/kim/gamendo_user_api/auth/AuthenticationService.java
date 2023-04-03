@@ -50,10 +50,11 @@ public class AuthenticationService {
                 .password(encodedPassword)
                 .build();
 
-        account.setRoles(Set.of(roleService.getRoleByName(RoleType.USER)));
+
         if (account.getEmail().contains("@test.com")) {
             account.setRoles(Set.of(roleService.getRoleByName(RoleType.ADMIN)));
-        }
+        } else account.setRoles(Set.of(roleService.getRoleByName(RoleType.USER)));
+
         var jwt = jwtService.generateToken(account);
         accountRepository.save(account);
         refreshTokenService.createRefreshToken(account);
