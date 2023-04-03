@@ -4,13 +4,18 @@ import almroth.kim.gamendo_user_api.account.model.Account;
 import almroth.kim.gamendo_user_api.accountProfile.AccountProfileRepository;
 import almroth.kim.gamendo_user_api.accountProfile.model.AccountProfile;
 import almroth.kim.gamendo_user_api.business.dto.AddAccountProfileViewModel;
+import almroth.kim.gamendo_user_api.business.dto.BusinessResponse;
+import almroth.kim.gamendo_user_api.business.dto.CreateBusinessRequest;
 import almroth.kim.gamendo_user_api.business.dto.RemoveViewModel;
 import almroth.kim.gamendo_user_api.business.model.Business;
+import almroth.kim.gamendo_user_api.mapper.BusinessMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -18,18 +23,17 @@ import java.util.Set;
 public class BusinessService {
 
     private final BusinessRepository repository;
-
     private final AccountProfileRepository accountProfileRepository;
+    private final BusinessMapper mapper = Mappers.getMapper(BusinessMapper.class);
 
     public Business Get(String name){
         return repository.findBusinessByName(name).orElseThrow(() -> new IllegalArgumentException("No such Business"));
     }
 
-    public void Create(Business business) {
-        if (repository.existsBusinessByName(business.getName()))
+    public void Create(CreateBusinessRequest model) {
+        if (repository.existsBusinessByName(model.getName()))
             throw new IllegalArgumentException("Business with name already exists");
-
-        repository.save(business);
+        repository.save(mapper.TO_MODEL(model));
     }
     public void Create(String name) {
         if (repository.existsBusinessByName(name))
@@ -67,4 +71,12 @@ public class BusinessService {
         business.setAccountProfiles(profiles);
     }
 
+    public List<BusinessResponse> GetAll() {
+        var businesses = repository.findAll();
+        ArrayList<BusinessResponse> simpleData = new ArrayList<>();
+        for (Business business : businesses) {
+            simpleData.add(mapper.TO_RESPONSE(business));
+        }
+        return simpleData;
+    }
 }

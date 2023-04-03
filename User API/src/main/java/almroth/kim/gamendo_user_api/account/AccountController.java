@@ -36,24 +36,8 @@ public class AccountController {
             return new Account();
         }
     }
-
-    @PostMapping
-    public void postAccount(@RequestBody Account account) {
-        accountService.addAccount(account);
-    }
-
-    @DeleteMapping(path = {"{accountId}"})
-    public void deleteAccount(@PathVariable("accountId") String uuid) {
-        accountService.removeAccountByUUID(UUID.fromString(uuid));
-    }
-
     @PutMapping(path = "{accountId}")
     public void putAccount(@PathVariable String accountId, @RequestBody Account values) {
         accountService.updateAccount(accountId, values);
-    }
-
-    @PostMapping("/login")
-    public Account login(@RequestBody LoginRequest account) {
-        return accountService.login(account);
     }
 }

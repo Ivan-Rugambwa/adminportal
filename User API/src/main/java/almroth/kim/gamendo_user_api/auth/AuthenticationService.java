@@ -25,6 +25,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Base64;
 import java.util.Set;
@@ -43,6 +44,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final NotionConfigProperties env;
 
+    @Transactional
     public RegisterResponse register(RegisterRequest request) {
         if (accountRepository.findByEmail(request.getEmail()).isPresent()) {
             System.out.println("Email already taken");
