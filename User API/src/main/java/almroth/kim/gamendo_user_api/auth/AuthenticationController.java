@@ -6,15 +6,13 @@ import almroth.kim.gamendo_user_api.auth.dto.RegisterRequest;
 import almroth.kim.gamendo_user_api.auth.dto.ValidateRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -45,10 +43,10 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.register(request));
     }
 
-    @PostMapping("/validate")
-    public ResponseEntity<?> validate(@RequestBody ValidateRequest token) {
+    @GetMapping("/validate")
+    public ResponseEntity<?> validate(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         var result = service.validateAccessToken(token);
-        return ResponseEntity.status(result.getStatus()).body(result.getMessage());
+        return ResponseEntity.status(result).build();
     }
 
     @PostMapping("/refresh")

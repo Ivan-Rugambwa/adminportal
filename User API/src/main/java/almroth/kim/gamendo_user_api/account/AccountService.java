@@ -40,9 +40,10 @@ public class AccountService {
     }
 
     public List<SimpleResponse> getUserAccounts(){
-        var accounts = accountRepository.findAllByRoles(RoleType.USER).orElseThrow(() -> new IllegalArgumentException("No users with role user"));
+        var accounts = accountRepository.findAll();
+        var userAccounts = accounts.stream().filter(account -> account.getRoles().stream().allMatch(role -> role.getName() == RoleType.USER)).toList();
         ArrayList<SimpleResponse> simpleData = new ArrayList<>();
-        for (Account acc : accounts) {
+        for (Account acc : userAccounts) {
             simpleData.add(mapper.SIMPLE_RESPONSE(acc));
         }
         return simpleData;

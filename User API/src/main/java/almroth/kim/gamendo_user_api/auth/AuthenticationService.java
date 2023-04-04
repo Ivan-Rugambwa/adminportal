@@ -19,6 +19,7 @@ import almroth.kim.gamendo_user_api.role.RoleType;
 import com.auth0.jwt.algorithms.Algorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -110,25 +111,18 @@ public class AuthenticationService {
                 .build();
     }
 
-    public ValidateResponse validateAccessToken(ValidateRequest validateRequest) {
+    public int validateAccessToken(String token) {
 
-        var secret = Base64.getDecoder().decode(env.secret().getBytes());
+        var secret = env.secret().getBytes();
+        token = token.substring(7);
 
         try {
-            com.auth0.jwt.JWT.require(Algorithm.HMAC512(secret)).build().verify(validateRequest.getToken());
+            com.auth0.jwt.JWT.require(Algorithm.HMAC512(secret)).build().verify(token);
         } catch (Exception e) {
-            return ValidateResponse
-                    .builder()
-                    .status(HttpStatus.UNPROCESSABLE_ENTITY)
-                    .message("Token invalid")
-                    .build();
+            return HttpStatus.UNPROCESSABLE_ENTITY.value();
         }
 
-        return ValidateResponse
-                .builder()
-                .status(HttpStatus.OK)
-                .message("Token valid")
-                .build();
+        return HttpStatus.OK.value();
 
     }
 
