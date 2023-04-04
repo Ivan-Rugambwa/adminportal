@@ -21,12 +21,12 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @CrossOrigin(origins = "http://localhost:9000")
+
     @GetMapping
     public List<SimpleResponse> getAccounts() {
         return accountService.getAccounts();
     }
-    @GetMapping("/users/only")
+    @GetMapping("/only")
     public List<SimpleResponse> getUserAccounts() {
         return accountService.getUserAccounts();
     }

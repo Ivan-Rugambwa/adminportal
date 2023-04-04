@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.9.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.1.0" camunda:diagramRelationId="bf72d084-fc7e-41da-a290-2acdffeaf7d2">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.9.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.1.0" camunda:diagramRelationId="bf72d084-fc7e-41da-a290-2acdffeaf7d2">
   <bpmn:process id="Process_0dfii83" isExecutable="true">
     <bpmn:subProcess id="Activity_0bn29hs" name="Send seat report to customer">
       <bpmn:incoming>Flow_0podn0z</bpmn:incoming>
@@ -89,7 +89,9 @@
     </bpmn:subProcess>
     <bpmn:startEvent id="Event_1wpllp2" name="First day of every month.">
       <bpmn:outgoing>Flow_1anznpa</bpmn:outgoing>
-      <bpmn:timerEventDefinition id="TimerEventDefinition_0p5lhhg" />
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0p5lhhg">
+        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">0 0 8 1 * ?</bpmn:timeCycle>
+      </bpmn:timerEventDefinition>
     </bpmn:startEvent>
     <bpmn:serviceTask id="Activity_1pag55b" name="Collect customer data from database.">
       <bpmn:incoming>Flow_1anznpa</bpmn:incoming>
