@@ -1,8 +1,8 @@
 {
   "$schema": "https://unpkg.com/@camunda/zeebe-element-templates-json-schema/resources/schema.json",
-  "name": "Get Secrets",
-  "id": "apendo.get.data.template",
-  "description": "Get secrets",
+  "name": "Get Email",
+  "id": "apendo.get.data.email",
+  "description": "Get Email",
   "version": 1,
   "documentationRef": "https://docs.camunda.io/docs/components/connectors/out-of-the-box-connectors/available-connectors-overview/",
   "icon": {
