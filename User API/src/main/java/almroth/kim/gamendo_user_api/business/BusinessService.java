@@ -33,6 +33,7 @@ public class BusinessService {
     public void Create(CreateBusinessRequest model) {
         if (repository.existsBusinessByName(model.getName()))
             throw new IllegalArgumentException("Business with name already exists");
+        model.setName(model.getName().toUpperCase());
         repository.save(mapper.TO_MODEL(model));
     }
 

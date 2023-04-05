@@ -4,6 +4,7 @@ import almroth.kim.gamendo_user_api.account.dto.SimpleResponse;
 import almroth.kim.gamendo_user_api.account.dto.UpdateAccountRequest;
 import almroth.kim.gamendo_user_api.account.model.Account;
 import almroth.kim.gamendo_user_api.business.BusinessRepository;
+import almroth.kim.gamendo_user_api.error.customException.EmailAlreadyTakenException;
 import almroth.kim.gamendo_user_api.mapper.AccountMapper;
 import almroth.kim.gamendo_user_api.role.RoleRepository;
 import almroth.kim.gamendo_user_api.role.RoleType;
@@ -74,19 +75,15 @@ public class AccountService {
         Account account = accountRepository
                 .findById(UUID.fromString(accountId))
                 .orElseThrow(() -> new IllegalStateException("No account with id: " + accountId));
+        if (!(Objects.equals(account.getEmail(), request.getEmail()))) account.setEmail(request.getEmail());
+        else if (accountRepository.existsByEmail(request.getEmail())) throw new EmailAlreadyTakenException("A user already has that email.");
 
         var business = businessRepository.findBusinessByName(request.getBusiness()).orElseThrow(() -> new IllegalArgumentException("No such business"));
-        Set<Role> roles = new HashSet<>();
-        for (var roleName :
-                request.getRoles()) {
-            var role = roleRepository.findRoleByName(RoleType.valueOf(roleName)).orElseThrow(() -> new IllegalArgumentException("No role with name: " + roleName));
-            roles.add(role);
-        }
-        account.setEmail(request.getEmail());
+
+
         account.setFirstName(request.getFirstName());
         account.setLastName(request.getLastName());
         account.getProfile().setBusiness(business);
-        account.setRoles(roles);
 
         accountRepository.save(account);
     }

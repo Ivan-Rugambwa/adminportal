@@ -31,6 +31,7 @@ public class Account implements UserDetails {
 
     @NotBlank(message = "Email is mandatory")
     @Pattern(regexp = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", message = "Wrong email format, see correct example: test@domain.com")
+    @Column(unique = true)
     private String email;
 
     @NotBlank(message = "Password is mandatory")

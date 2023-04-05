@@ -6,7 +6,7 @@
       <bpmn:outgoing>Flow_05ktw75</bpmn:outgoing>
       <bpmn:multiInstanceLoopCharacteristics>
         <bpmn:extensionElements>
-          <zeebe:loopCharacteristics inputCollection="=users" />
+          <zeebe:loopCharacteristics inputCollection="=users" inputElement="user" />
         </bpmn:extensionElements>
       </bpmn:multiInstanceLoopCharacteristics>
       <bpmn:serviceTask id="Activity_1r5gays" name="Save to Database">
@@ -81,12 +81,12 @@
             <zeebe:input source="=&#34;secrets.FROM&#34;" target="from" />
             <zeebe:input source="=&#34;secrets.PASSWORD&#34;" target="password" />
             <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
-            <zeebe:input source="users.email" target="to" />
+            <zeebe:input source="=user.email" target="to" />
             <zeebe:input source="Seat-rapport" target="subject" />
             <zeebe:input source="Hej,&#10;Det är dags att fylla i denna månads seat-rapport.&#10;Vänligen gå in på apendo.seat.se för att fylla i." target="text" />
           </zeebe:ioMapping>
           <zeebe:taskHeaders>
-            <zeebe:header key="resultVariable" value="emailResponse" />
+            <zeebe:header key="resultVariable" value="sendReportEmail" />
           </zeebe:taskHeaders>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_0sqz3ng</bpmn:incoming>
@@ -99,11 +99,13 @@
             <zeebe:input source="=&#34;secrets.FROM&#34;" target="from" />
             <zeebe:input source="=&#34;secrets.PASSWORD&#34;" target="password" />
             <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
-            <zeebe:input source="user.email" target="to" />
+            <zeebe:input source="=user.email" target="to" />
             <zeebe:input source="Påminnelse Seat-rapport" target="subject" />
             <zeebe:input source="Hej,&#10;Det har gått en vecka och seat-rapporten för denna månad är fortfarande inte ifylld. &#10;Vänligen gå in på apendo.seat.se för att fylla i den." target="text" />
           </zeebe:ioMapping>
-          <zeebe:taskHeaders />
+          <zeebe:taskHeaders>
+            <zeebe:header key="resultVariable" value="remainderEmail" />
+          </zeebe:taskHeaders>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_1eayyd1</bpmn:incoming>
         <bpmn:outgoing>Flow_1uobuw8</bpmn:outgoing>
@@ -115,11 +117,13 @@
             <zeebe:input source="=&#34;secrets.FROM&#34;" target="from" />
             <zeebe:input source="=&#34;secrets.PASSWORD&#34;" target="password" />
             <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
-            <zeebe:input target="to" />
+            <zeebe:input source="=user.email" target="to" />
             <zeebe:input target="subject" />
             <zeebe:input source="=reasonForDenial" target="text" />
           </zeebe:ioMapping>
-          <zeebe:taskHeaders />
+          <zeebe:taskHeaders>
+            <zeebe:header key="resultVariable" value="denialReasonEmail" />
+          </zeebe:taskHeaders>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_04zucgt</bpmn:incoming>
         <bpmn:outgoing>Flow_1eec4ir</bpmn:outgoing>
@@ -136,7 +140,7 @@
             <zeebe:input source="=&#34;Hej,\nAnvändare &#34; &#10;+ user.email + &#10;&#34; har rapporterat att de använt mer än deras avtal.&#34;" target="text" />
           </zeebe:ioMapping>
           <zeebe:taskHeaders>
-            <zeebe:header key="resultVariable" value="invoiceResult" />
+            <zeebe:header key="resultVariable" value="invoiceEmail" />
           </zeebe:taskHeaders>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_1ttei45</bpmn:incoming>
