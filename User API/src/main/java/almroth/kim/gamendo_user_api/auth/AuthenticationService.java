@@ -17,6 +17,8 @@ import almroth.kim.gamendo_user_api.refreshToken.RefreshTokenService;
 import almroth.kim.gamendo_user_api.role.RoleService;
 import almroth.kim.gamendo_user_api.role.RoleType;
 import com.auth0.jwt.algorithms.Algorithm;
+import io.jsonwebtoken.impl.Base64UrlCodec;
+import io.jsonwebtoken.io.Decoders;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -28,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Set;
 
@@ -61,7 +64,7 @@ public class AuthenticationService {
                 .password(encodedPassword)
                 .build();
 
-        businessService.Create(request.getBusiness());
+        var business = businessService.Get(request.getBusiness());
 
         if (account.getEmail().contains("@test.com")) {
             account.setRoles(Set.of(roleService.getRoleByName(RoleType.ADMIN)));
@@ -71,7 +74,7 @@ public class AuthenticationService {
 
         var profile = AccountProfile.builder()
                 .account(account)
-                .business(businessService.Get(request.getBusiness()))
+                .business(business)
                 .build();
 
         profileService.Create(profile);
@@ -114,10 +117,15 @@ public class AuthenticationService {
     public int validateAccessToken(String token) {
 
         var secret = env.secret().getBytes();
-        token = token.substring(7);
+        var chunks = token.split("\\.");
+        var p1 = Decoders.BASE64URL.decode(chunks[0]);
+        var p2 = Decoders.BASE64URL.decode(chunks[1]);
+        token = Base64.getEncoder().encodeToString(p1) + "." +
+                Base64.getEncoder().encodeToString(p2) + "." +
+                chunks[2];
 
         try {
-            com.auth0.jwt.JWT.require(Algorithm.HMAC512(secret)).build().verify(token);
+            com.auth0.jwt.JWT.require(Algorithm.HMAC512(Base64.getDecoder().decode(secret))).build().verify(token);
         } catch (Exception e) {
             return HttpStatus.UNPROCESSABLE_ENTITY.value();
         }

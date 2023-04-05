@@ -27,21 +27,13 @@ public class BusinessService {
     private final BusinessMapper mapper = Mappers.getMapper(BusinessMapper.class);
 
     public Business Get(String name){
-        return repository.findBusinessByName(name).orElseThrow(() -> new IllegalArgumentException("No such Business"));
+        return repository.findBusinessByName(name).orElseThrow(() -> new IllegalArgumentException("No such Business: " + name));
     }
 
     public void Create(CreateBusinessRequest model) {
         if (repository.existsBusinessByName(model.getName()))
             throw new IllegalArgumentException("Business with name already exists");
         repository.save(mapper.TO_MODEL(model));
-    }
-    public void Create(String name) {
-        if (repository.existsBusinessByName(name))
-            return;
-
-        var business = Business.builder().name(name).build();
-
-        repository.save(business);
     }
 
     public void Update(Business businessViewModel, Account account) {

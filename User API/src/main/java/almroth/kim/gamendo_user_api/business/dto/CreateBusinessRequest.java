@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class CreateBusinessRequest {
     private String name;
+    private Integer seatAmount;
 }

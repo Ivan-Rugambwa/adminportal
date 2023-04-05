@@ -1,10 +1,13 @@
 package almroth.kim.gamendo_user_api.account;
 
-import almroth.kim.gamendo_user_api.account.dto.LoginRequest;
 import almroth.kim.gamendo_user_api.account.dto.SimpleResponse;
+import almroth.kim.gamendo_user_api.account.dto.UpdateAccountRequest;
 import almroth.kim.gamendo_user_api.account.model.Account;
+import almroth.kim.gamendo_user_api.business.BusinessRepository;
 import almroth.kim.gamendo_user_api.mapper.AccountMapper;
+import almroth.kim.gamendo_user_api.role.RoleRepository;
 import almroth.kim.gamendo_user_api.role.RoleType;
+import almroth.kim.gamendo_user_api.role.model.Role;
 import com.password4j.BcryptFunction;
 import com.password4j.Password;
 import com.password4j.types.Bcrypt;
@@ -12,22 +15,24 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private final BusinessRepository businessRepository;
+    private final RoleRepository roleRepository;
 
     private final AccountMapper mapper = Mappers.getMapper(AccountMapper.class);
     BcryptFunction bcrypt = BcryptFunction.getInstance(Bcrypt.Y, 11);
 
     @Autowired
-    public AccountService(AccountRepository accountRepository) {
+    public AccountService(AccountRepository accountRepository, BusinessRepository businessRepository, RoleRepository roleRepository) {
+
         this.accountRepository = accountRepository;
+        this.businessRepository = businessRepository;
+        this.roleRepository = roleRepository;
     }
 
     public List<SimpleResponse> getAccounts() {
@@ -49,15 +54,6 @@ public class AccountService {
         return simpleData;
     }
 
-    public void addAccount(Account accountIn) {
-        Optional<Account> accountFromDb = accountRepository.findByEmail(accountIn.getEmail());
-
-        if (accountFromDb.isPresent())
-            throw new IllegalStateException("Email already in use");
-
-        accountIn.setPassword(generateHashedPassword(accountIn.getPassword()));
-        accountRepository.save(accountIn);
-    }
 
     public void removeAccountByUUID(UUID uuid) {
         if (!accountRepository.existsById(uuid)) {
@@ -74,30 +70,25 @@ public class AccountService {
         return account.get();
     }
 
-    public void updateAccount(String accountId, Account accountIn) {
-        Account accountFromDb = accountRepository
+    public void updateAccount(String accountId, UpdateAccountRequest request) {
+        Account account = accountRepository
                 .findById(UUID.fromString(accountId))
                 .orElseThrow(() -> new IllegalStateException("No account with id: " + accountId));
 
-        if (isNotNullOrEmptyOrEqual(accountIn.getEmail(), accountFromDb.getEmail())
-                && accountRepository.findByEmail(accountIn.getEmail()).isEmpty())
-            accountFromDb.setEmail(accountIn.getEmail());
+        var business = businessRepository.findBusinessByName(request.getBusiness()).orElseThrow(() -> new IllegalArgumentException("No such business"));
+        Set<Role> roles = new HashSet<>();
+        for (var roleName :
+                request.getRoles()) {
+            var role = roleRepository.findRoleByName(RoleType.valueOf(roleName)).orElseThrow(() -> new IllegalArgumentException("No role with name: " + roleName));
+            roles.add(role);
+        }
+        account.setEmail(request.getEmail());
+        account.setFirstName(request.getFirstName());
+        account.setLastName(request.getLastName());
+        account.getProfile().setBusiness(business);
+        account.setRoles(roles);
 
-        if (isNotNullOrEmptyOrEqual(accountIn.getPassword(), accountFromDb.getPassword()))
-            accountFromDb.setPassword(generateHashedPassword(accountIn.getPassword()));
-
-        if (isNotNullOrEmptyOrEqual(accountIn.getFirstName(), accountFromDb.getFirstName()))
-            accountFromDb.setFirstName(accountIn.getFirstName());
-
-        if (isNotNullOrEmptyOrEqual(accountIn.getLastName(), accountFromDb.getLastName()))
-            accountFromDb.setLastName(accountIn.getLastName());
-
-        accountRepository.save(accountFromDb);
-    }
-
-
-    private boolean isNotNullOrEmptyOrEqual(String newValue, String currentValue) {
-        return newValue != null && newValue.length() != 0 && !newValue.equals(currentValue);
+        accountRepository.save(account);
     }
 
     private String generateHashedPassword(String password) {

@@ -27,5 +27,6 @@ public class Business {
     private String name;
     @OneToMany(mappedBy = "business")
     private Set<AccountProfile> accountProfiles = new HashSet<>();
+    private Integer seatAmount;
 
 }

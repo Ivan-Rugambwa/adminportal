@@ -54,7 +54,7 @@
   </bpmn:process>
   <bpmn:message id="Message_0o7tk2c" name="test">
     <bpmn:extensionElements>
-      <zeebe:subscription correlationKey="=user.email" />
+      <zeebe:subscription correlationKey="=user.email + &#34;-&#34; + year + &#34;/&#34; + month" />
     </bpmn:extensionElements>
   </bpmn:message>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -62,14 +62,14 @@
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="179" y="99" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1qg7vaa_di" bpmnElement="Activity_172sbx1">
-        <dc:Bounds x="270" y="77" width="100" height="80" />
+      <bpmndi:BPMNShape id="Event_0vuwbne_di" bpmnElement="Event_0vuwbne">
+        <dc:Bounds x="952" y="99" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0j5npl2_di" bpmnElement="Activity_1hkn0pp">
         <dc:Bounds x="790" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0vuwbne_di" bpmnElement="Event_0vuwbne">
-        <dc:Bounds x="952" y="99" width="36" height="36" />
+      <bpmndi:BPMNShape id="Activity_1qg7vaa_di" bpmnElement="Activity_172sbx1">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0xzz4l5_di" bpmnElement="Activity_0xzz4l5" isExpanded="true">
         <dc:Bounds x="400" y="210" width="350" height="200" />

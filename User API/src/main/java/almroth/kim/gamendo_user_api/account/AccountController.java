@@ -1,7 +1,7 @@
 package almroth.kim.gamendo_user_api.account;
 
-import almroth.kim.gamendo_user_api.account.dto.LoginRequest;
 import almroth.kim.gamendo_user_api.account.dto.SimpleResponse;
+import almroth.kim.gamendo_user_api.account.dto.UpdateAccountRequest;
 import almroth.kim.gamendo_user_api.account.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +41,11 @@ public class AccountController {
         }
     }
     @PutMapping(path = "{accountId}")
-    public void putAccount(@PathVariable String accountId, @RequestBody Account values) {
-        accountService.updateAccount(accountId, values);
+    public void putAccount(@PathVariable String accountId, @RequestBody UpdateAccountRequest request) {
+        accountService.updateAccount(accountId, request);
+    }
+    @DeleteMapping(path = "{accountId}")
+    public void deleteAccount(@PathVariable String accountId){
+        accountService.removeAccountByUUID(UUID.fromString(accountId));
     }
 }
