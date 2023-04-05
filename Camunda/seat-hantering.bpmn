@@ -82,10 +82,12 @@
             <zeebe:input source="=&#34;secrets.PASSWORD&#34;" target="password" />
             <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
             <zeebe:input source="users.email" target="to" />
-            <zeebe:input source="Fyll i seatrapport" target="subject" />
-            <zeebe:input target="text" />
+            <zeebe:input source="Seat-rapport" target="subject" />
+            <zeebe:input source="Hej,&#10;Det är dags att fylla i denna månads seat-rapport.&#10;Vänligen gå in på apendo.seat.se för att fylla i." target="text" />
           </zeebe:ioMapping>
-          <zeebe:taskHeaders />
+          <zeebe:taskHeaders>
+            <zeebe:header key="resultVariable" value="emailResponse" />
+          </zeebe:taskHeaders>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_0sqz3ng</bpmn:incoming>
         <bpmn:outgoing>Flow_03mp6nz</bpmn:outgoing>
@@ -97,9 +99,9 @@
             <zeebe:input source="=&#34;secrets.FROM&#34;" target="from" />
             <zeebe:input source="=&#34;secrets.PASSWORD&#34;" target="password" />
             <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
-            <zeebe:input target="to" />
-            <zeebe:input target="subject" />
-            <zeebe:input target="text" />
+            <zeebe:input source="user.email" target="to" />
+            <zeebe:input source="Påminnelse Seat-rapport" target="subject" />
+            <zeebe:input source="Hej,&#10;Det har gått en vecka och seat-rapporten för denna månad är fortfarande inte ifylld. &#10;Vänligen gå in på apendo.seat.se för att fylla i den." target="text" />
           </zeebe:ioMapping>
           <zeebe:taskHeaders />
         </bpmn:extensionElements>
@@ -115,7 +117,7 @@
             <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
             <zeebe:input target="to" />
             <zeebe:input target="subject" />
-            <zeebe:input target="text" />
+            <zeebe:input source="=reasonForDenial" target="text" />
           </zeebe:ioMapping>
           <zeebe:taskHeaders />
         </bpmn:extensionElements>
@@ -129,11 +131,13 @@
             <zeebe:input source="=&#34;secrets.FROM&#34;" target="from" />
             <zeebe:input source="=&#34;secrets.PASSWORD&#34;" target="password" />
             <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
-            <zeebe:input target="to" />
-            <zeebe:input target="subject" />
-            <zeebe:input target="text" />
+            <zeebe:input source="seat.fakturering@apendo.se" target="to" />
+            <zeebe:input source="Överanvändning av seat" target="subject" />
+            <zeebe:input source="=&#34;Hej,\nAnvändare &#34; &#10;+ user.email + &#10;&#34; har rapporterat att de använt mer än deras avtal.&#34;" target="text" />
           </zeebe:ioMapping>
-          <zeebe:taskHeaders />
+          <zeebe:taskHeaders>
+            <zeebe:header key="resultVariable" value="invoiceResult" />
+          </zeebe:taskHeaders>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_1ttei45</bpmn:incoming>
         <bpmn:outgoing>Flow_16hs5a5</bpmn:outgoing>
