@@ -7,6 +7,7 @@ import almroth.kim.gamendo_user_api.error.customException.RefreshTokenException;
 import almroth.kim.gamendo_user_api.error.dto.BadCredentialsResponse;
 import almroth.kim.gamendo_user_api.error.dto.ErrorResponse;
 import almroth.kim.gamendo_user_api.error.dto.ValidationErrorResponse;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -96,6 +97,26 @@ public class MyExceptionHandler {
         error.setDate(LocalDateTime.now());
 
         error.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+        error.setMessage(ex.getLocalizedMessage());
+
+        return ResponseEntity.status(error.getStatus()).body(error);
+    }
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> Exception(HttpRequestMethodNotSupportedException ex) {
+        ErrorResponse error = new ErrorResponse();
+        error.setDate(LocalDateTime.now());
+
+        error.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        error.setMessage(ex.getLocalizedMessage());
+
+        return ResponseEntity.status(error.getStatus()).body(error);
+    }
+    @ExceptionHandler(SignatureException.class)
+    public ResponseEntity<ErrorResponse> SignatureException(HttpRequestMethodNotSupportedException ex) {
+        ErrorResponse error = new ErrorResponse();
+        error.setDate(LocalDateTime.now());
+
+        error.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         error.setMessage(ex.getLocalizedMessage());
 
         return ResponseEntity.status(error.getStatus()).body(error);

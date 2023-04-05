@@ -22,4 +22,5 @@ logging:
 server:
   error:
     include-message: always
+    include-stacktrace: never
   port: 9000

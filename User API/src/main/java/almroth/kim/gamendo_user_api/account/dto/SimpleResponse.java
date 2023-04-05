@@ -4,6 +4,7 @@ import almroth.kim.gamendo_user_api.role.model.Role;
 import lombok.*;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,7 +13,9 @@ import java.util.Set;
 @Builder
 public class SimpleResponse {
 
+    private UUID uuid;
     private String email;
     private String firstName;
     private String lastName;
+    private String businessName;
 }

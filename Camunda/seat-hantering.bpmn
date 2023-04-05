@@ -6,7 +6,7 @@
       <bpmn:outgoing>Flow_05ktw75</bpmn:outgoing>
       <bpmn:multiInstanceLoopCharacteristics>
         <bpmn:extensionElements>
-          <zeebe:loopCharacteristics inputCollection="=users" />
+          <zeebe:loopCharacteristics inputCollection="=users" inputElement="user" />
         </bpmn:extensionElements>
       </bpmn:multiInstanceLoopCharacteristics>
       <bpmn:serviceTask id="Activity_1r5gays" name="Save to Database">
@@ -40,7 +40,7 @@
         <bpmn:incoming>Flow_1uobuw8</bpmn:incoming>
       </bpmn:endEvent>
       <bpmn:sequenceFlow id="Flow_1uobuw8" sourceRef="Activity_0whi532" targetRef="Event_1bejuwx" />
-      <bpmn:receiveTask id="Activity_0wo2whx" name="Wait for response">
+      <bpmn:receiveTask id="Activity_0wo2whx" name="Wait for response" messageRef="Message_263k152">
         <bpmn:incoming>Flow_1eec4ir</bpmn:incoming>
         <bpmn:incoming>Flow_03mp6nz</bpmn:incoming>
         <bpmn:outgoing>Flow_04vs2u6</bpmn:outgoing>
@@ -81,11 +81,13 @@
             <zeebe:input source="=&#34;secrets.FROM&#34;" target="from" />
             <zeebe:input source="=&#34;secrets.PASSWORD&#34;" target="password" />
             <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
-            <zeebe:input source="users.email" target="to" />
-            <zeebe:input source="Fyll i seatrapport" target="subject" />
-            <zeebe:input target="text" />
+            <zeebe:input source="=user.email" target="to" />
+            <zeebe:input source="Seat-rapport" target="subject" />
+            <zeebe:input source="Hej,&#10;Det är dags att fylla i denna månads seat-rapport.&#10;Vänligen gå in på apendo.seat.se för att fylla i." target="text" />
           </zeebe:ioMapping>
-          <zeebe:taskHeaders />
+          <zeebe:taskHeaders>
+            <zeebe:header key="resultVariable" value="sendReportEmail" />
+          </zeebe:taskHeaders>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_0sqz3ng</bpmn:incoming>
         <bpmn:outgoing>Flow_03mp6nz</bpmn:outgoing>
@@ -97,11 +99,13 @@
             <zeebe:input source="=&#34;secrets.FROM&#34;" target="from" />
             <zeebe:input source="=&#34;secrets.PASSWORD&#34;" target="password" />
             <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
-            <zeebe:input target="to" />
-            <zeebe:input target="subject" />
-            <zeebe:input target="text" />
+            <zeebe:input source="=user.email" target="to" />
+            <zeebe:input source="Påminnelse Seat-rapport" target="subject" />
+            <zeebe:input source="Hej,&#10;Det har gått en vecka och seat-rapporten för denna månad är fortfarande inte ifylld. &#10;Vänligen gå in på apendo.seat.se för att fylla i den." target="text" />
           </zeebe:ioMapping>
-          <zeebe:taskHeaders />
+          <zeebe:taskHeaders>
+            <zeebe:header key="resultVariable" value="remainderEmail" />
+          </zeebe:taskHeaders>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_1eayyd1</bpmn:incoming>
         <bpmn:outgoing>Flow_1uobuw8</bpmn:outgoing>
@@ -113,11 +117,13 @@
             <zeebe:input source="=&#34;secrets.FROM&#34;" target="from" />
             <zeebe:input source="=&#34;secrets.PASSWORD&#34;" target="password" />
             <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
-            <zeebe:input target="to" />
+            <zeebe:input source="=user.email" target="to" />
             <zeebe:input target="subject" />
-            <zeebe:input target="text" />
+            <zeebe:input source="=reasonForDenial" target="text" />
           </zeebe:ioMapping>
-          <zeebe:taskHeaders />
+          <zeebe:taskHeaders>
+            <zeebe:header key="resultVariable" value="denialReasonEmail" />
+          </zeebe:taskHeaders>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_04zucgt</bpmn:incoming>
         <bpmn:outgoing>Flow_1eec4ir</bpmn:outgoing>
@@ -129,11 +135,13 @@
             <zeebe:input source="=&#34;secrets.FROM&#34;" target="from" />
             <zeebe:input source="=&#34;secrets.PASSWORD&#34;" target="password" />
             <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
-            <zeebe:input target="to" />
-            <zeebe:input target="subject" />
-            <zeebe:input target="text" />
+            <zeebe:input source="seat.fakturering@apendo.se" target="to" />
+            <zeebe:input source="Överanvändning av seat" target="subject" />
+            <zeebe:input source="=&#34;Hej,\nAnvändare &#34; &#10;+ user.email + &#10;&#34; har rapporterat att de använt mer än deras avtal.&#34;" target="text" />
           </zeebe:ioMapping>
-          <zeebe:taskHeaders />
+          <zeebe:taskHeaders>
+            <zeebe:header key="resultVariable" value="invoiceEmail" />
+          </zeebe:taskHeaders>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_1ttei45</bpmn:incoming>
         <bpmn:outgoing>Flow_16hs5a5</bpmn:outgoing>
@@ -183,11 +191,13 @@
       <bpmn:outgoing>Flow_0pqud3r</bpmn:outgoing>
     </bpmn:serviceTask>
   </bpmn:process>
+  <bpmn:message id="Message_263k152" name="report-response">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=user.email + &#34;-&#34; + year + &#34;/&#34; + month" />
+    </bpmn:extensionElements>
+  </bpmn:message>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0dfii83">
-      <bpmndi:BPMNShape id="Activity_0n6uzst_di" bpmnElement="Activity_1qzq815">
-        <dc:Bounds x="1120" y="90" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0bn29hs_di" bpmnElement="Activity_0bn29hs" isExpanded="true">
         <dc:Bounds x="140" y="220" width="1180" height="500" />
         <bpmndi:BPMNLabel />
@@ -354,6 +364,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_061mery_di" bpmnElement="Activity_1pag55b">
         <dc:Bounds x="228" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0n6uzst_di" bpmnElement="Activity_1qzq815">
+        <dc:Bounds x="1120" y="90" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_18ke92o" bpmnElement="Flow_1anznpa">
         <di:waypoint x="176" y="120" />

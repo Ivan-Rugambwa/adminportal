@@ -3,6 +3,7 @@ package almroth.kim.gamendo_user_api.account.model;
 import almroth.kim.gamendo_user_api.accountProfile.model.AccountProfile;
 import almroth.kim.gamendo_user_api.refreshToken.model.RefreshToken;
 import almroth.kim.gamendo_user_api.role.model.Role;
+import almroth.kim.gamendo_user_api.seat.model.Seat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -30,6 +31,7 @@ public class Account implements UserDetails {
 
     @NotBlank(message = "Email is mandatory")
     @Pattern(regexp = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", message = "Wrong email format, see correct example: test@domain.com")
+    @Column(unique = true)
     private String email;
 
     @NotBlank(message = "Password is mandatory")
@@ -44,6 +46,9 @@ public class Account implements UserDetails {
 
     @OneToOne(mappedBy = "account")
     private AccountProfile profile;
+
+    @OneToMany(mappedBy = "assignedAccount")
+    private Set<Seat> completedSeats;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "ACCOUNT_ROLES",

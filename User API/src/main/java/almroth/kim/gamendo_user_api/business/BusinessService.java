@@ -13,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,22 +23,18 @@ public class BusinessService {
     private final AccountProfileRepository accountProfileRepository;
     private final BusinessMapper mapper = Mappers.getMapper(BusinessMapper.class);
 
-    public Business Get(String name){
-        return repository.findBusinessByName(name).orElseThrow(() -> new IllegalArgumentException("No such Business"));
+    public Business GetByName(String name){
+        return repository.findBusinessByName(name).orElseThrow(() -> new IllegalArgumentException("No such Business: " + name));
+    }
+    public Business GetByUuid(String uuid){
+        return repository.findById(UUID.fromString(uuid)).orElseThrow(() -> new IllegalArgumentException("No Business with id: " + uuid));
     }
 
     public void Create(CreateBusinessRequest model) {
         if (repository.existsBusinessByName(model.getName()))
             throw new IllegalArgumentException("Business with name already exists");
+        model.setName(model.getName().toUpperCase());
         repository.save(mapper.TO_MODEL(model));
-    }
-    public void Create(String name) {
-        if (repository.existsBusinessByName(name))
-            return;
-
-        var business = Business.builder().name(name).build();
-
-        repository.save(business);
     }
 
     public void Update(Business businessViewModel, Account account) {

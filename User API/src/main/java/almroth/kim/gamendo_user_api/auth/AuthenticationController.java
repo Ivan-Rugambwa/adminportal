@@ -43,9 +43,9 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.register(request));
     }
 
-    @GetMapping("/validate")
-    public ResponseEntity<?> validate(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        var result = service.validateAccessToken(token);
+    @PostMapping("/validate")
+    public ResponseEntity<?> validate(@RequestBody ValidateRequest request) {
+        var result = service.validateAccessToken(request.getToken());
         return ResponseEntity.status(result).build();
     }
 

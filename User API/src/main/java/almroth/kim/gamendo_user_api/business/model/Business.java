@@ -1,6 +1,7 @@
 package almroth.kim.gamendo_user_api.business.model;
 
 import almroth.kim.gamendo_user_api.accountProfile.model.AccountProfile;
+import almroth.kim.gamendo_user_api.seat.model.Seat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,5 +28,8 @@ public class Business {
     private String name;
     @OneToMany(mappedBy = "business")
     private Set<AccountProfile> accountProfiles = new HashSet<>();
+    private Integer seatAmount;
+    @OneToMany(mappedBy = "business")
+    private Set<Seat> seats;
 
 }
