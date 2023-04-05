@@ -2,13 +2,10 @@ package almroth.kim.gamendo_user_api.auth;
 
 import almroth.kim.gamendo_user_api.account.AccountRepository;
 import almroth.kim.gamendo_user_api.account.model.Account;
-import almroth.kim.gamendo_user_api.accountProfile.AccountProfileRepository;
 import almroth.kim.gamendo_user_api.accountProfile.AccountProfileService;
 import almroth.kim.gamendo_user_api.accountProfile.model.AccountProfile;
 import almroth.kim.gamendo_user_api.auth.dto.*;
-import almroth.kim.gamendo_user_api.business.BusinessRepository;
 import almroth.kim.gamendo_user_api.business.BusinessService;
-import almroth.kim.gamendo_user_api.business.model.Business;
 import almroth.kim.gamendo_user_api.config.JwtService;
 import almroth.kim.gamendo_user_api.config.NotionConfigProperties;
 import almroth.kim.gamendo_user_api.error.customException.DataBadCredentialsException;
@@ -17,11 +14,9 @@ import almroth.kim.gamendo_user_api.refreshToken.RefreshTokenService;
 import almroth.kim.gamendo_user_api.role.RoleService;
 import almroth.kim.gamendo_user_api.role.RoleType;
 import com.auth0.jwt.algorithms.Algorithm;
-import io.jsonwebtoken.impl.Base64UrlCodec;
 import io.jsonwebtoken.io.Decoders;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Set;
 
@@ -64,7 +58,7 @@ public class AuthenticationService {
                 .password(encodedPassword)
                 .build();
 
-        var business = businessService.Get(request.getBusiness());
+        var business = businessService.GetByName(request.getBusiness());
 
         if (account.getEmail().contains("@test.com")) {
             account.setRoles(Set.of(roleService.getRoleByName(RoleType.ADMIN)));
