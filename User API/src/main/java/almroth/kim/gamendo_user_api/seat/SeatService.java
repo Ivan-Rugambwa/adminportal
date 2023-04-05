@@ -13,6 +13,8 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -52,11 +54,12 @@ public class SeatService {
         repository.save(seat);
         return mapper.SEAT_RESPONSE(seat);
     }
-    public void UpdateSeat(UpdateSeatRequest request, String seatUuid){
-        var seat = repository.findById(UUID.fromString(seatUuid)).orElseThrow(() -> new IllegalArgumentException("No seat with id: " + seatUuid));
+    public void UpdateSeat(UpdateSeatRequest request, UUID seatUuid){
+        var seat = repository.findById(seatUuid).orElseThrow(() -> new IllegalArgumentException("No seat with id: " + seatUuid));
 
         seat.setSeatUsed(request.getUsedSeat());
         seat.setIsCompleted(true);
+        seat.setLastChangeDate(Date.from(Instant.now()));
         repository.save(seat);
     }
 

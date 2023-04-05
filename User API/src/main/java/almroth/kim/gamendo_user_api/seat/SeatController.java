@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 
 @RestController
 @RequestMapping("api/admin/seat")
@@ -32,7 +34,7 @@ public class SeatController {
         return ResponseEntity.ok().body(seat);
     }
     @PatchMapping(path = "{seatUuid}")
-    public ResponseEntity<?> Update(@RequestBody UpdateSeatRequest request, @PathVariable String seatUuid){
+    public ResponseEntity<?> Update(@RequestBody UpdateSeatRequest request, @PathVariable UUID seatUuid){
         service.UpdateSeat(request, seatUuid);
         return ResponseEntity.noContent().build();
     }

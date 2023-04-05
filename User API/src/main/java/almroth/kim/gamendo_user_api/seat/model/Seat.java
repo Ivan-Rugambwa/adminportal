@@ -12,8 +12,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -24,7 +26,7 @@ import java.util.Date;
 public class Seat {
     @Id
     @UuidGenerator
-    private String uuid;
+    private UUID uuid;
     @ManyToOne
     @NotNull(message = "Business is required")
     private Business business;
@@ -32,7 +34,7 @@ public class Seat {
     private Account assignedAccount;
     @NotNull(message = "Is completed is required")
     private Boolean isCompleted;
-    @LastModifiedDate
+
     private Date lastChangeDate;
     private Integer seatUsed;
 }
