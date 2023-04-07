@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1fznb4x" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.9.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0">
+  <bpmn:process id="Process_0odwlrf" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1mryzzw</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1mryzzw" sourceRef="StartEvent_1" targetRef="Activity_04e2e5g" />
+    <bpmn:endEvent id="Event_0jdjw75">
+      <bpmn:incoming>Flow_0zoj4u4</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0tf6hoh" sourceRef="Activity_04e2e5g" targetRef="Activity_15elxdj" />
+    <bpmn:serviceTask id="Activity_04e2e5g" zeebe:modelerTemplate="apendo.get.data.template" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="data:image/svg+xml;user-circle.svg">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="apendo:get:1" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=&#34;secrets.EMAIL&#34;" target="email" />
+          <zeebe:input source="=&#34;secrets.PASSWORD&#34;" target="password" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="resultVariable" value="test" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1mryzzw</bpmn:incoming>
+      <bpmn:outgoing>Flow_0tf6hoh</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0oie54u" sourceRef="Activity_15elxdj" targetRef="Activity_1qm1qf0" />
+    <bpmn:sequenceFlow id="Flow_0zoj4u4" sourceRef="Activity_1qm1qf0" targetRef="Event_0jdjw75" />
+    <bpmn:userTask id="Activity_15elxdj">
+      <bpmn:incoming>Flow_0tf6hoh</bpmn:incoming>
+      <bpmn:outgoing>Flow_0oie54u</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_1qm1qf0" zeebe:modelerTemplate="apendo.create.base" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="data:image/svg+xml;user-circle.svg">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="apendo:create:1" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=&#34;secrets.EMAIL&#34;" target="email" />
+          <zeebe:input source="=&#34;secrets.PASSWORD&#34;" target="password" />
+          <zeebe:input source="55c282d4-ed4c-407b-a1c9-47d94cca6432" target="accountUuid" />
+          <zeebe:input source="e1e5c01f-84cd-415c-bd5b-faf62bff30a1" target="businessUuid" />
+          <zeebe:input source="=today()" target="today" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="resultVariable" value="createSeatResult" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0oie54u</bpmn:incoming>
+      <bpmn:outgoing>Flow_0zoj4u4</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0odwlrf">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1f47yqa_di" bpmnElement="Activity_04e2e5g">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1mu73ky_di" bpmnElement="Activity_1qm1qf0">
+        <dc:Bounds x="610" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0jdjw75_di" bpmnElement="Event_0jdjw75">
+        <dc:Bounds x="792" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0wz5hj0_di" bpmnElement="Activity_15elxdj">
+        <dc:Bounds x="440" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1mryzzw_di" bpmnElement="Flow_1mryzzw">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tf6hoh_di" bpmnElement="Flow_0tf6hoh">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="440" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0oie54u_di" bpmnElement="Flow_0oie54u">
+        <di:waypoint x="540" y="117" />
+        <di:waypoint x="610" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0zoj4u4_di" bpmnElement="Flow_0zoj4u4">
+        <di:waypoint x="710" y="117" />
+        <di:waypoint x="792" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
