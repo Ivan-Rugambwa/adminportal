@@ -48,8 +48,8 @@ public class BusinessService {
         repository.save(business);
     }
 
-    public void Delete(RemoveViewModel businessViewModel) {
-        var business = repository.findBusinessByName(businessViewModel.getName()).orElseThrow(() -> new IllegalArgumentException("No such Business"));
+    public void Delete(UUID uuid) {
+        var business = repository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("No such Business"));
         repository.delete(business);
     }
 

@@ -5,10 +5,8 @@ import almroth.kim.gamendo_user_api.business.model.Business;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Pattern;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -29,12 +27,19 @@ public class Seat {
     private UUID uuid;
     @ManyToOne
     @NotNull(message = "Business is required")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Business business;
     @ManyToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Account assignedAccount;
     @NotNull(message = "Is completed is required")
     private Boolean isCompleted;
 
     private Date lastChangeDate;
+    @NotBlank(message = "Year and Month is required")
+    @Pattern(regexp = "^\\d{4}/(0[1-9]|1[0-2])$", message = "forYearMonth: Need to be in the form of a 4 digit year and a 2 digit month separated with a slash, for example: 2023/04")
+    private String forYearMonth;
     private Integer seatUsed;
 }

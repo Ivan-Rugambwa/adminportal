@@ -8,7 +8,6 @@ import almroth.kim.gamendo_user_api.error.customException.EmailAlreadyTakenExcep
 import almroth.kim.gamendo_user_api.mapper.AccountMapper;
 import almroth.kim.gamendo_user_api.role.RoleRepository;
 import almroth.kim.gamendo_user_api.role.RoleType;
-import almroth.kim.gamendo_user_api.role.model.Role;
 import com.password4j.BcryptFunction;
 import com.password4j.Password;
 import com.password4j.types.Bcrypt;
@@ -46,12 +45,14 @@ public class AccountService {
     }
 
     public List<SimpleResponse> getUserAccounts(){
+        System.out.println("Getting user accounts only...");
         var accounts = accountRepository.findAll();
         var userAccounts = accounts.stream().filter(account -> account.getRoles().stream().allMatch(role -> role.getName() == RoleType.USER)).toList();
         ArrayList<SimpleResponse> simpleData = new ArrayList<>();
         for (Account acc : userAccounts) {
             simpleData.add(mapper.SIMPLE_RESPONSE(acc));
         }
+        System.out.println("Successfully got user accounts only.");
         return simpleData;
     }
 
@@ -63,29 +64,36 @@ public class AccountService {
         accountRepository.deleteById(uuid);
     }
 
+    public SimpleResponse getSimpleAccountByUuid(String uuid) {
+        Account account = accountRepository
+                .findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new IllegalStateException("No account with id: " + uuid));
+        return mapper.SIMPLE_RESPONSE(account);
+    }
     public Account getAccountByUuid(String uuid) {
-        var account = accountRepository.findById(UUID.fromString(uuid));
-        if (account.isEmpty()) {
-            throw new IllegalStateException("No account with id: " + uuid);
-        }
-        return account.get();
+        return accountRepository
+                .findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new IllegalStateException("No account with id: " + uuid));
     }
 
-    public void updateAccount(String accountId, UpdateAccountRequest request) {
+    public SimpleResponse updateAccount(String accountId, UpdateAccountRequest request) {
         Account account = accountRepository
                 .findById(UUID.fromString(accountId))
                 .orElseThrow(() -> new IllegalStateException("No account with id: " + accountId));
-        if (!(Objects.equals(account.getEmail(), request.getEmail()))) account.setEmail(request.getEmail());
-        else if (accountRepository.existsByEmail(request.getEmail())) throw new EmailAlreadyTakenException("A user already has that email.");
+
+        if (!Objects.equals(account.getEmail(), request.getEmail())
+                && accountRepository.existsByEmail(request.getEmail()))
+            throw new EmailAlreadyTakenException("That email is unavailable.");
 
         var business = businessRepository.findBusinessByName(request.getBusiness()).orElseThrow(() -> new IllegalArgumentException("No such business"));
 
-
+        account.setEmail(request.getEmail());
         account.setFirstName(request.getFirstName());
         account.setLastName(request.getLastName());
         account.getProfile().setBusiness(business);
 
-        accountRepository.save(account);
+        accountRepository.saveAndFlush(account);
+        return mapper.SIMPLE_RESPONSE(account);
     }
 
     private String generateHashedPassword(String password) {

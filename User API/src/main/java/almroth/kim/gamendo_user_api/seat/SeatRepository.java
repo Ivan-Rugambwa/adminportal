@@ -12,4 +12,5 @@ import java.util.UUID;
 public interface SeatRepository  extends JpaRepository<Seat, UUID> {
 
     Optional<Set<Seat>> findAllByBusiness_Name(String name);
+    Optional<Set<Seat>> findAllByBusiness_Uuid(UUID uuid);
 }

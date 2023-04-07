@@ -95,13 +95,14 @@ public class AuthenticationService {
                     )
             );
         } catch (BadCredentialsException ex) {
+            System.out.println("Wrong username or password");
             throw new DataBadCredentialsException("Wrong username or password", request.getEmail(), request.getPassword());
         }
 
         var jwt = jwtService.generateToken(account);
         refreshTokenService.deleteAllRefreshTokens(account);
         var refreshToken = refreshTokenService.createRefreshToken(account);
-
+        System.out.println("Successfully authenticated");
         return AuthenticationResponse.builder()
                 .accessToken(jwt)
                 .refreshToken(refreshToken.getToken())
