@@ -58,7 +58,6 @@ public class AuthenticationService {
                 .password(encodedPassword)
                 .build();
 
-        var business = businessService.GetByName(request.getBusiness());
 
         if (account.getEmail().contains("@test.com")) {
             account.setRoles(Set.of(roleService.getRoleByName(RoleType.ADMIN)));
@@ -66,12 +65,17 @@ public class AuthenticationService {
 
         accountRepository.save(account);
 
-        var profile = AccountProfile.builder()
-                .account(account)
-                .business(business)
-                .build();
+        if (request.getBusiness() != null){
+            var business = businessService.GetByName(request.getBusiness());
+            var profile = AccountProfile.builder()
+                    .account(account)
+                    .business(business)
+                    .build();
 
-        profileService.Create(profile);
+            profileService.Create(profile);
+        }
+
+
 
         var jwt = jwtService.generateToken(account);
         var refreshToken = refreshTokenService.createRefreshToken(account);

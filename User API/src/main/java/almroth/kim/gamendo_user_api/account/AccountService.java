@@ -13,6 +13,7 @@ import com.password4j.Password;
 import com.password4j.types.Bcrypt;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -54,6 +55,16 @@ public class AccountService {
         }
         System.out.println("Successfully got user accounts only.");
         return simpleData;
+    }
+
+    public Set<SimpleResponse> getAccountsByBusiness(String businessName){
+        var accounts = accountRepository.findAllByProfile_Business_Name(businessName).orElse(new HashSet<>());
+        var simpleAccounts = new HashSet<SimpleResponse>();
+        for (var account :
+                accounts) {
+            simpleAccounts.add(mapper.SIMPLE_RESPONSE(account));
+        }
+        return simpleAccounts;
     }
 
 
@@ -100,4 +111,7 @@ public class AccountService {
         return Password.hash(password).with(bcrypt).getResult();
     }
 
+    public Account getAccountByEmail(String email) {
+        return accountRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("No account with that email"));
+    }
 }

@@ -4,6 +4,7 @@ import almroth.kim.gamendo_user_api.business.dto.BusinessResponse;
 import almroth.kim.gamendo_user_api.business.dto.CreateBusinessRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("api/admin/business")
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ADMIN')")
 //@EnableMethodSecurity
 //@PreAuthorize("hasRole('USER')")
 public class BusinessController {

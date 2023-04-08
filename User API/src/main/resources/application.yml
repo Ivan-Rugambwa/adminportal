@@ -23,4 +23,4 @@ server:
   error:
     include-message: always
     include-stacktrace: never
-  port: 9000
+  port: 35462

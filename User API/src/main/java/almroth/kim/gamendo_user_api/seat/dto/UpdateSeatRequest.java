@@ -7,4 +7,6 @@ import lombok.Data;
 public class UpdateSeatRequest {
     @NotNull
     private Integer usedSeat;
+    @NotNull
+    private String updatedByEmail;
 }

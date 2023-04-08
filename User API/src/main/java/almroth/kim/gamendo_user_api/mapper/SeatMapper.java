@@ -13,7 +13,7 @@ public interface SeatMapper {
     Seat SEAT(SeatResponse seatResponse);
 
     @Mapping(target = "businessName", source = "business", qualifiedByName = "businessToBusinessName")
-    @Mapping(target = "assignedAccountEmail", source = "assignedAccount", qualifiedByName = "accountToAccountName")
+    @Mapping(target = "completedByEmail", source = "completedBy", qualifiedByName = "accountToAccountName")
     SeatResponse SEAT_RESPONSE(Seat seat);
 
     @Named("businessToBusinessName")
@@ -22,6 +22,7 @@ public interface SeatMapper {
     }
     @Named("accountToAccountName")
     default String accountToAccountName(Account account) {
+        if (account == null) return null;
         return account.getEmail();
     }
 }

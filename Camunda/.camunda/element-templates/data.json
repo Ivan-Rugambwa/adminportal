@@ -22,7 +22,7 @@
   "properties": [
     {
       "type": "Hidden",
-      "value": "apendo:get:1",
+      "value": "apendo:get:2",
       "binding": {
         "type": "zeebe:taskDefinition:type"
       }
@@ -50,6 +50,19 @@
       "binding": {
         "type": "zeebe:input",
         "name": "password"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Business name",
+      "description": "The name of the business the user belongs to",
+      "type": "String",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "businessName"
       },
       "constraints": {
         "notEmpty": true

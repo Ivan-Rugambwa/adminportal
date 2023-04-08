@@ -65,11 +65,13 @@ public class BusinessService {
     }
 
     public List<BusinessResponse> GetAll() {
+        System.out.println("Trying to get all businesses...");
         var businesses = repository.findAll();
         ArrayList<BusinessResponse> simpleData = new ArrayList<>();
         for (Business business : businesses) {
             simpleData.add(mapper.TO_RESPONSE(business));
         }
+        System.out.println("Successfully got all businesses");
         return simpleData;
     }
 }

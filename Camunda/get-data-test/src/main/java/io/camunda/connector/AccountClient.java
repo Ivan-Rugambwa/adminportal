@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public interface AccountClient {
-    @GET("api/admin/user/only")
+    @GET("api/admin/user/by/business/name/{businessName}")
     @Headers({"Content-Type: application/json"})
-    CompletableFuture<List<Account>> getAccounts(@Header("Authorization") String token);
+    CompletableFuture<List<Account>> getAccounts(@Header("Authorization") String token, @Path("businessName") String businessName);
 
     @POST("api/auth/authenticate")
     @Headers({"Content-Type: application/json"})

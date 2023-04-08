@@ -48,21 +48,24 @@ public class RoleConfig {
     public void register(AccountRepository accountRepository, AuthenticationService authenticationService){
         if(accountRepository.count() > 0) return;
 
-        var acc1 = RegisterRequest.builder().email("kim@test.com").password("testtest").firstName("Kim").lastName("Almroth").business("APENDO").build();
+        var acc1 = RegisterRequest.builder().email("kim@test.com").password("testtest").firstName("Kim").lastName("Almroth").build();
         var acc2 = RegisterRequest.builder().email("john@doe.com").password("testtest").firstName("john").lastName("doe").business("ICA").build();
-        var acc3 = RegisterRequest.builder().email("jane@smith.com").password("testtest").firstName("jane").lastName("smith").business("MAX").build();
+        var acc3 = RegisterRequest.builder().email("mary@lombok.com").password("testtest").firstName("mary").lastName("lombok").business("ICA").build();
+        var acc4 = RegisterRequest.builder().email("jane@smith.com").password("testtest").firstName("jane").lastName("smith").business("MAX").build();
+        var acc5 = RegisterRequest.builder().email("harry@stone.com").password("testtest").firstName("harry").lastName("stone").business("IKEA").build();
 
         authenticationService.register(acc1);
         authenticationService.register(acc2);
         authenticationService.register(acc3);
+        authenticationService.register(acc4);
+        authenticationService.register(acc5);
     }
     @Transactional
     public void CreateBusiness(BusinessRepository repository){
         var bus1 = Business.builder().seatAmount(45).name("ICA").build();
-        var bus2 = Business.builder().seatAmount(50).name("APENDO").build();
-        var bus3 = Business.builder().seatAmount(45).name("MAX").build();
-        var bus4 = Business.builder().seatAmount(45).name("IKEA").build();
+        var bus3 = Business.builder().seatAmount(47).name("MAX").build();
+        var bus4 = Business.builder().seatAmount(42).name("IKEA").build();
 
-        repository.saveAll(Set.of(bus1, bus2, bus3, bus4));
+        repository.saveAll(Set.of(bus1, bus3, bus4));
     }
 }

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://unpkg.com/@camunda/zeebe-element-templates-json-schema/resources/schema.json",
+  "name": "Create seat base report",
+  "id": "apendo.create.seat-312323423423",
+  "description": "Create seat report",
+  "version": 1,
+  "documentationRef": "https://docs.camunda.io/docs/components/connectors/out-of-the-box-connectors/available-connectors-overview/",
+  "icon": {
+    "contents": "data:image/svg+xml;user-circle.svg"
+  },
+  "category": {
+    "id": "connectors",
+    "name": "Connectors"
+  },
+  "appliesTo": [
+    "bpmn:Task"
+  ],
+  "elementType": {
+    "value": "bpmn:ServiceTask"
+  },
+  
+  "properties": [
+    {
+      "type": "Hidden",
+      "value": "apendo:create-seat:1",
+      "binding": {
+        "type": "zeebe:taskDefinition:type"
+      }
+    },
+    {
+      "label": "Email",
+      "description": "The email to use for authentication",
+      "type": "String",
+      "value": "=\"secrets.EMAIL\"",
+      "feel": "required",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "email"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Password",
+      "description": "The password to use for authentication",
+      "type": "String",
+      "value": "=\"secrets.PASSWORD\"",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "password"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Year and Month date",
+      "description": "The year and month the report is for in the format of 'yyyy-mm-dd' or 'yyyy-mm'",
+      "type": "String",
+      "value": "=today()",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "today"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Result Variable",
+      "description": "Name of variable to store the response in",
+      "group": "output",
+      "type": "String",
+      "binding": {
+        "type": "zeebe:taskHeader",
+        "key": "resultVariable"
+      }
+    }
+  ]
+}

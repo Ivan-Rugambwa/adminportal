@@ -5,6 +5,7 @@ import almroth.kim.gamendo_user_api.account.dto.UpdateAccountRequest;
 import almroth.kim.gamendo_user_api.account.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @RequestMapping("api/admin/user")
 @CrossOrigin(originPatterns = "/**")
 //@EnableMethodSecurity
-//@PreAuthorize("hasRole('USER')")
+@PreAuthorize("hasRole('ADMIN')")
 public class AccountController {
     AccountService accountService;
 
@@ -31,6 +32,11 @@ public class AccountController {
     @GetMapping("/only")
     public List<SimpleResponse> getUserAccounts() {
         return accountService.getUserAccounts();
+    }
+
+    @GetMapping("/by/business/name/{businessName}")
+    public ResponseEntity<?> getAccountsByBusinessName(@PathVariable String businessName) {
+        return ResponseEntity.ok(accountService.getAccountsByBusiness(businessName));
     }
 
     @GetMapping(path = {"{accountId}"})

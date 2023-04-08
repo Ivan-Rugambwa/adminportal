@@ -9,7 +9,6 @@ public class GetDataResult {
 
   // TODO: define connector result properties, which are returned to the process engine
   private List<Account> users;
-  private String message;
 
 
 }

@@ -21,6 +21,8 @@ public class MessageController {
 
         var key = service.publish(request);
 
+        service.updateSeat(request, token);
+
         return ResponseEntity.ok().build();
     }
 }

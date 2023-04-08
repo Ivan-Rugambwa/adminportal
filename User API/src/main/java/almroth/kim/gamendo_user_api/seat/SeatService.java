@@ -41,7 +41,6 @@ public class SeatService {
     public SeatResponse CreateSeatBase(CreateSeatRequest request){
         System.out.println("Creating seat...");
         var business = businessService.GetByUuid(request.getBusinessUuid());
-        var account = accountService.getAccountByUuid(request.getAccountUuid());
 
         var seats = repository.findAllByBusiness_Uuid(business.getUuid()).orElse(new HashSet<>());
         if (seats.stream().anyMatch(seat -> Objects.equals(seat.getForYearMonth(), request.getForYearMonth()))) {
@@ -51,7 +50,7 @@ public class SeatService {
 
         var seat = Seat.builder()
                 .seatUsed(null)
-                .assignedAccount(account)
+                .completedBy(null)
                 .business(business)
                 .isCompleted(false)
                 .forYearMonth(request.getForYearMonth())
@@ -62,7 +61,11 @@ public class SeatService {
     }
     public void UpdateSeat(UpdateSeatRequest request, UUID seatUuid){
         var seat = repository.findById(seatUuid).orElseThrow(() -> new IllegalArgumentException("No seat with id: " + seatUuid));
+        var account = accountService.getAccountByEmail(request.getUpdatedByEmail());
 
+//        account.getCompletedSeats().add(seat);
+
+        seat.setCompletedBy(account);
         seat.setSeatUsed(request.getUsedSeat());
         seat.setIsCompleted(true);
         seat.setLastChangeDate(Date.from(Instant.now()));
@@ -87,4 +90,8 @@ public class SeatService {
         }
         return seatResponses;
     }
+
+//    public SeatResponse GetSeatByCurrentMonthAndBusinessName(String name, String forYearMonth) {
+//        var seat = repository.findByBusiness_NameAndForYearMonthEquals(name, forYearMonth);
+//    }
 }

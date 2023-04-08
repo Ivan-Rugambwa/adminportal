@@ -12,6 +12,8 @@ public class EmailRequest {
     private String password;
     @Secret
     private String host;
+    @Secret
+    private String port;
 
     private String to;
 

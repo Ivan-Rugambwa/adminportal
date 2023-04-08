@@ -13,4 +13,5 @@ public interface SeatRepository  extends JpaRepository<Seat, UUID> {
 
     Optional<Set<Seat>> findAllByBusiness_Name(String name);
     Optional<Set<Seat>> findAllByBusiness_Uuid(UUID uuid);
+    Optional<Seat> findByBusiness_NameAndForYearMonthEquals(String name, String forYearMonth);
 }

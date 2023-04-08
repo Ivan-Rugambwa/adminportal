@@ -9,8 +9,9 @@ import java.util.UUID;
 public class SeatResponse {
     private UUID uuid;
     private String businessName;
-    private String assignedAccountEmail;
+    private String completedByEmail;
     private Boolean isCompleted;
     private Date lastChangeDate;
     private Integer seatUsed;
+    private String forYearMonth;
 }

@@ -12,6 +12,7 @@ public class GetDataRequest {
     private String email;
     @Secret
     private String password;
+    private String businessName;
     private String token;
 
 }

@@ -17,8 +17,8 @@ import java.util.concurrent.ExecutionException;
 
 @OutboundConnector(
     name = "Get user data.",
-    inputVariables = {"email", "password"},
-    type = "apendo:get:1")
+    inputVariables = {"email", "password", "businessName"},
+    type = "apendo:get:2")
 public class GetDataFunction implements OutboundConnectorFunction {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(GetDataFunction.class);
@@ -38,18 +38,17 @@ public class GetDataFunction implements OutboundConnectorFunction {
     LOGGER.info("Executing my connector with request {}", connectorRequest);
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://wsprakt3.apendo.se:9000/")
+            .baseUrl("http://83.233.216.66:35462/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     AccountClient client = retrofit.create(AccountClient.class);
 
     var loginResponse = login(client, connectorRequest);
 
-    var userAccounts = getUserAccounts(client, loginResponse.getAccessToken());
+    var userAccounts = getUserAccounts(client, loginResponse.getAccessToken(), connectorRequest);
 
     var getDataResult = new GetDataResult();
     getDataResult.setUsers(userAccounts);
-    getDataResult.setMessage("Done");
 
     return getDataResult;
   }
@@ -63,10 +62,10 @@ public class GetDataFunction implements OutboundConnectorFunction {
     return client.login(loginRequest).get();
   }
 
-  public static List<Account> getUserAccounts(AccountClient client, String token){
+  public static List<Account> getUserAccounts(AccountClient client, String token, GetDataRequest request){
     List<Account> accounts;
     try {
-      accounts = client.getAccounts("Bearer " + token).get();
+      accounts = client.getAccounts("Bearer " + token, request.getBusinessName()).get();
     } catch (Exception e) {
       throw new IllegalArgumentException(e.getLocalizedMessage());
     }

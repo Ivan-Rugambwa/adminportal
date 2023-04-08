@@ -47,7 +47,7 @@ public class Account implements UserDetails {
     @OneToOne(mappedBy = "account")
     private AccountProfile profile;
 
-    @OneToMany(mappedBy = "assignedAccount")
+    @OneToMany(mappedBy = "completedBy")
     private Set<Seat> completedSeats;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

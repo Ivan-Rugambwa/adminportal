@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("api/admin/seat")
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ADMIN')")
 public class SeatController {
 
     final SeatService service;
@@ -29,6 +31,11 @@ public class SeatController {
         var seats = service.GetAllSeatsByBusinessName(name);
         return ResponseEntity.ok().body(seats);
     }
+//    @GetMapping(path = "/business/name/{name}")
+//    public ResponseEntity<?> GetCurrentMonthSeatByBusinessName(@PathVariable String name){
+//        var seats = service.GetSeatByCurrentMonthAndBusinessName(name);
+//        return ResponseEntity.ok().body(seats);
+//    }
     @GetMapping(path = "/business/{uuid}")
     public ResponseEntity<?> GetAllByBusinessUuid(@PathVariable UUID uuid){
         var seats = service.GetAllSeatsByBusinessUuid(uuid);

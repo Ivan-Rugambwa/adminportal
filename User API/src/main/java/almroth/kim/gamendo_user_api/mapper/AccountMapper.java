@@ -18,9 +18,14 @@ public interface AccountMapper {
     SimpleResponse SIMPLE_RESPONSE(Account account);
 
     @Named("getBusinessName")
-    default String getBusinessName(AccountProfile profile) {return profile.getBusiness().getName();}
+    default String getBusinessName(AccountProfile profile) {
+        if (profile == null) return null;
+        return profile.getBusiness().getName();
+    }
 
     @Named("getBusinessUuid")
-    default UUID getBusinessUuid(AccountProfile profile) {return profile.getBusiness().getUuid();}
+    default UUID getBusinessUuid(AccountProfile profile) {
+        if (profile == null) return null;
+        return profile.getBusiness().getUuid();}
 
 }

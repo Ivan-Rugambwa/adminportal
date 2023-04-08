@@ -49,7 +49,7 @@ public class MyRequestTest {
     context.replaceSecrets(input);
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://wsprakt3.apendo.se:9000/")
+            .baseUrl("http://83.233.216.66:35462/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     AccountClient client = retrofit.create(AccountClient.class);
@@ -69,6 +69,7 @@ public class MyRequestTest {
     var input = new GetDataRequest();
     input.setPassword("secrets.PASSWORD");
     input.setEmail("secrets.EMAIL");
+    input.setBusinessName("ICA");
     input.setToken("");
     var context = OutboundConnectorContextBuilder.create()
             .secret("PASSWORD", "testtest").secret("EMAIL", "kim@test.com")
@@ -78,7 +79,7 @@ public class MyRequestTest {
     context.replaceSecrets(input);
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://wsprakt3.apendo.se:9000/")
+            .baseUrl("http://83.233.216.66:35462/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     AccountClient client = retrofit.create(AccountClient.class);
@@ -86,7 +87,7 @@ public class MyRequestTest {
     var loginResponse = login(client, input);
     input.setToken(loginResponse.getAccessToken());
 
-    var acc = getUserAccounts(client, input.getToken());
+    var acc = getUserAccounts(client, input.getToken(), input);
 
     // then
 
