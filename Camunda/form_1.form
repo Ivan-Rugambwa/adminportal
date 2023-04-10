@@ -1,0 +1,56 @@
+{
+  "components": [
+    {
+      "label": "Seatanvänding",
+      "type": "number",
+      "id": "Field_0lalf59",
+      "key": "seatUsed",
+      "properties": {},
+      "disabled": true
+    },
+    {
+      "values": [
+        {
+          "label": "Godkänn",
+          "value": "true"
+        },
+        {
+          "label": "Neka",
+          "value": "false"
+        }
+      ],
+      "label": "Seatanvänding ok?",
+      "type": "radio",
+      "id": "Field_1mggb7w",
+      "key": "approved",
+      "disabled": false,
+      "validate": {
+        "required": true
+      },
+      "properties": {},
+      "defaultValue": null
+    },
+    {
+      "label": "Anledning till nekad rapport",
+      "type": "textarea",
+      "id": "Field_0w2y6hu",
+      "key": "field_0evc47t",
+      "description": "Meddelandet skickas till kunden",
+      "conditional": {
+        "hide": "=approved = null or approved = \"true\""
+      },
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Form_189j2xz",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.2.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.9.0"
+  },
+  "schemaVersion": 7
+}

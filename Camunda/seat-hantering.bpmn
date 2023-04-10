@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.9.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.1.0" camunda:diagramRelationId="bf72d084-fc7e-41da-a290-2acdffeaf7d2">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.9.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0" camunda:diagramRelationId="bf72d084-fc7e-41da-a290-2acdffeaf7d2">
   <bpmn:process id="Process_0dfii83" isExecutable="true">
+    <bpmn:extensionElements>
+      <zeebe:userTaskForm id="userTaskForm_28tffc0">{
+  "components": [
+    {
+      "label": "Seatanvänding",
+      "type": "number",
+      "id": "Field_0lalf59",
+      "key": "seatUsed",
+      "properties": {},
+      "disabled": true
+    },
+    {
+      "values": [
+        {
+          "label": "Godkänn",
+          "value": "true"
+        },
+        {
+          "label": "Neka",
+          "value": "false"
+        }
+      ],
+      "label": "Seatanvänding ok?",
+      "type": "radio",
+      "id": "Field_1mggb7w",
+      "key": "approved",
+      "disabled": false,
+      "validate": {
+        "required": true
+      },
+      "properties": {},
+      "defaultValue": null
+    },
+    {
+      "label": "Anledning till nekad rapport",
+      "type": "textarea",
+      "id": "Field_0w2y6hu",
+      "key": "field_0evc47t",
+      "description": "Meddelandet skickas till kunden",
+      "conditional": {
+        "hide": "=approved = null or approved = \"true\""
+      },
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Form_189j2xz",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.2.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.9.0"
+  },
+  "schemaVersion": 7
+}</zeebe:userTaskForm>
+    </bpmn:extensionElements>
     <bpmn:subProcess id="Activity_0bn29hs" name="Send seat report to customer">
       <bpmn:incoming>Flow_1xm08c7</bpmn:incoming>
       <bpmn:outgoing>Flow_05ktw75</bpmn:outgoing>
@@ -16,7 +74,7 @@
         <bpmn:outgoing>Flow_18vqjm7</bpmn:outgoing>
       </bpmn:exclusiveGateway>
       <bpmn:sequenceFlow id="Flow_0yg342n" name="No" sourceRef="Gateway_1pu6miy" targetRef="Gateway_0ku2471">
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=reportedSeat &lt;= baseline</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=seatUsedAmount &lt;= baseline</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:endEvent id="Event_1vaxsxj" name="Case checked successfully">
         <bpmn:incoming>Flow_0bdmqt8</bpmn:incoming>
@@ -27,13 +85,19 @@
         <bpmn:outgoing>Flow_04zucgt</bpmn:outgoing>
       </bpmn:exclusiveGateway>
       <bpmn:sequenceFlow id="Flow_1h5asax" name="Yes" sourceRef="Gateway_12423i2" targetRef="Gateway_1pu6miy">
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=approved = true</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=approved = "true"</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_04zucgt" name="No" sourceRef="Gateway_12423i2" targetRef="Activity_04q67g1">
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=approved = false</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=approved = "false"</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_1eec4ir" sourceRef="Activity_04q67g1" targetRef="Activity_0wo2whx" />
       <bpmn:userTask id="Activity_1nh3302" name="Operations check case">
+        <bpmn:extensionElements>
+          <zeebe:ioMapping>
+            <zeebe:input source="=seatUsedAmount" target="seatUsed" />
+          </zeebe:ioMapping>
+          <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_28tffc0" />
+        </bpmn:extensionElements>
         <bpmn:incoming>Flow_04vs2u6</bpmn:incoming>
         <bpmn:outgoing>Flow_0wigqtz</bpmn:outgoing>
       </bpmn:userTask>
@@ -44,7 +108,7 @@
       <bpmn:sequenceFlow id="Flow_1uobuw8" sourceRef="Activity_0whi532" targetRef="Event_1bejuwx" />
       <bpmn:receiveTask id="Activity_0wo2whx" name="Wait for response" messageRef="Message_263k152">
         <bpmn:incoming>Flow_1eec4ir</bpmn:incoming>
-        <bpmn:incoming>Flow_0hx1y7o</bpmn:incoming>
+        <bpmn:incoming>Flow_1bcafj0</bpmn:incoming>
         <bpmn:outgoing>Flow_04vs2u6</bpmn:outgoing>
       </bpmn:receiveTask>
       <bpmn:sequenceFlow id="Flow_04vs2u6" sourceRef="Activity_0wo2whx" targetRef="Activity_1nh3302" />
@@ -60,7 +124,7 @@
       </bpmn:startEvent>
       <bpmn:sequenceFlow id="Flow_0sqz3ng" sourceRef="Event_0afylyt" targetRef="Activity_04q1tda" />
       <bpmn:sequenceFlow id="Flow_18vqjm7" name="Yes" sourceRef="Gateway_1pu6miy" targetRef="Gateway_0dvzr0j">
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=reportedSeat &gt; baseline</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=seatUsedAmount &gt; baseline</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:endEvent id="Event_16lsqom" name="Mail sent">
         <bpmn:incoming>Flow_16hs5a5</bpmn:incoming>
@@ -136,10 +200,8 @@
         <bpmn:incoming>Flow_1ttei45</bpmn:incoming>
         <bpmn:outgoing>Flow_16hs5a5</bpmn:outgoing>
       </bpmn:serviceTask>
-      <bpmn:sequenceFlow id="Flow_1bcafj0" sourceRef="Activity_04q1tda" targetRef="Activity_1rcue7n" />
+      <bpmn:sequenceFlow id="Flow_1bcafj0" sourceRef="Activity_04q1tda" targetRef="Activity_0wo2whx" />
       <bpmn:subProcess id="Activity_1rcue7n" name="Send mail to all customers">
-        <bpmn:incoming>Flow_1bcafj0</bpmn:incoming>
-        <bpmn:outgoing>Flow_0hx1y7o</bpmn:outgoing>
         <bpmn:multiInstanceLoopCharacteristics>
           <bpmn:extensionElements>
             <zeebe:loopCharacteristics inputCollection="=getUsers.users" inputElement="user" />
@@ -162,7 +224,7 @@
               <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
               <zeebe:input source="kim.almroth@apendo.se" target="to" />
               <zeebe:input source="Seat-rapport" target="subject" />
-              <zeebe:input source="=&#34;Hej &#34; + user.firstName + &#34; &#34; + user.lastName +&#34;,\n\n&#34; + user.email +&#10;&#34;\n\nDet är dags att fylla i denna månads seat-rapport för &#34; + seat.businessName + &#34;.\n&#34; +&#10;&#34;Vänligen gå in på apendo.seat.se för att fylla i eller tryck på denna länk:\n&#34; +&#10;&#34;http://apendo.seat.se/seat/report/&#34; + seat.uuid" target="text" />
+              <zeebe:input source="=&#34;Hej &#34; + user.firstName + &#34; &#34; + user.lastName +&#34;,\n\n&#34; + user.email +&#10;&#34;\n\nDet är dags att fylla i denna månads seat-rapport för &#34; + seat.businessName + &#34;.\n&#34; +&#10;&#34;Vänligen gå in på apendo.seat.se för att fylla i eller tryck på denna länk:\n&#34; +&#10;&#34;http://apendo.seat.se/seat/report?uuid=&#34; + seat.uuid" target="text" />
             </zeebe:ioMapping>
             <zeebe:taskHeaders>
               <zeebe:header key="resultVariable" value="sendMailResult" />
@@ -173,7 +235,6 @@
         </bpmn:serviceTask>
         <bpmn:sequenceFlow id="Flow_0qwya3p" sourceRef="Activity_1v92odq" targetRef="Event_17vio5p" />
       </bpmn:subProcess>
-      <bpmn:sequenceFlow id="Flow_0hx1y7o" sourceRef="Activity_1rcue7n" targetRef="Activity_0wo2whx" />
       <bpmn:manualTask id="Activity_1r5gays" name="Save to Database">
         <bpmn:incoming>Flow_0k9rdmi</bpmn:incoming>
         <bpmn:outgoing>Flow_0bdmqt8</bpmn:outgoing>
@@ -229,7 +290,7 @@
         <zeebe:ioMapping>
           <zeebe:input source="=&#34;secrets.EMAIL&#34;" target="email" />
           <zeebe:input source="=&#34;secrets.PASSWORD&#34;" target="password" />
-          <zeebe:input source="=today()" target="today" />
+          <zeebe:input source="2023-04-02" target="today" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
           <zeebe:header key="resultVariable" value="seats" />
@@ -307,33 +368,33 @@
       <bpmndi:BPMNShape id="Activity_15gauom_di" bpmnElement="Activity_16c8uxu">
         <dc:Bounds x="1540" y="300" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1rcue7n_di" bpmnElement="Activity_1rcue7n" isExpanded="true">
-        <dc:Bounds x="490" y="350" width="350" height="200" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_09lceu5_di" bpmnElement="Event_09lceu5">
-        <dc:Bounds x="530" y="432" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_17vio5p_di" bpmnElement="Event_17vio5p">
-        <dc:Bounds x="782" y="432" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0oeivgz" bpmnElement="Activity_1v92odq">
-        <dc:Bounds x="620" y="410" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_0h9opl3_di" bpmnElement="Flow_0h9opl3">
-        <di:waypoint x="566" y="450" />
-        <di:waypoint x="620" y="450" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0qwya3p_di" bpmnElement="Flow_0qwya3p">
-        <di:waypoint x="720" y="450" />
-        <di:waypoint x="782" y="450" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Activity_1t0cvoo_di" bpmnElement="Activity_1r5gays">
         <dc:Bounds x="1540" y="410" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_130c24u_di" bpmnElement="Activity_04q1tda">
         <dc:Bounds x="320" y="410" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1rcue7n_di" bpmnElement="Activity_1rcue7n" isExpanded="true">
+        <dc:Bounds x="490" y="500" width="350" height="200" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_09lceu5_di" bpmnElement="Event_09lceu5">
+        <dc:Bounds x="530" y="582" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_17vio5p_di" bpmnElement="Event_17vio5p">
+        <dc:Bounds x="782" y="582" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0oeivgz" bpmnElement="Activity_1v92odq">
+        <dc:Bounds x="620" y="560" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0h9opl3_di" bpmnElement="Flow_0h9opl3">
+        <di:waypoint x="566" y="600" />
+        <di:waypoint x="620" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qwya3p_di" bpmnElement="Flow_0qwya3p">
+        <di:waypoint x="720" y="600" />
+        <di:waypoint x="782" y="600" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_0vbibq0_di" bpmnElement="Event_1203gv0">
         <dc:Bounds x="922" y="472" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -417,10 +478,6 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1bcafj0_di" bpmnElement="Flow_1bcafj0">
         <di:waypoint x="420" y="450" />
-        <di:waypoint x="490" y="450" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0hx1y7o_di" bpmnElement="Flow_0hx1y7o">
-        <di:waypoint x="840" y="450" />
         <di:waypoint x="910" y="450" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_16w3vtr" bpmnElement="Event_15zd2l6">
