@@ -39,6 +39,7 @@ public class MessageService {
                 .variables(Map.of("seatUsedAmount", request.getAmountOfSeatsUsed()))
                 .send().join();
         System.out.println("Message published");
+
         return response.getMessageKey();
     }
 
@@ -71,6 +72,7 @@ public class MessageService {
         var updateRequest = new UpdateSeatRequest();
         updateRequest.setUpdatedByEmail(request.getEmail());
         updateRequest.setUsedSeat(request.getAmountOfSeatsUsed());
+        updateRequest.setStatus("REVIEW");
 
         var response = client.updateDbSeat(request.getSeatUuid(), updateRequest, token).execute();
 

@@ -65,7 +65,7 @@ public class SeatService {
                 .seatUsed(null)
                 .completedBy(null)
                 .business(business)
-                .isCompleted(false)
+                .status("FILL")
                 .forYearMonth(request.getForYearMonth())
                 .build();
         var savedSeat = repository.save(seat);
@@ -75,14 +75,15 @@ public class SeatService {
     public void UpdateSeat(UpdateSeatRequest request, UUID seatUuid){
         System.out.println("Updating seat...");
         var seat = repository.findById(seatUuid).orElseThrow(() -> new IllegalArgumentException("No seat with id: " + seatUuid));
-        var account = accountService.getAccountByEmail(request.getUpdatedByEmail());
 
-//        account.getCompletedSeats().add(seat);
-
-        seat.setCompletedBy(account);
-        seat.setSeatUsed(request.getUsedSeat());
-        seat.setIsCompleted(true);
+        if (request.getUpdatedByEmail() != null){
+            var account = accountService.getAccountByEmail(request.getUpdatedByEmail());
+            seat.setCompletedBy(account);
+        }
+        if (request.getUsedSeat() != null) seat.setSeatUsed(request.getUsedSeat());
+        if (request.getStatus() != null) seat.setStatus(request.getStatus());
         seat.setLastChangeDate(Date.from(Instant.now()));
+
         repository.save(seat);
     }
 
