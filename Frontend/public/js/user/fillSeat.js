@@ -48,9 +48,13 @@ const fillAll = async (seats) => {
 }
 const fillSingle = async (seat) => {
     document.querySelector('#for').innerText = `${seat['businessName']} - ${seat['forYearMonth']}`;
-    if (seat['isCompleted']) {
+    if (seat['status'] === 'COMPLETE') {
         document.getElementById('form-box').innerText = 'Seatanvänding: ' + seat['seatUsed'] +
             '\nDenna rapport har blivit ifylld.' +
+            '\nIfylld av: ' + seat['completedByEmail'];
+    } else if (seat['status'] === 'REVIEW') {
+        document.getElementById('form-box').innerText = 'Seatanvänding: ' + seat['seatUsed'] +
+            '\nDenna rapport väntar på att bli godkänd.' +
             '\nIfylld av: ' + seat['completedByEmail'];
     } else {
         await createForm(seat);
@@ -191,10 +195,6 @@ window.addEventListener('submit', async (event) => {
         },
         body: JSON.stringify(body)
     })
-        .then(response => {
-            console.log(response.json());
-            return response.json();
-        })
         .catch(error => {
             console.error(error)
         })

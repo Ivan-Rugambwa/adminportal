@@ -290,7 +290,7 @@
         <zeebe:ioMapping>
           <zeebe:input source="=&#34;secrets.EMAIL&#34;" target="email" />
           <zeebe:input source="=&#34;secrets.PASSWORD&#34;" target="password" />
-          <zeebe:input source="2023-04-02" target="today" />
+          <zeebe:input source="2023-02-02" target="today" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
           <zeebe:header key="resultVariable" value="seats" />
