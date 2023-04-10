@@ -1,6 +1,6 @@
-var express = require('express');
-var app = express();
-var path = require('path');
+const express = require('express');
+const app = express();
+const path = require('path');
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, 'public'), {
@@ -28,7 +28,7 @@ app.all('*', (req, res) => {
     if (req.accepts('html')) {
         res.sendFile(path.join(__dirname) + '/public/html/404.html');
     } else if (req.accepts('json')) {
-        res.json({ error: '404 Not Found' });
+        res.json({error: '404 Not Found'});
     } else {
         res.type('txt').send('404 Not Found');
     }
