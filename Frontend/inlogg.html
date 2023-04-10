@@ -5,20 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
+   
+    
     <title>Inlog</title>
+    <script src="inlogg.js"></script>
 </head>
 <body>
-    <form action="/adminportal.html" id="login-form">
-        
+    <form>
+
         <label for="email">E-postadress:</label>
         <input type="email" id="email" name="email" required>
         <br>
         <label for="password">Lösenord:</label>
         <input type="password" id="password" name="password" required>
         <br>
-        <input type="submit"  value="Logga in">
+        <input type="button" id="login-form" value="Logga in" onclick="getInfo()">
         
       </form>
-      
+      vue.js
 </body>
 </html>
