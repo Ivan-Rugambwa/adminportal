@@ -1,11 +1,12 @@
-
+import { verifyJwt } from "./auth.js";
 //const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbeyJuYW1lIjoiQURNSU4iLCJkZXNjcmlwdGlvbiI6IlNpdGUgYWRtaW5pc3RyYXRvciJ9XSwic3ViIjoia2ltQHRlc3QuY29tIiwiaWF0IjoxNjgwODczODk5LCJleHAiOjE2ODA4NzQ3OTl9.dR8cu7DfCAdReJ3Shh16YZgMUkevJKumK5YcrmywATJZ4d0_cXNeQPem5DWHKsx_EcL9lUtXzwX2CfZZpOEazQ"
 
-function getInfo() {
+async function getInfo() {
 
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
   const apiUrl = "http://83.233.216.66:35462/api/auth/authenticate";
+  
 
   function requestBody(email, password) {
     console.log(email, password);
@@ -16,7 +17,7 @@ function getInfo() {
     return JSON.stringify(payload);
   };
 
-  fetch(apiUrl, {
+ await fetch(apiUrl, {
     method: "POST",
     body: requestBody(email, password),
     headers: {
@@ -25,21 +26,43 @@ function getInfo() {
   })
     .then((response) => response.json())
 
-    .then((data) => {
-
-      console.log(data.accessToken)
-    })
-    .catch((error) => {
+    .then(data => {
+      console.log(data.accestoken);
+      window.localStorage.setItem("jwt", data.accessToken);
+      window.localStorage.setItem("refreshToken", data.refreshToken);
+    }).catch((error) => {
       console.error("Login error:", error);
       // Display an error message
       alert("An error occurred while logging in");
     });
 }
+//Check if the user is logged in when loading the admin portal page
+window.addEventListener('load', async function () {
+  this.window.localStorage.setItem("jwt",null);
+  console.log("checking jwt");
+  if (localStorage.getItem('jwt')) {
+    console.log("found jwt");
+    const result = await verifyJwt();
+    if (result === 200) {
+      console.log("jwt ok!!!");
+     window.location.assign('http://localhost:3000/admin');
+    } else {
+      console.log("jwt bad");
+    }
+  } else {
+    console.log("no jwt");
+  }
+});
 
-// Check if the user is logged in when loading the admin portal page
-// window.addEventListener('load', function() {
-//   if (!localStorage.getItem('isLoggedIn')) {
-//       // Redirect the user to the login page
-//       window.location.replace = "inlogg.html";
-//   }
-// });
+window.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  console.log("logging in");
+  await getInfo();
+  if(await verifyJwt() === 200){
+    console.log("verfy ok");
+    window.location.assign('http://localhost:3000/admin');
+  }
+  console.log("after verify");
+  
+});
+

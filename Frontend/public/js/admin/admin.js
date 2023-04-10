@@ -8,7 +8,7 @@ function checkLogin() {
     const jwt = localStorage.getItem('jwt');
     if (!jwt) {
       // User is not logged in, redirect to login page
-      window.location.href = "inlogg.html";
+      window.location.href = "localhost:3000/login";
     }
   }
 //   function logOut() {

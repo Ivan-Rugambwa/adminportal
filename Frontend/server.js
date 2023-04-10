@@ -19,6 +19,9 @@ app.get("/seat", (req, res) => {
 app.get("/login", (req, res) => {
     res.sendFile(path.join(__dirname, '/public/html/auth/inlogg.html'))
 })
+app.get("/admin", (req, res) => {
+    res.sendFile(path.join(__dirname, '/public/html/admin/adminportal.html'))
+})
 app.get("/seat/report", (req, res) => {
     res.sendFile(path.join(__dirname, '/public/html/user/fillSeat.html'))
 })
