@@ -2,16 +2,14 @@ function sendFormData() {
     const firstName = document.getElementById("firstName").value;
     const lastName = document.getElementById("lastName").value;
     const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const apiUrl = "http://wsprakt3.apendo.se:9000/api/auth/register";
+    const apiUrl = "83.233.216.66:35462/api/admin/user";
 
     function requestBody(firstName, lastName, email, password) {
         console.log(firstName, lastName, email, password);
         let payload = {
             "firstName": firstName,
             "lastName": lastName,
-            "email": email,
-            "password": password
+            "email": email
         }
         return JSON.stringify(payload);
     };

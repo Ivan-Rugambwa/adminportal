@@ -1,36 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css">
-
-    <title>Document</title>
-
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Document</title>
 </head>
-<body>
+
+<body onload="checkLogin()">
   <header>
     <h1>Adminsida</h1>
   </header>
   <nav>
     <ul>
+      <input id="search" type="text" placeholder="Search..">
+      <button type="submit"><i class="fa fa-search" onclick="searchUser()"></i></button>
       <li><a href="#">Hem</a></li>
-      <li><a href="#">Hantera användare</a></li>
-      <li><a href="#">Hantera kunder</a></li>
+      <li><a href="/user.html">Hantera användare</a></li>
+      <li><a href="/business.html">Hantera Företag</a></li>
+      <li><a href="/registrationForm.html">Registrera användare</a></li>
       <li><a href="#">Godkänn ansökningar</a></li>
-      <li><a href="/inlogg.html">Logga ut</a></li>
+      <li><a href="#" onclick="logOut()">Logga ut</a></li>
     </ul>
   </nav>
   <section>
-    <h2>Hantera användare</h2>
+    <h2>Användare info</h2>
     <table>
       <thead>
         <tr>
           <th>Användarnamn</th>
           <th>E-postadress</th>
           <th>Kundseat</th>
-          <th>Åtgärder</th>
+          <th><input type="submit" value="Redigera"></th>
         </tr>
       </thead>
       <tbody>
@@ -38,10 +42,13 @@
           <td>admin</td>
           <td>admin@example.com</td>
           <td>Seats</td>
-          <td>
-            <form action="#" method="post">
-              <input type="hidden" name="action" value="edit">
-              <input type="hidden" name="user_id" value="1">
-              <input type="submit" value="Redigera">
-              
-           
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <script src="admin.js">
+ 
+  </script>
+</body>
+
+</html>

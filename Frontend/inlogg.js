@@ -1,73 +1,45 @@
 
+const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbeyJuYW1lIjoiQURNSU4iLCJkZXNjcmlwdGlvbiI6IlNpdGUgYWRtaW5pc3RyYXRvciJ9XSwic3ViIjoia2ltQHRlc3QuY29tIiwiaWF0IjoxNjgwODczODk5LCJleHAiOjE2ODA4NzQ3OTl9.dR8cu7DfCAdReJ3Shh16YZgMUkevJKumK5YcrmywATJZ4d0_cXNeQPem5DWHKsx_EcL9lUtXzwX2CfZZpOEazQ"
+
 function getInfo() {
-   
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const apiUrl = "http://wsprakt3.apendo.se:9000/api/auth/authenticate";
 
-		
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const apiUrl = "http://83.233.216.66:35462/api/auth/authenticate";
 
-    function requestBody(email, password) {
-        console.log(email, password);
-        let payload = {
-            "email": email,
-            "password": password
-			
-        }
-        return JSON.stringify(payload);
-    };
-    fetch(apiUrl, {
-        method: "POST",
-        body: requestBody(email, password),
-        headers: {
-            "Content-Type": "application/json",
-        },
+  function requestBody(email, password) {
+    console.log(email, password);
+    let payload = {
+      "email": email,
+      "password": password
+    }
+    return JSON.stringify(payload);
+  };
+
+  fetch(apiUrl, {
+    method: "POST",
+    body: requestBody(email, password),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+
+    .then((data) => {
+
+      console.log(data.accessToken)
     })
-        .then((response) => {
-            console.log(response);
-            // handle response here
-        })
-        .catch((error) => {
-            console.error(error);
-            // handle error here
-        });
-
-    
+    .catch((error) => {
+      console.error("Login error:", error);
+      // Display an error message
+      alert("An error occurred while logging in");
+    });
 }
 
-
-
-
-
-// var objPeople = [
-// 	{ // Object @ 0 index
-// 		email: "ivan.rugambwa@apendo.se",
-// 		password: "potatis1"
-// 	},
-// 	{ // Object @ 1 index
-// 		email: "kim.almroth@apendo.se",
-// 		password: "potatis2"
-// 	},
-// 	{ // Object @ 1 index
-// 		email: "kristoffer.hogberg@apendo.se",
-// 		password: "potatis3"
-// 	}
-// ]
-
-// function getInfo() {
-// 	var email = document.getElementById('email').value
-// 	var password = document.getElementById('password').value
-
-// 	for(var i = 0; i < objPeople.length; i++) {
-// 		// check is user input matches username and password of a current index of the objPeople array
-// 		if(email == objPeople[i].email && password == objPeople[i].password) {
-// 			console.log(email + " is logged in!!!")
-// 			// stop the function if this is found to be true
-//             window.location.href = 'http://127.0.0.1:5501/adminportal.html';
-// 			return
-            
-// 		}
-// 	}
-// 	console.log("incorrect email or password")
-// }
-
+// Check if the user is logged in when loading the admin portal page
+// window.addEventListener('load', function() {
+//   if (!localStorage.getItem('isLoggedIn')) {
+//       // Redirect the user to the login page
+//       window.location.replace = "inlogg.html";
+//   }
+// });
