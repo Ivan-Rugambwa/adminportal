@@ -5,4 +5,5 @@ import lombok.Data;
 public class UpdateSeatRequest {
     private String updatedByEmail;
     private Integer usedSeat;
+    private String status;
 }
