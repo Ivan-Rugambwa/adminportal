@@ -13,15 +13,21 @@ public interface SeatMapper {
     Seat SEAT(SeatResponse seatResponse);
 
     @Mapping(target = "businessName", source = "business", qualifiedByName = "businessToBusinessName")
-    @Mapping(target = "assignedAccountEmail", source = "assignedAccount", qualifiedByName = "accountToAccountName")
+    @Mapping(target = "completedByEmail", source = "completedBy", qualifiedByName = "accountToAccountName")
+    @Mapping(target = "businessBaseline", source = "business", qualifiedByName = "businessToBusinessBaseline")
     SeatResponse SEAT_RESPONSE(Seat seat);
 
     @Named("businessToBusinessName")
     default String businessToBusinessName(Business business) {
         return business.getName();
     }
+    @Named("businessToBusinessBaseline")
+    default Integer businessToBusinessBaseline(Business business) {
+        return business.getSeatBaseline();
+    }
     @Named("accountToAccountName")
     default String accountToAccountName(Account account) {
+        if (account == null) return null;
         return account.getEmail();
     }
 }

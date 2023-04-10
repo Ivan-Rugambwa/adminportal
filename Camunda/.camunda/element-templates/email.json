@@ -1,8 +1,8 @@
 {
   "$schema": "https://unpkg.com/@camunda/zeebe-element-templates-json-schema/resources/schema.json",
-  "name": "Get Email",
-  "id": "apendo.get.data.email",
-  "description": "Get Email",
+  "name": "Send Email",
+  "id": "apendo.send.email",
+  "description": "Send Email",
   "version": 1,
   "documentationRef": "https://docs.camunda.io/docs/components/connectors/out-of-the-box-connectors/available-connectors-overview/",
   "icon": {
@@ -21,7 +21,7 @@
   "properties": [
     {
       "type": "Hidden",
-      "value": "apendo:get-secrets:1",
+      "value": "apendo:send-email:1",
       "binding": {
         "type": "zeebe:taskDefinition:type"
       }
@@ -41,10 +41,24 @@
       }
     },
     {
+      "label": "Port",
+      "description": "Port for smtp server",
+      "type": "String",
+      "value": "=\"secrets.PORT\"",
+      "feel": "required",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "port"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
       "label": "Password",
       "description": "Password for from account",
       "type": "String",
-      "value": "=\"secrets.PASSWORD\"",
+      "value": "=\"secrets.FROM_PASSWORD\"",
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",

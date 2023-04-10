@@ -58,7 +58,6 @@ public class AuthenticationService {
                 .password(encodedPassword)
                 .build();
 
-        var business = businessService.GetByName(request.getBusiness());
 
         if (account.getEmail().contains("@test.com")) {
             account.setRoles(Set.of(roleService.getRoleByName(RoleType.ADMIN)));
@@ -66,12 +65,17 @@ public class AuthenticationService {
 
         accountRepository.save(account);
 
-        var profile = AccountProfile.builder()
-                .account(account)
-                .business(business)
-                .build();
+        if (request.getBusiness() != null){
+            var business = businessService.GetByName(request.getBusiness());
+            var profile = AccountProfile.builder()
+                    .account(account)
+                    .business(business)
+                    .build();
 
-        profileService.Create(profile);
+            profileService.Create(profile);
+        }
+
+
 
         var jwt = jwtService.generateToken(account);
         var refreshToken = refreshTokenService.createRefreshToken(account);
@@ -95,13 +99,14 @@ public class AuthenticationService {
                     )
             );
         } catch (BadCredentialsException ex) {
+            System.out.println("Wrong username or password");
             throw new DataBadCredentialsException("Wrong username or password", request.getEmail(), request.getPassword());
         }
 
         var jwt = jwtService.generateToken(account);
         refreshTokenService.deleteAllRefreshTokens(account);
         var refreshToken = refreshTokenService.createRefreshToken(account);
-
+        System.out.println("Successfully authenticated");
         return AuthenticationResponse.builder()
                 .accessToken(jwt)
                 .refreshToken(refreshToken.getToken())
@@ -111,13 +116,6 @@ public class AuthenticationService {
     public int validateAccessToken(String token) {
 
         var secret = env.secret().getBytes();
-        var chunks = token.split("\\.");
-        var p1 = Decoders.BASE64URL.decode(chunks[0]);
-        var p2 = Decoders.BASE64URL.decode(chunks[1]);
-        token = Base64.getEncoder().encodeToString(p1) + "." +
-                Base64.getEncoder().encodeToString(p2) + "." +
-                chunks[2];
-
         try {
             com.auth0.jwt.JWT.require(Algorithm.HMAC512(Base64.getDecoder().decode(secret))).build().verify(token);
         } catch (Exception e) {
@@ -125,7 +123,6 @@ public class AuthenticationService {
         }
 
         return HttpStatus.OK.value();
-
     }
 
     public AuthenticationResponse refreshToken(String token) {

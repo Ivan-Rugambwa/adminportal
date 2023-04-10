@@ -12,7 +12,7 @@ public class UpdateAccountRequest {
     @NotBlank(message = "Email is required")
     @Pattern(regexp = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", message = "Wrong email format, see correct example: test@domain.com")
     private String email;
-    @NotBlank(message = "Password is required")
+//    @NotBlank(message = "Password is required")
     private String password;
     @NotBlank(message = "First name is required")
     private String firstName;

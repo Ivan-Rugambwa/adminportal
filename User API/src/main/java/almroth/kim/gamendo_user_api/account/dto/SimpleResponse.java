@@ -14,6 +14,7 @@ import java.util.UUID;
 public class SimpleResponse {
 
     private UUID uuid;
+    private UUID businessUuid;
     private String email;
     private String firstName;
     private String lastName;

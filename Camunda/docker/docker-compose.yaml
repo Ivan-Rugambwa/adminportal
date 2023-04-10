@@ -110,7 +110,9 @@ services:
       - operate
       - identity
     volumes:
-      - "./te"
+      - "./get-data-test-with-dependencies.jar:/opt/app/get-data.jar"
+      - "./send-email-test-with-dependencies.jar:/opt/app/send-email.jar"
+      - "./create-seat-test-with-dependencies.jar:/opt/app/create-seat.jar"
 
   optimize: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#optimize
     image: camunda/optimize:${CAMUNDA_OPTIMIZE_VERSION}
