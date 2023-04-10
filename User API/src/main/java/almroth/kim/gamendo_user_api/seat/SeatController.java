@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.web.header.Header;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -26,11 +27,11 @@ public class SeatController {
         var seats = service.GetAllSeats();
         return ResponseEntity.ok().body(seats);
     }
-    @GetMapping(path = "/business/name/{name}")
-    public ResponseEntity<?> GetAllByBusinessName(@PathVariable String name){
-        var seats = service.GetAllSeatsByBusinessName(name);
-        return ResponseEntity.ok().body(seats);
+    @GetMapping({"{uuid}"})
+    public ResponseEntity<?> GetByUuid(@PathVariable UUID uuid, @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(service.GetByUuid(uuid));
     }
+
 //    @GetMapping(path = "/business/name/{name}")
 //    public ResponseEntity<?> GetCurrentMonthSeatByBusinessName(@PathVariable String name){
 //        var seats = service.GetSeatByCurrentMonthAndBusinessName(name);

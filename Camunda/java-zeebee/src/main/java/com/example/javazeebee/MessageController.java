@@ -16,12 +16,18 @@ public class MessageController {
     MessageService service;
     @PostMapping
     public ResponseEntity<?> publish(@RequestBody PublishRequest request, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) throws Exception {
+        System.out.println("Got message request for " + request.getBusiness() + " " + request.getForYearMonth());
+        if (!service.isTokenValid(token)) {
+            System.out.println("Invalid JWT");
+            return ResponseEntity.status(401).body("JWT is not valid");
+        }
+        System.out.println("Token is valid");
 
-        if (!service.isTokenValid(token)) return ResponseEntity.status(401).body("JWT is not valid");
-
-        var key = service.publish(request);
-
-        service.updateSeat(request, token);
+        if (service.updateSeat(request, token)){
+            var key = service.publish(request);
+        } else {
+            ResponseEntity.badRequest().body("Failed to update");
+        }
 
         return ResponseEntity.ok().build();
     }

@@ -2,6 +2,7 @@ package almroth.kim.gamendo_user_api.seat;
 
 import almroth.kim.gamendo_user_api.account.AccountService;
 import almroth.kim.gamendo_user_api.business.BusinessService;
+import almroth.kim.gamendo_user_api.config.JwtService;
 import almroth.kim.gamendo_user_api.mapper.SeatMapper;
 import almroth.kim.gamendo_user_api.seat.dto.CreateSeatRequest;
 import almroth.kim.gamendo_user_api.seat.dto.SeatResponse;
@@ -26,6 +27,8 @@ public class SeatService {
     private final BusinessService businessService;
     @Autowired
     private final AccountService accountService;
+    @Autowired
+    private final JwtService jwtService;
     private final SeatMapper mapper = Mappers.getMapper(SeatMapper.class);
 
     public Set<SeatResponse> GetAllSeats(){
@@ -37,6 +40,16 @@ public class SeatService {
             seatResponses.add(mapper.SEAT_RESPONSE(seat));
         }
         return seatResponses;
+    }
+    public SeatResponse GetByUuid(UUID uuid){
+        var seat = repository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("No such seat"));
+        return mapper.SEAT_RESPONSE(seat);
+    }
+    public SeatResponse GetByUuidWithMatchingBusiness(UUID seatUuid, String token){
+        var seat = repository.findById(seatUuid).orElseThrow(() -> new IllegalArgumentException("No such seat"));
+        var claim = jwtService.extractClaim(token.substring(7), claims -> claims.get("organization")).toString();
+        if (!Objects.equals(seat.getBusiness().getName(), claim)) throw new IllegalArgumentException("Account business and Seat business does not match.");
+        return mapper.SEAT_RESPONSE(seat);
     }
     public SeatResponse CreateSeatBase(CreateSeatRequest request){
         System.out.println("Creating seat...");
@@ -60,6 +73,7 @@ public class SeatService {
         return mapper.SEAT_RESPONSE(savedSeat);
     }
     public void UpdateSeat(UpdateSeatRequest request, UUID seatUuid){
+        System.out.println("Updating seat...");
         var seat = repository.findById(seatUuid).orElseThrow(() -> new IllegalArgumentException("No seat with id: " + seatUuid));
         var account = accountService.getAccountByEmail(request.getUpdatedByEmail());
 
@@ -72,12 +86,15 @@ public class SeatService {
         repository.save(seat);
     }
 
-    public Set<SeatResponse> GetAllSeatsByBusinessName(String name) {
+    public Set<SeatResponse> GetAllSeatsByBusinessName(String name, String token) {
         var seats = repository.findAllByBusiness_Name(name).orElseThrow(() -> new IllegalArgumentException("No seats with business: " + name));
+        var claim = jwtService.extractClaim(token.substring(7), claims -> claims.get("organization")).toString();
+
         Set<SeatResponse> seatResponses = new HashSet<>();
-        for (var seat :
-                seats) {
-            seatResponses.add(mapper.SEAT_RESPONSE(seat));
+        for (var seat : seats) {
+            if (Objects.equals(seat.getBusiness().getName(), claim))
+                seatResponses.add(mapper.SEAT_RESPONSE(seat));
+            else throw new IllegalArgumentException("Account business and Seat business does not match.");
         }
         return seatResponses;
     }

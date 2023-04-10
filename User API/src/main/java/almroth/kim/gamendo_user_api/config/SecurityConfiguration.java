@@ -29,6 +29,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**", "/error").permitAll()
                 .requestMatchers("/api/admin/**").hasAnyRole("ADMIN")
+                .requestMatchers("/api/user/**").hasAnyRole("USER")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

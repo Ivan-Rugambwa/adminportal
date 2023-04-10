@@ -1,6 +1,7 @@
 package almroth.kim.gamendo_user_api.config;
 
 import almroth.kim.gamendo_user_api.account.model.Account;
+import almroth.kim.gamendo_user_api.role.RoleType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -10,9 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -57,6 +56,9 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Object> extraClaims, Account userDetails) {
+        if (userDetails.getProfile() != null && userDetails.getRoles().stream().noneMatch(role -> role.getName() == RoleType.ADMIN)) {
+            extraClaims.put("organization", userDetails.getProfile().getBusiness().getName());
+        }
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .claim("role", userDetails.getRoles())

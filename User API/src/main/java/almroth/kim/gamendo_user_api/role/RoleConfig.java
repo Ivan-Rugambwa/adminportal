@@ -62,9 +62,9 @@ public class RoleConfig {
     }
     @Transactional
     public void CreateBusiness(BusinessRepository repository){
-        var bus1 = Business.builder().seatAmount(45).name("ICA").build();
-        var bus3 = Business.builder().seatAmount(47).name("MAX").build();
-        var bus4 = Business.builder().seatAmount(42).name("IKEA").build();
+        var bus1 = Business.builder().seatBaseline(45).name("ICA").build();
+        var bus3 = Business.builder().seatBaseline(47).name("MAX").build();
+        var bus4 = Business.builder().seatBaseline(42).name("IKEA").build();
 
         repository.saveAll(Set.of(bus1, bus3, bus4));
     }

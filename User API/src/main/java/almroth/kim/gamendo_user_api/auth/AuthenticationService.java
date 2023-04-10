@@ -116,13 +116,6 @@ public class AuthenticationService {
     public int validateAccessToken(String token) {
 
         var secret = env.secret().getBytes();
-        var chunks = token.split("\\.");
-        var p1 = Decoders.BASE64URL.decode(chunks[0]);
-        var p2 = Decoders.BASE64URL.decode(chunks[1]);
-        token = Base64.getEncoder().encodeToString(p1) + "." +
-                Base64.getEncoder().encodeToString(p2) + "." +
-                chunks[2];
-
         try {
             com.auth0.jwt.JWT.require(Algorithm.HMAC512(Base64.getDecoder().decode(secret))).build().verify(token);
         } catch (Exception e) {
@@ -130,7 +123,6 @@ public class AuthenticationService {
         }
 
         return HttpStatus.OK.value();
-
     }
 
     public AuthenticationResponse refreshToken(String token) {
