@@ -65,7 +65,7 @@ public class SeatService {
                 .seatUsed(null)
                 .completedBy(null)
                 .business(business)
-                .isCompleted(false)
+                .status("FILL")
                 .forYearMonth(request.getForYearMonth())
                 .build();
         var savedSeat = repository.save(seat);
@@ -81,7 +81,7 @@ public class SeatService {
 
         seat.setCompletedBy(account);
         seat.setSeatUsed(request.getUsedSeat());
-        seat.setIsCompleted(true);
+        seat.setStatus(request.getStatus());
         seat.setLastChangeDate(Date.from(Instant.now()));
         repository.save(seat);
     }

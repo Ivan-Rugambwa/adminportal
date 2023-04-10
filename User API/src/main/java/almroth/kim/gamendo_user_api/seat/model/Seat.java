@@ -32,8 +32,9 @@ public class Seat {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Account completedBy;
-    @NotNull(message = "Is completed is required")
-    private Boolean isCompleted;
+    @NotNull(message = "Status is required")
+    @Pattern(regexp = "\\b(FILL|REVIEW|COMPLETE)\\b", message = "Need to be FILL, REVIEW or COMPLETE")
+    private String status;
 
     private Date lastChangeDate;
     @NotNull

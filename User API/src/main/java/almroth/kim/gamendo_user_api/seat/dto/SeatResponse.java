@@ -11,7 +11,7 @@ public class SeatResponse {
     private String businessName;
     private Integer businessBaseline;
     private String completedByEmail;
-    private Boolean isCompleted;
+    private String status;
     private Date lastChangeDate;
     private Integer seatUsed;
     private String forYearMonth;
