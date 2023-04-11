@@ -1,4 +1,4 @@
-import {getJwtPayload, login} from "../admin/auth.js";
+import {getJwtPayload, isUser, verifyJwt} from "../auth/auth.js";
 
 const baseUrl = location.protocol + "//" + location.hostname + (location.port ? ":" + location.port : "");
 
@@ -71,29 +71,6 @@ const fill = async () => {
     }
 
 }
-// const form = document.querySelector('#my-form');
-// form.addEventListener('submit', async function (event) {
-//     event.preventDefault(); // prevent the default behavior of submitting the form to the server
-//
-//     // do something with the form data here
-//     const name = form.elements['seat'].value;
-//
-//     // example of sending form data to the server using fetch API
-//     await fetch('/submit-form', {
-//         method: 'POST',
-//         body: JSON.stringify({name, email, message}),
-//         headers: {
-//             'Content-Type': 'application/json'
-//         }
-//     })
-//         .then(response => response.json())
-//         .then(data => {
-//             // handle response from server here
-//         })
-//         .catch(error => {
-//             // handle error here
-//         });
-// });
 const getAllSeatsByBusiness = async () => {
     const payload = await getJwtPayload();
     console.log(payload['organization'])
@@ -114,6 +91,7 @@ const getAllSeatsByBusiness = async () => {
 
 const createForm = async (seat) => {
     const formBox = document.getElementById('form-box')
+    formBox.innerHTML = '';
     const payload = await getJwtPayload();
     const form = document.createElement('form');
     form.setAttribute('id', 'seat-form');
@@ -199,7 +177,16 @@ window.addEventListener('submit', async (event) => {
             console.error(error)
         })
     await fill();
-    console.log('After fetch')
 })
-await login();
-await fill();
+window.addEventListener('load', async ev => {
+    if (!(await isUser())) {
+        window.location.assign('http://localhost:3000/auth/unauthorized')
+    }
+    if (await verifyJwt() === 200) {
+        await fill();
+    } else {
+        window.location.assign(`${baseUrl}/auth/login`)
+    }
+})
+
+

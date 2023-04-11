@@ -86,11 +86,11 @@ export const login = async () => {
             console.error(error)
         })
 }
-
 export const getJwtPayload = async () => {
-    // if (await verifyJwt() !== 200) throw Error("JWT invalid")
-
-    let jwt = window.localStorage.getItem("jwt");
+    if (await verifyJwt() !== 200) {
+        window.location.assign('http://localhost:3000/auth/login');
+        throw Error("JWT invalid")
+    }
     const base64Url = window.localStorage.getItem("jwt").split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
@@ -98,4 +98,15 @@ export const getJwtPayload = async () => {
     }).join(''));
 
     return JSON.parse(jsonPayload);
+}
+
+export const isAdmin = async () => {
+    const payload = await getJwtPayload();
+    const role = payload['role'];
+    return role.some(role => role['name'] === 'ADMIN')
+}
+export const isUser = async () => {
+    const payload = await getJwtPayload();
+    const role = payload['role'];
+    return role.some(role => role['name'] === 'USER')
 }
