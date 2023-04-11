@@ -2,7 +2,7 @@ function updateBusniess() {
     const seat = document.getElementById("seatAmount").value;
     const name = document.getElementById("name").value;
     
-    const apiUrl = `83.233.216.66:35462/api/admin/busniess/${uuid}`;
+    const apiUrl = `http://wsprakt.apendo.se:35462/api/admin/busniess/${uuid}`;
   
     let payload = {
       "name":name,

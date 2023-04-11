@@ -6,7 +6,7 @@ const baseUrl = location.protocol + "//" + location.hostname + (location.port ? 
 const getSeat = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const uuid = urlParams.get('uuid');
-    const url = 'http://83.233.216.66:35462/api/user/seat/' + uuid;
+    const url = 'http://wsprakt3.apendo.se:35462:35462/api/user/seat/' + uuid;
     const token = window.localStorage.getItem("jwt");
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     let res;
