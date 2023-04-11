@@ -6,7 +6,7 @@ function formValidation() {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
     const business = document.getElementById("business").value.trim();
-    const apiUrl = "83.233.216.66:35462/api/auth/register";
+    const apiUrl = "http://wsprakt.apendo.se:35462/api/auth/register";
   
     // perform basic form validation
     if (firstName === "" || lastName === "" || email === "" || password === "" || business === "") {

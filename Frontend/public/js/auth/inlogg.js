@@ -4,9 +4,9 @@ import {isAdmin, isUser, verifyJwt} from "./auth.js";
 
 async function getInfo() {
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const apiUrl = "http://83.233.216.66:35462/api/auth/authenticate";
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const apiUrl = "http://wsprakt3.apendo.se:35462/api/auth/authenticate";
 
 
     function requestBody(email, password) {
@@ -27,15 +27,16 @@ async function getInfo() {
     })
         .then((response) => response.json())
 
-        .then(data => {
-            console.log(data.accestoken);
-            window.localStorage.setItem("jwt", data.accessToken);
-            window.localStorage.setItem("refreshToken", data.refreshToken);
-        }).catch((error) => {
-            console.error("Login error:", error);
-            // Display an error message
-            alert("An error occurred while logging in");
-        });
+    .then(data => {
+      console.log(data.accessToken);
+      window.localStorage.setItem("jwt", data.accessToken);
+      window.localStorage.setItem("refreshToken", data.refreshToken);
+    }).catch((error) => {
+      console.error("Login error:", error);
+      // Display an error message
+      alert("An error occurred while logging in");
+    });
+
 }
 
 //Check if the user is logged in when loading the admin portal page

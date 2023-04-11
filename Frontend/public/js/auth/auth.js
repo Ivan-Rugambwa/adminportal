@@ -5,7 +5,7 @@ export const verifyJwt = async () => {
     if (typeof jwt != 'string' && jwt.trim().length > 0) {
         console.error('No jwt found');
     }
-    const url = 'http://83.233.216.66:35462/api/auth/validate';
+    const url = 'http://wsprakt3.apendo.se:35462/api/auth/validate';
 
     if (jwt.startsWith('Bearer ')) {
         jwt = jwt.substring(7);

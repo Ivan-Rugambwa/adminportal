@@ -2,7 +2,7 @@ function getBusiness() {
     const business = document.getElementById("name").value;
     const seats = document.getElementById("seatAmount").value;
     
-    const apiUrl = "83.233.216.66:35462/api/admin/business";
+    const apiUrl = "http://wsprakt.apendo.se:35462/api/admin/business";
   
     
   
