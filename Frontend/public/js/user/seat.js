@@ -1,7 +1,9 @@
-import {getJwtPayload, login, verifyJwt} from "../admin/auth.js";
+import {getJwtPayload, isUser, verifyJwt} from "../auth/auth";
 
 window.addEventListener('load', async ev => {
-    await login();
+    if (!(await isUser())) {
+        window.location.assign('http://localhost:3000/unauthorized')
+    }
     const statusCode = await verifyJwt();
     console.log(statusCode)
     if (statusCode !== 200) {
