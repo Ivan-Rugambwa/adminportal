@@ -1,13 +1,14 @@
 import {getJwtPayload, isUser, verifyJwt} from "../auth/auth";
+import {baseUrl, userApiUrl} from "../shared";
 
 window.addEventListener('load', async ev => {
     if (!(await isUser())) {
-        window.location.assign('http://localhost:3000/unauthorized')
+        window.location.assign(`${baseUrl}/unauthorized`)
     }
     const statusCode = await verifyJwt();
     console.log(statusCode)
     if (statusCode !== 200) {
-        window.location.assign('http://localhost:3000/unauthorized')
+        window.location.assign(`${baseUrl}/unauthorized`)
     } else {
         await setName();
         const seat = await getSeat();
@@ -20,7 +21,7 @@ window.addEventListener('load', async ev => {
 
 const getSeat = async () => {
     const uuid = '65ff0289-9e00-4574-9f34-8f24b9a03ef4';
-    const url = 'http://83.233.216.66:35462/api/admin/seat/' + uuid;
+    const url = `${userApiUrl}/api/admin/seat/${uuid}`;
     const token = window.localStorage.getItem("jwt");
     let res;
 
