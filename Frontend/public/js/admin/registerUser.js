@@ -2,7 +2,7 @@ function sendFormData() {
     const firstName = document.getElementById("firstName").value;
     const lastName = document.getElementById("lastName").value;
     const email = document.getElementById("email").value;
-    const apiUrl = "http://wsprakt.apendo.se:35462/api/admin/user";
+    const apiUrl = "http://wsprakt2.apendo.se:35462/api/admin/user";
 
     function requestBody(firstName, lastName, email, password) {
         console.log(firstName, lastName, email, password);
