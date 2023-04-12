@@ -34,9 +34,9 @@ public class BusinessController {
         service.Delete(uuid);
         return ResponseEntity.noContent().build();
     }
-    @PatchMapping
-    public ResponseEntity<?> updateBusiness(UpdateBusinessRequest request){
-        var response = service.Update(request);
+    @PatchMapping("{uuid}")
+    public ResponseEntity<?> updateBusiness(@RequestBody UpdateBusinessRequest request, @PathVariable UUID uuid){
+        var response = service.Update(request, uuid);
         return ResponseEntity.ok(response);
     }
 }

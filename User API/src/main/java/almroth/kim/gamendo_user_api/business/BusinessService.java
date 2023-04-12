@@ -9,6 +9,7 @@ import almroth.kim.gamendo_user_api.mapper.BusinessMapper;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -35,24 +36,29 @@ public class BusinessService {
         repository.save(mapper.TO_MODEL(model));
     }
 
-    public BusinessResponse Update(UpdateBusinessRequest request) {
-        var business = repository.findBusinessByName(request.getName()).orElseThrow(() -> new IllegalArgumentException("No such Business"));
+    public BusinessResponse Update(UpdateBusinessRequest request, UUID uuid) {
+        var business = repository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("No such Business"));
+        System.out.println("Updating business....");
 
         if (request.getAccountUUID() != null){
             var account = accountService.getAccountByUuid(request.getAccountUUID());
             business.getAccountProfiles().add(account.getProfile());
+            System.out.println("Adding account");
         }
         if (request.getSeatAmount() != null){
             business.setSeatBaseline(request.getSeatAmount());
+            System.out.println("Changing seat baseline");
         }
         if (request.getName() != null){
             business.setName(request.getName());
+            System.out.println("Changing name");
         }
 
         repository.save(business);
         return mapper.TO_RESPONSE(business);
     }
 
+    @Transactional
     public void Delete(UUID uuid) {
         var business = repository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("No such Business"));
         repository.delete(business);
