@@ -1,26 +1,32 @@
-function updateBusniess() {
+
+
+function updateBusiness() {
+  const uuid = document.getElementById("uuid").value;
+  const accountUUID = document.getElementById("accountUUID").value;
     const seat = document.getElementById("seatAmount").value;
     const name = document.getElementById("name").value;
     
-    const apiUrl = `http://wsprakt.apendo.se:35462/api/admin/busniess/${uuid}`;
+    const apiUrl = `http://localhost:35462/api/admin/business/${uuid}`;
   
     let payload = {
+      "accountUUID":null,
       "name":name,
-      "seatAmount": seatAmount
+      "seatBaseline": seat
       
     };
   
     fetch(apiUrl, {
-      method: "POST",
+      method: "PATCH",
       headers: {
         
-        'Authorization': `Bearer ${"eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbeyJuYW1lIjoiQURNSU4iLCJkZXNjcmlwdGlvbiI6IlNpdGUgYWRtaW5pc3RyYXRvciJ9XSwic3ViIjoia2ltQHRlc3QuY29tIiwiaWF0IjoxNjgwNzgwNDI1LCJleHAiOjE2ODA3ODEzMjV9.KZFhGq1Vcj3azT8HeEzNvGtGVAv-PA2m3dAmthxyVqpkeIZxfCcF8f9FkHT-naqIo3u2-dpFHybVhQlWSlcaiQ"}`,
+        'Authorization': `Bearer ${window.localStorage.getItem("jwt")}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload)
     })
     .then(response => response.json())
     .then(data => {
+      console.log(payload);
       console.log(data);
       // handle the response data as needed
     })
