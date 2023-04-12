@@ -6,7 +6,7 @@ function formValidation() {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
     const business = document.getElementById("business").value.trim();
-    const apiUrl = "http://wsprakt2.apendo.se:35462/api/auth/register";
+    const url = `${baseUrl}/api/auth/register`
   
     // perform basic form validation
     if (firstName === "" || lastName === "" || email === "" || password === "" || business === "") {
@@ -34,7 +34,7 @@ function formValidation() {
     }
   
     // make a POST request to the API with the form data
-    fetch(apiUrl, {
+    fetch(url, {
         method: 'POST',
         headers: {
           

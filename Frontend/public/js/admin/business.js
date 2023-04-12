@@ -1,21 +1,17 @@
+import { baseUrl } from "../shared";
+
 function getBusiness() {
-  const uuid = document.getElementById("uuid").value;
-  const business = document.getElementById("name").value;
-  const seats = document.getElementById("seatAmount").value;
+    const business = document.getElementById("name").value;
+    const seats = document.getElementById("seatAmount").value;
+    const url = `${baseUrl}/api/admin/business/`
 
-  const apiUrl = "http://wsprakt2.apendo.se:35462/api/admin/business";
-
-
-
-
-
-  fetch(apiUrl, {
-    method: "GET",
-    headers: {
-      'Authorization': `Bearer ${window.localStorage.getItem("jwt")}`,
-      "Content-Type": "application/json",
-    },
-  })
+    fetch(url, {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${window.localStorage.getItem("jwt")}`,
+        "Content-Type": "application/json",
+      },
+      })
     .then(response => response.json())
     .then(data => {
       console.log(data);
@@ -37,6 +33,4 @@ function getBusiness() {
         tableBody.appendChild(row);
       });
     })
-
-
 }

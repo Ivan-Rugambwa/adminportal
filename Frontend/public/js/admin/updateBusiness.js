@@ -5,8 +5,7 @@ function updateBusiness() {
   const accountUUID = document.getElementById("accountUUID").value;
     const seat = document.getElementById("seatAmount").value;
     const name = document.getElementById("name").value;
-    
-    const apiUrl = `http://localhost:35462/api/admin/business/${uuid}`;
+    const url = `${baseUrl}/api/auth/register/api/admin/busniess/${uuid}`
   
     let payload = {
       "accountUUID":null,
@@ -14,8 +13,8 @@ function updateBusiness() {
       "seatBaseline": seat
       
     };
-  
-    fetch(apiUrl, {
+    
+    fetch(url, {
       method: "PATCH",
       headers: {
         
