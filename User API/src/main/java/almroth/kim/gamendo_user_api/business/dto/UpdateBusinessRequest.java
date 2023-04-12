@@ -14,6 +14,6 @@ import java.util.UUID;
 public class UpdateBusinessRequest {
 
     private String name;
-    private Integer seatAmount;
+    private Integer seatBaseline;
     private String accountUUID;
 }

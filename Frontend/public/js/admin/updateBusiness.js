@@ -1,20 +1,21 @@
-function updateBusniess() {
+
+
+function updateBusiness() {
+  const uuid = document.getElementById("uuid").value;
+  const accountUUID = document.getElementById("accountUUID").value;
     const seat = document.getElementById("seatAmount").value;
     const name = document.getElementById("name").value;
-    
-    
     const url = `${baseUrl}/api/auth/register/api/admin/busniess/${uuid}`
   
-    
-  
     let payload = {
+      "accountUUID":null,
       "name":name,
-      "seatAmount": seatAmount
+      "seatBaseline": seat
       
     };
-  
-    fetch(url, {
-      method: "POST",
+    
+    fetch(apiUrl, {
+      method: "PATCH",
       headers: {
         
         'Authorization': `Bearer ${window.localStorage.getItem("jwt")}`,
@@ -24,6 +25,7 @@ function updateBusniess() {
     })
     .then(response => response.json())
     .then(data => {
+      console.log(payload);
       console.log(data);
       // handle the response data as needed
     })

@@ -45,8 +45,8 @@ public class BusinessService {
             business.getAccountProfiles().add(account.getProfile());
             System.out.println("Adding account");
         }
-        if (request.getSeatAmount() != null){
-            business.setSeatBaseline(request.getSeatAmount());
+        if (request.getSeatBaseline() != null){
+            business.setSeatBaseline(request.getSeatBaseline());
             System.out.println("Changing seat baseline");
         }
         if (request.getName() != null){
