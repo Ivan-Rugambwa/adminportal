@@ -2,6 +2,8 @@ package almroth.kim.gamendo_user_api.business;
 
 import almroth.kim.gamendo_user_api.business.dto.BusinessResponse;
 import almroth.kim.gamendo_user_api.business.dto.CreateBusinessRequest;
+import almroth.kim.gamendo_user_api.business.dto.UpdateBusinessRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,9 +15,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("api/admin/business")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN')")
-//@EnableMethodSecurity
-//@PreAuthorize("hasRole('USER')")
 public class BusinessController {
     final BusinessService service;
 
@@ -28,9 +27,14 @@ public class BusinessController {
     public void postBusiness(@RequestBody CreateBusinessRequest request) {
         service.Create(request);
     }
-    @DeleteMapping("{uuid}")
+    @DeleteMapping("/{uuid}")
     public ResponseEntity<?> deleteBusiness(@PathVariable UUID uuid){
         service.Delete(uuid);
         return ResponseEntity.noContent().build();
+    }
+    @PatchMapping("/{uuid}")
+    public ResponseEntity<?> updateBusiness(@RequestBody UpdateBusinessRequest request, @PathVariable UUID uuid){
+        var response = service.Update(request, uuid);
+        return ResponseEntity.ok(response);
     }
 }

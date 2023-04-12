@@ -1,12 +1,9 @@
 import {getJwtPayload, isUser, verifyJwt} from "../auth/auth.js";
-
-const baseUrl = location.protocol + "//" + location.hostname + (location.port ? ":" + location.port : "");
-
-
+import {userApiUrl, baseUrl} from "../shared.js";
 const getSeat = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const uuid = urlParams.get('uuid');
-    const url = 'http://wsprakt3.apendo.se:35462:35462/api/user/seat/' + uuid;
+    const url = `${userApiUrl}/api/user/seat/${uuid}`;
     const token = window.localStorage.getItem("jwt");
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     let res;
@@ -41,7 +38,7 @@ const fillAll = async (seats) => {
     seats.forEach((seat) => {
         const anchor = document.createElement('a');
         anchor.textContent = `${seat['businessName']} - ${seat['forYearMonth']}`;
-        anchor.href = baseUrl + '/seat/report?uuid=' + seat['uuid'];
+        anchor.href = `${baseUrl}/seat/report?uuid=${seat['uuid']}`;
         document.querySelector('#for').appendChild(anchor);
         document.querySelector('#for').appendChild(document.createElement('br'));
     })
@@ -74,7 +71,7 @@ const fill = async () => {
 const getAllSeatsByBusiness = async () => {
     const payload = await getJwtPayload();
     console.log(payload['organization'])
-    const url = 'http://83.233.216.66:35462/api/user/seat/business/' + payload['organization'];
+    const url = `${userApiUrl}/api/user/seat/business/${payload['organization']}`;
     let res;
     await fetch(url, {
         method: "GET",
@@ -180,7 +177,7 @@ window.addEventListener('submit', async (event) => {
 })
 window.addEventListener('load', async ev => {
     if (!(await isUser())) {
-        window.location.assign('http://localhost:3000/auth/unauthorized')
+        window.location.assign(`${baseUrl}/auth/unauthorized`)
     }
     if (await verifyJwt() === 200) {
         await fill();

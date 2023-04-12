@@ -1,3 +1,5 @@
+import {baseUrl, userApiUrl} from "../shared.js";
+
 export const verifyJwt = async () => {
     let isValid = 500;
     let jwt = window.localStorage.getItem("jwt");
@@ -5,7 +7,7 @@ export const verifyJwt = async () => {
     if (typeof jwt != 'string' && jwt.trim().length > 0) {
         console.error('No jwt found');
     }
-    const url = 'http://wsprakt3.apendo.se:35462/api/auth/validate';
+    const url = `${userApiUrl}/api/auth/validate`;
 
     if (jwt.startsWith('Bearer ')) {
         jwt = jwt.substring(7);
@@ -37,7 +39,7 @@ export const useRefreshToken = () => {
         return;
     }
 
-    const url = 'http://83.233.216.66:35462/api/auth/refresh';
+    const url = `${userApiUrl}/api/auth/refresh`;
     const data = {refreshToken: refreshToken};
 
     fetch(url, {
@@ -69,7 +71,7 @@ export const useRefreshToken = () => {
 export const login = async () => {
     let email = "harry@stone.com";
     let password = "testtest";
-    const url = 'http://83.233.216.66:35462/api/auth/authenticate';
+    const url = `${userApiUrl}/api/auth/authenticate`;
     const data = {email: email, password: password};
 
     await fetch(url, {
@@ -88,7 +90,7 @@ export const login = async () => {
 }
 export const getJwtPayload = async () => {
     if (await verifyJwt() !== 200) {
-        window.location.assign('http://localhost:3000/auth/login');
+        window.location.assign(`${baseUrl}/auth/login`);
         throw Error("JWT invalid")
     }
     const base64Url = window.localStorage.getItem("jwt").split('.')[1];
