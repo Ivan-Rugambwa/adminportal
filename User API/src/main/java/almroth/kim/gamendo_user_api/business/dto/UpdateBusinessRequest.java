@@ -5,12 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Data
-public class UpdateViewModel {
-    @NotBlank(message = "Name is required")
+public class UpdateBusinessRequest {
+
     private String name;
-    @NotBlank(message = "Account profiles are required")
 
     private Set<AccountProfile> accountProfiles;
+    private Integer seatAmount;
+    private String accountUUID;
 }

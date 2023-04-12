@@ -2,6 +2,7 @@ package almroth.kim.gamendo_user_api.business;
 
 import almroth.kim.gamendo_user_api.business.dto.BusinessResponse;
 import almroth.kim.gamendo_user_api.business.dto.CreateBusinessRequest;
+import almroth.kim.gamendo_user_api.business.dto.UpdateBusinessRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,5 +33,10 @@ public class BusinessController {
     public ResponseEntity<?> deleteBusiness(@PathVariable UUID uuid){
         service.Delete(uuid);
         return ResponseEntity.noContent().build();
+    }
+    @PatchMapping
+    public ResponseEntity<?> updateBusiness(UpdateBusinessRequest request){
+        var response = service.Update(request);
+        return ResponseEntity.ok(response);
     }
 }
