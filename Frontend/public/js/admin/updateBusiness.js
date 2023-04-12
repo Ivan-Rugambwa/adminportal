@@ -14,7 +14,7 @@ function updateBusiness() {
       
     };
     
-    fetch(apiUrl, {
+    fetch(url, {
       method: "PATCH",
       headers: {
         
