@@ -7,5 +7,8 @@ window.addEventListener('load', async ev => {
     if (role.some(role => role['name'] !== 'ADMIN')) {
         window.location.assign(`${baseUrl}/auth/unauthorized`);
         console.log('Not authorized for admin pages');
+    } else {
+        document.querySelector('html').style.display = 'block';
     }
+
 })
