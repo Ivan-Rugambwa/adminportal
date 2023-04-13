@@ -62,7 +62,14 @@ window.addEventListener('submit', async (event) => {
     await getInfo();
     const statusCode = await verifyJwt();
     if (statusCode !== 200) return window.location.assign(`${baseUrl}/error`);
-    if ((await isAdmin())) {
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectUrl = urlParams.get('redirect');
+
+    if (redirectUrl !== null){
+        window.location.assign(redirectUrl);
+    }
+    else if ((await isAdmin())) {
         window.location.assign(`${baseUrl}/admin`);
     }
     else if ((await isUser())) {

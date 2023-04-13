@@ -1,9 +1,10 @@
 package almroth.kim.gamendo_user_api.account;
 
 import almroth.kim.gamendo_user_api.account.dto.SimpleResponse;
-import almroth.kim.gamendo_user_api.account.dto.UpdateAccountRequest;
+import almroth.kim.gamendo_user_api.account.dto.UpdateAccountAdminRequest;
 import almroth.kim.gamendo_user_api.account.model.Account;
 import almroth.kim.gamendo_user_api.business.BusinessRepository;
+import almroth.kim.gamendo_user_api.business.BusinessService;
 import almroth.kim.gamendo_user_api.error.customException.EmailAlreadyTakenException;
 import almroth.kim.gamendo_user_api.mapper.AccountMapper;
 import almroth.kim.gamendo_user_api.role.RoleRepository;
@@ -13,6 +14,7 @@ import com.password4j.Password;
 import com.password4j.types.Bcrypt;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -23,17 +25,19 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final BusinessRepository businessRepository;
+    private final BusinessService businessService;
     private final RoleRepository roleRepository;
 
     private final AccountMapper mapper = Mappers.getMapper(AccountMapper.class);
     BcryptFunction bcrypt = BcryptFunction.getInstance(Bcrypt.Y, 11);
 
     @Autowired
-    public AccountService(AccountRepository accountRepository, BusinessRepository businessRepository, RoleRepository roleRepository) {
+    public AccountService(AccountRepository accountRepository, BusinessRepository businessRepository, RoleRepository roleRepository, @Lazy BusinessService businessService) {
 
         this.accountRepository = accountRepository;
         this.businessRepository = businessRepository;
         this.roleRepository = roleRepository;
+        this.businessService = businessService;
     }
 
     public List<SimpleResponse> getAccounts() {
@@ -87,7 +91,7 @@ public class AccountService {
                 .orElseThrow(() -> new IllegalStateException("No account with id: " + uuid));
     }
 
-    public SimpleResponse updateAccount(String accountId, UpdateAccountRequest request) {
+    public SimpleResponse updateAccount(String accountId, UpdateAccountAdminRequest request) {
         Account account = accountRepository
                 .findById(UUID.fromString(accountId))
                 .orElseThrow(() -> new IllegalStateException("No account with id: " + accountId));
@@ -96,7 +100,7 @@ public class AccountService {
                 && accountRepository.existsByEmail(request.getEmail()))
             throw new EmailAlreadyTakenException("That email is unavailable.");
 
-        var business = businessRepository.findBusinessByName(request.getBusiness()).orElseThrow(() -> new IllegalArgumentException("No such business"));
+        var business = businessService.GetByUuid(request.getBusiness());
 
         account.setEmail(request.getEmail());
         account.setFirstName(request.getFirstName());

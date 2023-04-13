@@ -6,7 +6,6 @@ const userTable = document.getElementById('userTable');
 window.addEventListener('load', async ev => {
     const users = await getUsers();
     fillTable(users);
-
 })
 
 const getUsers = async () => {
