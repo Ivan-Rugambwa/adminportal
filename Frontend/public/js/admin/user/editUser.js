@@ -1,4 +1,4 @@
-import {userApiUrl} from "../shared.js";
+import {userApiUrl} from "../../shared.js";
 
 window.addEventListener('load', async ev => {
     const user = await getUser();

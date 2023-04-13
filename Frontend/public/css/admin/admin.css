@@ -1,3 +1,11 @@
 .editIcon {
     margin: 0 10px;
+    padding: 2px;
+}
+.deleteButton {
+    all: unset;
+    cursor: pointer;
+}
+#userTableBody a, #userTableBody a:visited, #userTableBody a:hover, #userTableBody a:active {
+    color: deepskyblue;
 }
