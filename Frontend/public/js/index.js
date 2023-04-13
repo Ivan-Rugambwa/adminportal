@@ -11,9 +11,7 @@ const user = document.getElementById('user');
 user.setAttribute(`href`, `${baseUrl}/seat/report`);
 
 admin.addEventListener('click', async ev => {
-    const baseUrl = location.protocol + "//" + location.hostname + (location.port ? ":" + location.port : "");
     ev.preventDefault();
-
     if (await isAdmin()) {
         window.location.assign(`${baseUrl}/admin`);
     } else {
@@ -22,9 +20,7 @@ admin.addEventListener('click', async ev => {
 })
 
 user.addEventListener('click', async ev => {
-    const baseUrl = location.protocol + "//" + location.hostname + (location.port ? ":" + location.port : "");
     ev.preventDefault();
-
     if (await isUser()) {
         window.location.assign(`${baseUrl}/seat/report`);
     } else {

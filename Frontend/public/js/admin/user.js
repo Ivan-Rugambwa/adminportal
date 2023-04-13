@@ -1,15 +1,21 @@
+import { baseUrl, userApiUrl } from "../shared.js";
+
+
+const get = document.getElementById("getUser");
+get.addEventListener("click",ev =>{
+  ev.preventDefault()
+  getUser();
+})
+
 function getUser() {
   const userId = document.getElementById("uuid").value;
   const firstName = document.getElementById("firstName").value;
   const lastName = document.getElementById("lastName").value;
   const email = document.getElementById("email").value;
-  const apiUrl = "http://wsprakt2.apendo.se:35462/api/admin/user";
+  const url = `${userApiUrl}/api/admin/user`;
 
-  
 
-  
-
-  fetch(apiUrl, {
+  fetch(url, {
     method: "GET",
     headers: {
       'Authorization': `Bearer ${window.localStorage.getItem("jwt")}`,
@@ -40,6 +46,4 @@ function getUser() {
         tableBody.appendChild(row);
       });
     })
-
-
 }
