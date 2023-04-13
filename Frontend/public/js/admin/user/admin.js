@@ -2,7 +2,8 @@ import {isAdmin, verifyJwt} from "../../auth/auth.js";
 import {baseUrl, userApiUrl} from "../../shared.js";
 
 const userTable = document.getElementById('userTable');
-
+const register = document.getElementById('registerButton');
+let isBlurred = false;
 
 const getUsers = async () => {
     const url = `${userApiUrl}/api/admin/user/only`;
@@ -40,22 +41,22 @@ const fillTable = (users) => {
 const createEdit = (uuid) => {
     const editSpan = document.createElement('span');
     const edit = document.createElement('a');
-    edit.setAttribute('class', 'editIcon')
+    edit.setAttribute('class', 'editIcon');
     const href = `${baseUrl}/admin/user/edit?user=${uuid}`;
-    const editIcon = document.createElement('i')
-    editIcon.setAttribute('class', 'fa-regular fa-pen-to-square')
-    edit.appendChild(editIcon)
+    const editIcon = document.createElement('i');
+    editIcon.setAttribute('class', 'fa-regular fa-pen-to-square');
+    edit.appendChild(editIcon);
     edit.href = href;
     editSpan.appendChild(edit);
     return editSpan;
 }
 const createDelete = (uuid) => {
     const delSpan = document.createElement('span');
-    const delIcon = document.createElement('button')
-    delIcon.setAttribute('type', 'button')
-    delIcon.setAttribute('class', 'fa-solid fa-trash deleteButton')
-    delIcon.setAttribute('style', 'color: #ff2828;')
-    delIcon.setAttribute('id', uuid.toString())
+    const delIcon = document.createElement('button');
+    delIcon.setAttribute('type', 'button');
+    delIcon.setAttribute('class', 'fa-solid fa-trash deleteButton');
+    delIcon.setAttribute('style', 'color: #ff2828;');
+    delIcon.setAttribute('id', 'delete-' + uuid.toString());
     delSpan.appendChild(delIcon);
     return delSpan;
 }
@@ -73,26 +74,6 @@ const deleteUser = async (uuid) => {
         throw new Error('Failed deleting user: ' + data.message)
     }
     await updateUsersTable();
-
-}
-const waitForElm = (selector) => {
-    return new Promise(resolve => {
-        if (document.querySelector(selector)) {
-            return resolve(document.querySelector(selector));
-        }
-
-        const observer = new MutationObserver(mutations => {
-            if (document.querySelector(selector)) {
-                resolve(document.querySelector(selector));
-                observer.disconnect();
-            }
-        });
-
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-    });
 }
 const updateUsersTable = async () => {
     document.getElementById('userTableBody').innerHTML = '';
@@ -100,15 +81,48 @@ const updateUsersTable = async () => {
     fillTable(users);
 }
 
+const confirmDelete = (elementId) => {
+    console.log(elementId)
+    const deleteButton = document.getElementById(elementId);
+    toggleBlur();
+}
+const toggleBlur = () => {
+    const outerConfirmDeletePrompt = document.getElementById('outerConfirmDeletePrompt');
+    if (isBlurred){
+        outerConfirmDeletePrompt.style.display = 'none';
+        console.log('is true')
+        isBlurred = false;
+    } else {
+        console.log('is false')
+        outerConfirmDeletePrompt.style.display = 'block';
+        isBlurred = true;
+    }
+}
+
 window.addEventListener('load', async ev => {
     await updateUsersTable()
 })
 
-window.addEventListener('click', async ev => {
-    console.log(ev.target)
+userTable.addEventListener('click', async ev => {
     if (ev.target.getAttribute('class').includes('deleteButton')) {
         ev.preventDefault();
-        await deleteUser(ev.target['id'])
+        confirmDelete(ev.target['id'], isBlurred);
+        if (isBlurred) {
+            // await deleteUser(ev.target['id'])
+        }
     }
-
 })
+
+const cancel = document.getElementById('cancel');
+cancel.addEventListener('click', ev => {
+    ev.preventDefault()
+    toggleBlur();
+})
+
+const confirm = document.getElementById('confirm');
+confirm.addEventListener('click', ev => {
+    ev.preventDefault()
+    toggleBlur();
+})
+
+

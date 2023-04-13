@@ -11,7 +11,7 @@
     <script src="https://kit.fontawesome.com/6c0cfcbd8b.js" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
-
+<body>
 <header>
     <h1>Adminsida</h1>
 </header>
@@ -28,7 +28,10 @@
     </ul>
 </nav>
 <section>
-    <h2>Användarinfo</h2>
+    <div id="userTableHeader">
+        <div><h2>Användarinfo</h2></div>
+        <div id="register"><a href="http://localhost:3000/admin/user/register" id="registerButton" type="submit">Lägg till ny användare</a></div>
+    </div>
     <table id="userTable">
         <thead>
         <tr>
@@ -44,6 +47,17 @@
         </tbody>
     </table>
 </section>
+
+<div id="outerConfirmDeletePrompt">
+    <div id="confirmDeletePrompt">
+        <div id="textDiv"><p>Confirm delete</p></div>
+        <div id="buttonsDiv">
+            <button id="confirm">Confirm</button>
+            <button id="cancel">Cancel</button>
+        </div>
+    </div>
+</div>
+
 <script src="../../js/admin/user/admin.js" type="module"></script>
 <script type="module" src="../../js/auth/isAdmin.js"></script>
 
