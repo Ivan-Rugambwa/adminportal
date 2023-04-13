@@ -12,12 +12,8 @@ function getUser() {
   const firstName = document.getElementById("firstName").value;
   const lastName = document.getElementById("lastName").value;
   const email = document.getElementById("email").value;
-  //const apiUrl = "http://wsprakt2.apendo.se:35462/api/admin/user";
   const url = `${userApiUrl}/api/admin/user`;
 
-  
-
-  
 
   fetch(url, {
     method: "GET",
@@ -50,6 +46,4 @@ function getUser() {
         tableBody.appendChild(row);
       });
     })
-
-
 }
