@@ -1,8 +1,7 @@
 package almroth.kim.gamendo_user_api.account;
 
 import almroth.kim.gamendo_user_api.account.dto.SimpleResponse;
-import almroth.kim.gamendo_user_api.account.dto.UpdateAccountRequest;
-import almroth.kim.gamendo_user_api.account.model.Account;
+import almroth.kim.gamendo_user_api.account.dto.UpdateAccountAdminRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -43,8 +42,8 @@ public class AccountController {
     public ResponseEntity<?> getAccountById(@PathVariable("accountId") String uuid) {
         return ResponseEntity.ok(accountService.getSimpleAccountByUuid(uuid));
     }
-    @PostMapping(path = "{accountId}")
-    public ResponseEntity<?> putAccount(@PathVariable String accountId, @RequestBody UpdateAccountRequest request) {
+    @PatchMapping(path = "/{accountId}")
+    public ResponseEntity<?> putAccount(@PathVariable String accountId, @RequestBody UpdateAccountAdminRequest request) {
 
         return ResponseEntity.ok(accountService.updateAccount(accountId, request));
     }

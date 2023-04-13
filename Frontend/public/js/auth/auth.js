@@ -90,8 +90,9 @@ export const login = async () => {
 }
 export const getJwtPayload = async () => {
     if (await verifyJwt() !== 200) {
-        window.location.assign(`${baseUrl}/auth/login`);
-        throw Error("JWT invalid")
+        const currentUrl = window.location.href;
+        window.location.assign(`${baseUrl}/auth/login?redirect=${currentUrl}`);
+
     }
     const base64Url = window.localStorage.getItem("jwt").split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');

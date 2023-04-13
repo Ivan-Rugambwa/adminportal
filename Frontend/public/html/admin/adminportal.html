@@ -3,49 +3,49 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../../css/menu.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="../../css/global.css" rel="stylesheet" type="text/css">
+    <link href="../../css/menu.css" rel="stylesheet" type="text/css">
+    <link href="../../css/admin/admin.css" rel="stylesheet" type="text/css">
+    <script src="https://kit.fontawesome.com/6c0cfcbd8b.js" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
 
-<body onload="checkLogin()">
 <header>
     <h1>Adminsida</h1>
 </header>
 <nav>
     <ul>
-      <input id="search" type="text" placeholder="Search..">
-      <button type="submit"><i class="fa fa-search" onclick="searchUser()"></i></button>
-      <li><a href="#">Hem</a></li>
-      <li><a href="../../html/admin/user.html">Hantera användare</a></li>
-      <li><a href="../../html/admin/business.html">Hantera Företag</a></li>
-      <li><a href="../../html/admin/registrationForm.html">Registrera användare</a></li>
-      <li><a href="#">Godkänn ansökningar</a></li>
-      <li><a href="#" onclick="logOut()">Logga ut</a></li>
+        <input id="search" placeholder="Search.." type="text">
+        <button type="submit"><i class="fa fa-search" onclick="searchUser()"></i></button>
+        <li><a href="#">Hem</a></li>
+        <li><a href="../../html/admin/user.html">Hantera användare</a></li>
+        <li><a href="../../html/admin/business.html">Hantera Företag</a></li>
+        <li><a href="../../html/admin/registrationForm.html">Registrera användare</a></li>
+        <li><a href="#">Godkänn ansökningar</a></li>
+        <li><a href="#" onclick="logOut()">Logga ut</a></li>
     </ul>
 </nav>
 <section>
-    <h2>Användare info</h2>
-    <table>
+    <h2>Användarinfo</h2>
+    <table id="userTable">
         <thead>
         <tr>
-            <th>Användarnamn</th>
+            <th>UUID</th>
             <th>E-postadress</th>
-            <th>Kundseat</th>
-            <th><input type="submit" value="Redigera"></th>
+            <th>Förnamn</th>
+            <th>Efternamn</th>
+            <th>Företag</th>
+            <th>Ändra</th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-            <td>admin</td>
-            <td>admin@example.com</td>
-            <td>Seats</td>
-        </tr>
+        <tbody id="userTableBody">
         </tbody>
     </table>
 </section>
-<script type="module" src="../../js/admin/admin.js"></script>
+<script src="../../js/admin/admin.js" type="module"></script>
+<script type="module" src="../../js/auth/isAdmin.js"></script>
+
 </body>
 </html>
