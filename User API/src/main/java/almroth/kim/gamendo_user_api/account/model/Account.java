@@ -44,13 +44,13 @@ public class Account implements UserDetails {
     @NotBlank(message = "Last name is mandatory")
     private String lastName;
 
-    @OneToOne(mappedBy = "account")
+    @OneToOne(mappedBy = "account", orphanRemoval = true)
     private AccountProfile profile;
 
     @OneToMany(mappedBy = "completedBy")
     private Set<Seat> completedSeats;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ACCOUNT_ROLES",
             joinColumns = {
                     @JoinColumn(name = "ACCOUNT_UUID")
