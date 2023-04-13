@@ -1,4 +1,3 @@
-import {isAdmin, verifyJwt} from "../../auth/auth.js";
 import {baseUrl, userApiUrl} from "../../shared.js";
 
 const userTable = document.getElementById('userTable');
@@ -6,32 +5,44 @@ const register = document.getElementById('registerButton');
 let isBlurred = false;
 
 const getUsers = async () => {
-    const url = `${userApiUrl}/api/admin/user/only`;
-    let res;
-    await fetch(url, {
+    const url = `${userApiUrl}/api/admin/user`;
+    const response = await fetch(url, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
         }
-    })
-        .then(response => res = response.json())
-        .catch(error => {
-            console.error(error);
-        })
-    return res;
+    });
+    let users = await response.json();
+
+
+    users.sort((a, b) => {
+        if (a['businessName'] === null) return +1;
+        if (b['businessName'] === null) return -1;
+        return a['businessName'].localeCompare(b['businessName'])
+    });
+    return users;
 }
 
 const fillTable = (users) => {
-    const userTableBody = document.getElementById('userTableBody');
+    document.getElementById('userTableBody').innerHTML = '';
+    document.getElementById('adminTableBody').innerHTML = '';
+    let tableBody;
 
     users.forEach(user => {
+        if (user['roleNames'].some(roleName => roleName === 'ADMIN')) {
+            tableBody = document.getElementById('adminTableBody');
+        } else {
+            tableBody = document.getElementById('userTableBody');
+        }
         const uuid = user['uuid'];
-        const row = userTableBody.insertRow();
+        const row = tableBody.insertRow();
         row.insertCell().innerHTML = uuid;
         row.insertCell().innerHTML = user['email'];
         row.insertCell().innerHTML = user['firstName'];
         row.insertCell().innerHTML = user['lastName'];
-        row.insertCell().innerHTML = user['businessName'];
+        if (tableBody.id !== 'adminTableBody') {
+            row.insertCell().innerHTML = user['businessName']
+        }
         row.insertCell()
             .appendChild(createEdit(uuid))
             .appendChild(createDelete(uuid));
@@ -56,7 +67,7 @@ const createDelete = (uuid) => {
     delIcon.setAttribute('type', 'button');
     delIcon.setAttribute('class', 'fa-solid fa-trash deleteButton');
     delIcon.setAttribute('style', 'color: #ff2828;');
-    delIcon.setAttribute('id', 'delete-' + uuid.toString());
+    delIcon.setAttribute('uuid', uuid.toString());
     delSpan.appendChild(delIcon);
     return delSpan;
 }
@@ -69,60 +80,75 @@ const deleteUser = async (uuid) => {
             'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
         }
     })
-    if(response.status !== 204){
+    if (response.status !== 204) {
         const data = await response.json();
         throw new Error('Failed deleting user: ' + data.message)
     }
-    await updateUsersTable();
+    await updateTables();
 }
-const updateUsersTable = async () => {
+const updateTables = async () => {
     document.getElementById('userTableBody').innerHTML = '';
+    document.getElementById('adminTableBody').innerHTML = '';
+    const spinning = 'fa-solid fa-arrow-rotate-right fa-spin';
+    const still = 'fa-solid fa-arrow-rotate-right';
+    const refreshIcon = document.getElementById('refreshIcon');
+    refreshIcon.setAttribute('class', spinning);
+    await new Promise(r => setTimeout(r, 200));
     const users = await getUsers();
     fillTable(users);
+    refreshIcon.setAttribute('class', still);
 }
 
-const confirmDelete = (elementId) => {
-    console.log(elementId)
-    const deleteButton = document.getElementById(elementId);
-    toggleBlur();
-}
 const toggleBlur = () => {
     const outerConfirmDeletePrompt = document.getElementById('outerConfirmDeletePrompt');
-    if (isBlurred){
+    const blur = document.getElementById('blur');
+    if (isBlurred) {
+        blur.style.display = 'none';
         outerConfirmDeletePrompt.style.display = 'none';
-        console.log('is true')
         isBlurred = false;
     } else {
-        console.log('is false')
+        blur.style.display = 'block';
         outerConfirmDeletePrompt.style.display = 'block';
         isBlurred = true;
     }
 }
 
 window.addEventListener('load', async ev => {
-    await updateUsersTable()
+    await updateTables()
 })
+
+const cancel = document.getElementById('cancel');
+const confirm = document.getElementById('confirm');
+const refresh = document.getElementById('refresh');
 
 userTable.addEventListener('click', async ev => {
     if (ev.target.getAttribute('class').includes('deleteButton')) {
         ev.preventDefault();
-        confirmDelete(ev.target['id'], isBlurred);
-        if (isBlurred) {
-            // await deleteUser(ev.target['id'])
-        }
+        const uuid = ev.target.getAttribute('uuid');
+        console.log(uuid)
+        document.getElementById('confirm').setAttribute('uuid', uuid);
+        toggleBlur();
     }
 })
 
-const cancel = document.getElementById('cancel');
 cancel.addEventListener('click', ev => {
     ev.preventDefault()
     toggleBlur();
 })
 
-const confirm = document.getElementById('confirm');
-confirm.addEventListener('click', ev => {
+confirm.addEventListener('click', async ev => {
     ev.preventDefault()
     toggleBlur();
+    const uuid = ev.target.getAttribute('uuid');
+    await deleteUser(uuid);
+    await updateTables();
+})
+
+refresh.addEventListener('click', async ev => {
+    ev.target.disabled = true;
+    ev.preventDefault();
+    await updateTables();
+    ev.target.disabled = false;
 })
 
 

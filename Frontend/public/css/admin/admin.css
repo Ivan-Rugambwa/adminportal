@@ -2,23 +2,31 @@
     margin: 0 10px;
     padding: 2px;
 }
+
 .deleteButton {
     all: unset;
     cursor: pointer;
 }
-#userTableBody a, #userTableBody a:visited, #userTableBody a:hover, #userTableBody a:active {
-    color: deepskyblue;
+
+#userTableBody a, #userTableBody a:visited, #userTableBody a:hover, #userTableBody a:active,
+#adminTableBody a, #adminTableBody a:visited, #adminTableBody a:hover, #adminTableBody a:active,
+#register a, #register a:visited, #register a:hover, #register a:active,
+#registerAdmin a, #registerAdmin a:visited, #registerAdmin a:hover, #registerAdmin a:active {
+    color: royalblue;
 }
-#userTableHeader {
+
+#userTableHeader, #adminTableHeader {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
 }
-#register {
+
+#register, #registerAdmin {
     display: flex;
     align-items: end;
     margin-bottom: 0.4rem;
 }
+
 #confirmDeletePrompt {
     /*display: block;*/
     /*!*position: absolute;*!*/
@@ -30,35 +38,81 @@
     display: flex;
     flex-direction: column;
 }
+
 #outerConfirmDeletePrompt {
     display: none;
     position: absolute;
     left: 0;
     right: 0;
-    top: inherit;
+    top: 30vh;
     margin-left: auto;
     margin-right: auto;
     width: fit-content;
     height: fit-content;
+    z-index: 900;
+    background-color: #333;
 }
+
 #confirmDeletePrompt p, #confirmDeletePrompt button {
     font-size: 1rem;
-    margin: 0 0.1rem;
-    padding: 0.1rem;
+    margin: 1rem 1rem 0.5rem 1rem;
+    padding: 0.2rem;
 }
+
 #confirmDeletePrompt p {
-    color: black;
     font-family: Georgia, serif;
     font-weight: normal;
     margin: 0;
     font-size: 0.9rem;
+    color: white;
 }
+
 #textDiv {
     display: flex;
     justify-content: center;
+    margin: 1rem;
+    color: white;
 }
+
 #buttonsDiv {
     height: fit-content;
     width: fit-content;
     /*margin: 0 5px;*/
+}
+
+#admins {
+    /*display: none;*/
+}
+
+#userTableTitle {
+    display: flex;
+    flex-direction: row;
+}
+
+#userTableTitle * {
+    margin: 0.1rem 0.2rem;
+}
+
+#userTableTitle button {
+    background: none;
+    color: lightskyblue;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+
+#userTableTitle i {
+    font-size: 22px;
+    pointer-events: none;
+}
+
+#blur {
+    display: none;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    z-index: 899;
+    backdrop-filter: blur(4px);
 }

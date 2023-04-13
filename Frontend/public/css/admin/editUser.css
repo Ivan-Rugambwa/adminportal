@@ -1,8 +1,11 @@
 #userForm {
     display: flex;
     flex-direction: column;
-    width: max-content;
+    width: 20rem;
+    /*flex-shrink: 0;*/
+    flex: auto;
 }
+
 #userForm button {
     margin: 1rem 0;
 }
