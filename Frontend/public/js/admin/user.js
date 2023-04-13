@@ -3,7 +3,7 @@ function getUser() {
   const firstName = document.getElementById("firstName").value;
   const lastName = document.getElementById("lastName").value;
   const email = document.getElementById("email").value;
-  const apiUrl = "http://wsprakt.apendo.se:35462/api/admin/user";
+  const apiUrl = "http://wsprakt2.apendo.se:35462/api/admin/user";
 
   
 
@@ -12,7 +12,7 @@ function getUser() {
   fetch(apiUrl, {
     method: "GET",
     headers: {
-      'Authorization': `Bearer ${"eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbeyJuYW1lIjoiQURNSU4iLCJkZXNjcmlwdGlvbiI6IlNpdGUgYWRtaW5pc3RyYXRvciJ9XSwic3ViIjoia2ltQHRlc3QuY29tIiwiaWF0IjoxNjgwNzgwNDI1LCJleHAiOjE2ODA3ODEzMjV9.KZFhGq1Vcj3azT8HeEzNvGtGVAv-PA2m3dAmthxyVqpkeIZxfCcF8f9FkHT-naqIo3u2-dpFHybVhQlWSlcaiQ"}`,
+      'Authorization': `Bearer ${window.localStorage.getItem("jwt")}`,
       "Content-Type": "application/json",
     },
   })
