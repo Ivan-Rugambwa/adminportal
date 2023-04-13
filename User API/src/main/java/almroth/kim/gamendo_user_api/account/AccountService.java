@@ -74,7 +74,7 @@ public class AccountService {
 
     public void removeAccountByUUID(UUID uuid) {
         if (!accountRepository.existsById(uuid)) {
-            throw new IllegalStateException("No account with uuid: " + uuid);
+            return;
         }
         accountRepository.deleteById(uuid);
     }

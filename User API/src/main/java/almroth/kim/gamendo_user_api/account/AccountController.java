@@ -48,7 +48,8 @@ public class AccountController {
         return ResponseEntity.ok(accountService.updateAccount(accountId, request));
     }
     @DeleteMapping(path = "{accountId}")
-    public void deleteAccount(@PathVariable String accountId){
+    public ResponseEntity<?> deleteAccount(@PathVariable String accountId){
         accountService.removeAccountByUUID(UUID.fromString(accountId));
+        return ResponseEntity.noContent().build();
     }
 }
