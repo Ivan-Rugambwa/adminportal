@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="../../css/admin/editUser.css" rel="stylesheet">
+    <link href="../../../css/admin/editUser.css" rel="stylesheet">
 </head>
 <body>
 <form id="userForm">
-    <label for="uuid">UUID:</label>
-    <input id="uuid" name="uuid" required type="text" disabled value="">
 
     <label for="email">Email:</label>
     <input id="email" name="email" required type="email" value="">
@@ -22,9 +20,9 @@
     <label for="business-select">Företag:</label>
     <select name="businesses" id="business-select"></select>
 
-    <button type="submit">Uppdatera</button>
+    <button type="submit">Registrera</button>
 </form>
-<script type="module" src="../../js/admin/editUser.js" type="module"></script>
-<script src="../../js/auth/isAdmin.js" type="module"></script>
+<script src="../../../js/admin/user/registerUser.js" type="module"></script>
+<script src="../../../js/auth/isAdmin.js" type="module"></script>
 </body>
 </html>

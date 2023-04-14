@@ -239,7 +239,7 @@
         <bpmn:incoming>Flow_0k9rdmi</bpmn:incoming>
         <bpmn:outgoing>Flow_0bdmqt8</bpmn:outgoing>
       </bpmn:manualTask>
-      <bpmn:serviceTask id="Activity_04q1tda" name="Get customers" zeebe:modelerTemplate="apendo.get.data.template" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="data:image/svg+xml;user-circle.svg">
+      <bpmn:serviceTask id="Activity_04q1tda" name="Get customers for company" zeebe:modelerTemplate="apendo.get.data.template" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="data:image/svg+xml;user-circle.svg">
         <bpmn:extensionElements>
           <zeebe:taskDefinition type="apendo:get:2" />
           <zeebe:ioMapping>
@@ -368,12 +368,6 @@
       <bpmndi:BPMNShape id="Activity_15gauom_di" bpmnElement="Activity_16c8uxu">
         <dc:Bounds x="1540" y="300" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1t0cvoo_di" bpmnElement="Activity_1r5gays">
-        <dc:Bounds x="1540" y="410" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_130c24u_di" bpmnElement="Activity_04q1tda">
-        <dc:Bounds x="320" y="410" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1rcue7n_di" bpmnElement="Activity_1rcue7n" isExpanded="true">
         <dc:Bounds x="490" y="500" width="350" height="200" />
         <bpmndi:BPMNLabel />
@@ -395,6 +389,13 @@
         <di:waypoint x="720" y="600" />
         <di:waypoint x="782" y="600" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1t0cvoo_di" bpmnElement="Activity_1r5gays">
+        <dc:Bounds x="1540" y="410" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_130c24u_di" bpmnElement="Activity_04q1tda">
+        <dc:Bounds x="320" y="410" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0vbibq0_di" bpmnElement="Event_1203gv0">
         <dc:Bounds x="922" y="472" width="36" height="36" />
         <bpmndi:BPMNLabel>
