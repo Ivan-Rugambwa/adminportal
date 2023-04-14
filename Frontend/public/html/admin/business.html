@@ -29,27 +29,23 @@
         <table id="myTable">
             <thead>
               <tr>
-                <th id="uuid">UUID</th>
-                <th id="name">Företag</th>
-                <th id="seatAmount">Seat</th>
-               <th><input type="button" id="login-form" value="Search" onclick="getBusiness()"></th> 
+                <th>UUID</th>
+                <th>Företag</th>
+                <th >Seat</th>
+                <th >Ändra</th>
+                
               </tr>
             </thead>
             
-            <tbody>
-              <div class="editTable">
-                <div class="left">ID: </div><div class="right"><input type="text" name="Seats" id="uuid"></div><br><br>
-                <div class="left">AccountID: </div><div class="right"><input type="text" name="Seats" id="accountUUID"></div><br><br>
-                <div class="left">Seat: </div><div class="right"><input type="number" name="Seats" id="seatAmount"></div><br><br>
-                <div class="left">Företag: </div><div class="right"><input type="text" name="Företag" id="name"></div><br><br>
-                <button onclick="updateBusiness()" class="updateUser">Update</button><br><br>
+            <tbody id="updateBusiness">
+              
             </div>        
             </tbody>
           
           </table>
 
-        <script src="../../js/admin/business.js"> </script>
-        <script src="../../js/admin/updateBusiness.js"> </script>
+        <script type="module" src="../../js/admin/business.js"> </script>
+       
 </body>
 
 </html>

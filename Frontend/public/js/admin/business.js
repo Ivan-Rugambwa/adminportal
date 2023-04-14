@@ -1,9 +1,15 @@
-import { baseUrl } from "../shared";
+import { baseUrl, userApiUrl } from "../shared.js";
+
+const get = document.getElementById("getBusiness");
+get.addEventListener("click",ev =>{
+  ev.preventDefault()
+  getBusiness();
+})
 
 function getBusiness() {
     const business = document.getElementById("name").value;
     const seats = document.getElementById("seatAmount").value;
-    const url = `${baseUrl}/api/admin/business/`
+    const url = `${userApiUrl}/api/admin/business`;
 
     fetch(url, {
       method: "GET",
