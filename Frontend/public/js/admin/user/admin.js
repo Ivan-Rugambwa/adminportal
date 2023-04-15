@@ -93,10 +93,18 @@ const updateTables = async () => {
     const still = 'fa-solid fa-arrow-rotate-right';
     const refreshIcon = document.getElementById('refreshIcon');
     refreshIcon.setAttribute('class', spinning);
-    await new Promise(r => setTimeout(r, 200));
-    const users = await getUsers();
-    fillTable(users);
+    refreshIcon.style.pointerEvents = 'none';
+
+    const users = getUsers();
+    const promises = await Promise.all([users, new Promise(r => setTimeout(r, 400))])
+
+    const timer = new Promise(r => setTimeout(r, 1600));
+    fillTable(promises[0]);
+
+    await Promise.all([timer]);
     refreshIcon.setAttribute('class', still);
+    refreshIcon.style.pointerEvents = 'auto';
+
 }
 
 const toggleBlur = () => {
