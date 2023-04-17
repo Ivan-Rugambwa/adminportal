@@ -1,42 +1,21 @@
 import {userApiUrl} from "../../shared.js";
-import {adminPage} from "../../auth/adminPage.js";
 
 window.addEventListener('load', async ev => {
-    await adminPage();
-    const user = await getUser();
     let businesses = await getBusinesses();
-    businesses = businesses.filter(business => business['name'] !== user['businessName'])
-    console.log(user)
     console.log(businesses)
-    fillForm(user, businesses);
+    fillForm(businesses);
 
 })
 
 window.addEventListener('submit', async ev => {
     ev.preventDefault();
     const form = document.getElementById('userForm');
-    console.log(form.elements['business-select'].value);
-    await putUpdate()
+    console.log(form.elements['business-select'].value)
+    if (form.elements['business-select'].value === ''){
+        console.log('No business chosen')
+    }
+    // await postRegister();
 })
-const getUser = async () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const uuid = urlParams.get('user');
-    const url = `${userApiUrl}/api/admin/user/${uuid}`
-    let response;
-    await fetch(url, {
-        method: "GET",
-        headers: {
-            "Authorization": `Bearer ${window.localStorage.getItem("jwt")}`
-        }
-    })
-        .then(res => {
-            response = res.json()
-        })
-        .catch(error => {
-            console.error(error);
-        })
-    return response;
-}
 
 const getBusinesses = async () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -58,25 +37,25 @@ const getBusinesses = async () => {
     return response;
 }
 
-const fillForm = (user, businesses) => {
-    document.getElementById('uuid').setAttribute('value', user['uuid']);
-    document.getElementById('email').setAttribute('value', user['email']);
-    document.getElementById('firstName').setAttribute('value', user['firstName']);
-    document.getElementById('lastName').setAttribute('value', user['lastName']);
+const fillForm = (businesses) => {
     const select = document.getElementById('business-select');
+    select.setAttribute('required', '')
     const currentBusiness = document.createElement('option');
-    currentBusiness.setAttribute('value', user['businessUuid']);
-    currentBusiness.innerText = user['businessName'];
+    currentBusiness.setAttribute('disabled', '');
+    currentBusiness.setAttribute('hidden', '');
+    currentBusiness.setAttribute('selected', '');
+    currentBusiness.setAttribute('value', '');
+    currentBusiness.innerText = 'Välj företag';
     select.appendChild(currentBusiness);
     businesses.forEach(business => {
         const option = document.createElement('option');
-        option.setAttribute('value', business['uuid']);
+        option.setAttribute('value', business['name']);
         option.innerText = business['name'];
         select.appendChild(option);
     });
 }
 
-const putUpdate = async () => {
+const postRegister = async () => {
     const form = document.getElementById('userForm');
     const body = {
         email: form.elements['email'].value,
@@ -85,8 +64,8 @@ const putUpdate = async () => {
         business: form.elements['business-select'].value
     }
     console.log(body)
-    return await fetch(`${userApiUrl}/api/admin/user/${form.elements['uuid'].value}`, {
-        method: 'PATCH',
+    return await fetch(`${userApiUrl}/api/admin/user`, {
+        method: 'POST',
         headers: {
             'Content-Type': "application/json",
             'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`

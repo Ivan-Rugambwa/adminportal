@@ -19,4 +19,5 @@ public class SimpleResponse {
     private String firstName;
     private String lastName;
     private String businessName;
+    private Set<String> roleNames;
 }
