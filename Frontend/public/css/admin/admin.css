@@ -8,6 +8,7 @@
     cursor: pointer;
 }
 
+#seatTableBody a, #seatTableBody a:visited, #seatTableBody a:hover, #seatTableBody a:active,
 #userTableBody a, #userTableBody a:visited, #userTableBody a:hover, #userTableBody a:active,
 #adminTableBody a, #adminTableBody a:visited, #adminTableBody a:hover, #adminTableBody a:active,
 #register a, #register a:visited, #register a:hover, #register a:active,
@@ -15,7 +16,7 @@
     color: royalblue;
 }
 
-#userTableHeader, #adminTableHeader {
+#userTableHeader, #adminTableHeader, #seatTableHeader {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
