@@ -1,4 +1,4 @@
-import {getJwtPayload, isAuthenticated} from "./auth.js";
+import {getJwtPayload, isAuthenticated, loginWithRedirect} from "./auth.js";
 import {baseUrl} from "../shared.js";
 
 // window.addEventListener('click', async ev => {
@@ -17,7 +17,7 @@ window.addEventListener('load', async ev => {
 export const adminPage = async () => {
     if (await isAuthenticated() === false) {
         console.log('bad');
-        // loginWithRedirect();
+        loginWithRedirect();
     }
     const payload = await getJwtPayload();
     const role = payload['role'];
