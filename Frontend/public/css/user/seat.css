@@ -19,6 +19,7 @@
     align-content: space-around;
     justify-content: space-between;
 }
+
 .grid-value {
     /*border: 1px solid blue;*/
     /*background-color: white;*/
@@ -38,12 +39,14 @@
     /*column-gap: 0;*/
     /*row-gap: 0;*/
 }
+
 body {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
+
 body * {
     /*border: 1px solid maroon;*/
     width: fit-content;

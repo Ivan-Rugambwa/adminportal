@@ -1,5 +1,10 @@
-.demo-main-cont.demo-comp-listview { padding: 0; }
-.demo-comp-listview .demo-note { margin: 10px; }
+.demo-main-cont.demo-comp-listview {
+    padding: 0;
+}
+
+.demo-comp-listview .demo-note {
+    margin: 10px;
+}
 
 .md-master-detail-demo,
 .md-master-detail-demo .mbsc-row {

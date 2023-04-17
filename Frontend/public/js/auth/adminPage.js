@@ -1,4 +1,4 @@
-import {getJwtPayload, isAuthenticated, loginWithRedirect} from "./auth.js";
+import {getJwtPayload, isAuthenticated} from "./auth.js";
 import {baseUrl} from "../shared.js";
 
 // window.addEventListener('click', async ev => {

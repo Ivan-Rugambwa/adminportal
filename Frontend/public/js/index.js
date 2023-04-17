@@ -2,10 +2,10 @@ import {isAdmin, isUser} from "./auth/auth.js";
 import {baseUrl} from "./shared.js";
 
 const login = document.getElementById('login');
-login.setAttribute(`href`,`${baseUrl}/auth/login`);
+login.setAttribute(`href`, `${baseUrl}/auth/login`);
 
 const admin = document.getElementById('admin');
-admin.setAttribute(`href`,`${baseUrl}/admin`);
+admin.setAttribute(`href`, `${baseUrl}/admin`);
 
 const user = document.getElementById('user');
 user.setAttribute(`href`, `${baseUrl}/seat/report`);
