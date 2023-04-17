@@ -1,5 +1,6 @@
-import {getJwtPayload, isUser, verifyJwt} from "../auth/auth.js";
+import {getJwtPayload, isAuthenticated, isUser} from "../auth/auth.js";
 import {userApiUrl, baseUrl} from "../shared.js";
+
 const getSeat = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const uuid = urlParams.get('uuid');
@@ -179,11 +180,9 @@ window.addEventListener('load', async ev => {
     if (!(await isUser())) {
         window.location.assign(`${baseUrl}/auth/unauthorized`)
     }
-    if (await verifyJwt() === 200) {
-        await fill();
-    } else {
-        window.location.assign(`${baseUrl}/auth/login`)
+    if (await isAuthenticated() === false) {
     }
+    await fill();
 })
 
 

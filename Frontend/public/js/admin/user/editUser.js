@@ -1,6 +1,8 @@
 import {userApiUrl} from "../../shared.js";
+import {adminPage} from "../../auth/adminPage.js";
 
 window.addEventListener('load', async ev => {
+    await adminPage();
     const user = await getUser();
     let businesses = await getBusinesses();
     businesses = businesses.filter(business => business['name'] !== user['businessName'])

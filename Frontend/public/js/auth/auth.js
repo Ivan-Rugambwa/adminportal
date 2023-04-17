@@ -1,11 +1,32 @@
 import {baseUrl, userApiUrl} from "../shared.js";
 
-export const verifyJwt = async () => {
-    let isValid = 500;
-    let jwt = window.localStorage.getItem("jwt");
 
-    if (typeof jwt != 'string' && jwt.trim().length > 0) {
-        console.error('No jwt found');
+export const isAuthenticated = async () => {
+    console.log(window.localStorage.getItem('jwt'));
+    console.log(window.localStorage.getItem('refreshToken'));
+    console.log('Checking jwt...');
+    if (await verifyJwt() === 200) {
+        console.log('Jwt valid');
+        return true;
+    }
+    console.log('Checking refresh token...');
+    if (await useRefreshToken() === 200) {
+        console.log('Refresh token valid');
+        return true;
+    }
+    console.log('Authentication failed');
+    return false;
+}
+export const loginWithRedirect = () => {
+    const currentUrl = window.location.pathname;
+    window.location.assign(`${baseUrl}/auth/login?redirect=${currentUrl}`);
+}
+const verifyJwt = async () => {
+    let status = 500;
+    let jwt = window.localStorage.getItem("jwt");
+    if (!jwt) {
+        console.log('No jwt found');
+        return 403;
     }
     const url = `${userApiUrl}/api/auth/validate`;
 
@@ -22,78 +43,50 @@ export const verifyJwt = async () => {
         body: JSON.stringify(data)
     })
         .then(response => {
-            if (response.ok) {
-                console.log('JWT is valid');
-            }
-            isValid = response.status;
+            status = response.status;
         })
         .catch(error => {
             console.error('There was an error: ' + error);
         })
-    return isValid;
+    return status;
 }
-export const useRefreshToken = () => {
+const useRefreshToken = async () => {
     let refreshToken = window.localStorage.getItem("refreshToken");
-    if (typeof refreshToken != 'string' && refreshToken.trim().length > 0) {
+    console.log(refreshToken)
+    if (typeof refreshToken !== 'string' || refreshToken.trim().length === 0) {
         console.error('No refresh token found');
-        return;
+        return 403;
     }
 
     const url = `${userApiUrl}/api/auth/refresh`;
     const data = {refreshToken: refreshToken};
-
-    fetch(url, {
+    console.log(data);
+    const response = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-    })
-        .then(response => {
-            if (response.status === 200) {
-                console.log('Refresh token is valid');
-            } else {
-                console.error('Refresh token is not valid');
-                return;
-            }
-            return response.json();
-        })
-        .then(body => {
-            window.localStorage.setItem('refreshToken', body.refreshToken);
-            window.localStorage.setItem('jwt', body.accessToken);
-            console.log("Set new access token and refresh token");
-        })
-        .catch(error => {
-            console.error(error);
-            console.error('Failed to refresh tokens');
-        })
-}
-export const login = async () => {
-    let email = "harry@stone.com";
-    let password = "testtest";
-    const url = `${userApiUrl}/api/auth/authenticate`;
-    const data = {email: email, password: password};
-
-    await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    }).then(response => response.json())
-        .then(data => {
-            window.localStorage.setItem("jwt", data.accessToken);
-            window.localStorage.setItem("refreshToken", data.refreshToken);
-        }).catch(error => {
-            console.error(error)
-        })
+    });
+    console.log(response.status);
+    if (response.status === 200) {
+        const body = await response.json();
+        window.localStorage.setItem('refreshToken', body.refreshToken);
+        window.localStorage.setItem('jwt', body.accessToken);
+        return 200;
+    } else {
+        console.error('Refresh token is not valid');
+        return 403;
+    }
 }
 export const getJwtPayload = async () => {
-    if (await verifyJwt() !== 200) {
-        const currentUrl = window.location.href;
-        window.location.assign(`${baseUrl}/auth/login?redirect=${currentUrl}`);
-
+    // if (await isAuthenticated() === false) {
+    //     throw Error('Not logged in');
+    // }
+    if (window.localStorage.getItem("jwt") === null) {
+        throw Error('No jwt');
     }
+
     const base64Url = window.localStorage.getItem("jwt").split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
@@ -101,6 +94,12 @@ export const getJwtPayload = async () => {
     }).join(''));
 
     return JSON.parse(jsonPayload);
+}
+
+export const logoutUser = () => {
+    window.localStorage.removeItem('jwt');
+    // window.localStorage.removeItem('refreshToken');
+    window.location.assign(`${baseUrl}/`);
 }
 
 export const isAdmin = async () => {

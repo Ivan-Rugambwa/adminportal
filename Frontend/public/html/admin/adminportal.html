@@ -8,6 +8,7 @@
     <link href="../../css/global.css" rel="stylesheet" type="text/css">
     <link href="../../css/menu.css" rel="stylesheet" type="text/css">
     <link href="../../css/admin/admin.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="../../css/navbar.css">
     <script src="https://kit.fontawesome.com/6c0cfcbd8b.js" crossorigin="anonymous"></script>
     <title>Adminsida</title>
 </head>
@@ -16,63 +17,60 @@
 <header>
     <h1>Adminsida</h1>
 </header>
-<nav>
-    <ul>
-        <input id="search" placeholder="Search.." type="text">
-        <button type="submit"><i class="fa fa-search" onclick="searchUser()"></i></button>
-        <li><a href="#">Hem</a></li>
-        <li><a href="../../html/admin/user.html">Hantera användare</a></li>
-        <li><a href="../../html/admin/business.html">Hantera Företag</a></li>
-        <li><a href="../../html/admin/registrationForm.html">Registrera användare</a></li>
-        <li><a href="#">Godkänn ansökningar</a></li>
-        <li><a href="#" onclick="logOut()">Logga ut</a></li>
-    </ul>
-</nav>
-
-<section id="users">
-    <div id="userTableHeader">
-        <div id="userTableTitle">
-            <h2>Användare</h2>
-            <button type="submit" id="refresh"><i id="refreshIcon" class="fa-solid fa-arrow-rotate-left"></i></button>
+<nav></nav>
+<div id="tables">
+    <section id="users">
+        <div id="userTableHeader">
+            <div id="userTableTitle">
+                <h2>Användare</h2>
+                <button type="submit" id="refresh"><i id="refreshIcon" class="fa-solid fa-arrow-rotate-left"></i>
+                </button>
+            </div>
+            <div id="register">
+                <a href="http://localhost:3000/admin/user/register" class="registerButton" type="submit">
+                    <i class="fa-solid fa-user-plus fa-lg"></i>
+                </a>
+            </div>
         </div>
-        <div id="register"><a href="http://localhost:3000/admin/user/register" id="registerButton" type="submit">Lägg
-            till ny användare</a></div>
-    </div>
-    <table id="userTable">
-        <thead>
-        <tr>
-            <th>UUID</th>
-            <th>E-postadress</th>
-            <th>Förnamn</th>
-            <th>Efternamn</th>
-            <th>Företag</th>
-            <th>Ändra</th>
-        </tr>
-        </thead>
-        <tbody id="userTableBody">
-        </tbody>
-    </table>
-</section>
-<section id="admins">
-    <div id="adminTableHeader">
-        <div><h2>Administratörer</h2></div>
-        <div id="registerAdmin"><a href="http://localhost:3000/admin/user/register" id="registerAdminButton"
-                                   type="submit">Lägg till ny administratörer</a></div>
-    </div>
-    <table id="adminTable">
-        <thead>
-        <tr>
-            <th>UUID</th>
-            <th>E-postadress</th>
-            <th>Förnamn</th>
-            <th>Efternamn</th>
-            <th>Ändra</th>
-        </tr>
-        </thead>
-        <tbody id="adminTableBody">
-        </tbody>
-    </table>
-</section>
+        <table id="userTable">
+            <thead>
+            <tr>
+                <th>UUID</th>
+                <th>E-postadress</th>
+                <th>Förnamn</th>
+                <th>Efternamn</th>
+                <th>Företag</th>
+                <th>Ändra</th>
+            </tr>
+            </thead>
+            <tbody id="userTableBody">
+            </tbody>
+        </table>
+    </section>
+    <section id="admins">
+        <div id="adminTableHeader">
+            <div><h2>Administratörer</h2></div>
+            <div id="registerAdmin">
+                <a href="http://localhost:3000/admin/user/register" class="registerButton" type="submit">
+                    <i class="fa-solid fa-user-plus fa-lg" style="color: #c40000;"></i>
+                </a>
+            </div>
+        </div>
+        <table id="adminTable">
+            <thead>
+            <tr>
+                <th>UUID</th>
+                <th>E-postadress</th>
+                <th>Förnamn</th>
+                <th>Efternamn</th>
+                <th>Ändra</th>
+            </tr>
+            </thead>
+            <tbody id="adminTableBody">
+            </tbody>
+        </table>
+    </section>
+</div>
 
 <div id="outerConfirmDeletePrompt">
     <div id="confirmDeletePrompt">
@@ -85,7 +83,6 @@
 </div>
 
 <script src="../../js/admin/user/admin.js" type="module"></script>
-<script type="module" src="../../js/auth/isAdmin.js"></script>
-
+<script type="module" src="../../js/navbar.js"></script>
 </body>
 </html>
