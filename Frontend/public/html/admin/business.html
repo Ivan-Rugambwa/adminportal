@@ -2,45 +2,72 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../../css/menu.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../css/navbar.css">
-
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../../css/menu.css" rel="stylesheet" type="text/css">
+  <link href="../../css/admin/admin.css" rel="stylesheet" type="text/css">
+  <script src="https://kit.fontawesome.com/6c0cfcbd8b.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../../css/navbar.css">
+  <script type="module" src="../../js/navbar.js"></script>
+  <title>Document</title>
 </head>
 
 <body>
-    <nav></nav>
-    <section>
-        <h2>Hantera Företag</h2>
-        <table id="myTable">
-            <thead>
-              <tr>
-                <th id="uuid">UUID</th>
-                <th id="name">Företag</th>
-                <th id="seatAmount">Seat</th>
-               <th><input type="button" id="login-form" value="Search" onclick="getBusiness()"></th> 
-              </tr>
-            </thead>
-            
-            <tbody>
-              <div class="editTable">
-                <div class="left">ID: </div><div class="right"><input type="text" name="Seats" id="uuid"></div><br><br>
-                <div class="left">AccountID: </div><div class="right"><input type="text" name="Seats" id="accountUUID"></div><br><br>
-                <div class="left">Seat: </div><div class="right"><input type="number" name="Seats" id="seatAmount"></div><br><br>
-                <div class="left">Företag: </div><div class="right"><input type="text" name="Företag" id="name"></div><br><br>
-                <button class="updateUser">Update</button><br><br>
-            </div>        
-            </tbody>
-          
-          </table>
+  <nav>
+    <ul>
+      <input id="search" type="text" placeholder="Search..">
+      <button type="submit"><i class="fa fa-search" onclick="searchUser()"></i></button>
+      <li><a href="../../html/admin/adminportal.html">Hem</a></li>
+      <li><a href="../../html/admin/user.html">Hantera användare</a></li>
+      <li><a href="../../html/admin/business.html">Hantera Företag</a></li>
+      <li><a href="../../html/admin/registrationForm.html">Registrera användare</a></li>
+      <li><a href="#">Godkänn ansökningar</a></li>
+      <li><a href="/inlogg.html">Logga ut</a></li>
 
-        <script type="module" src="../../js/admin/business.js"> </script>
-        <script type="module" src="../../js/admin/updateBusiness.js"> </script>
-        <script type="module" src="../../js/navbar.js"></script>
+    </ul>
+  </nav>
+  <section>
+    <div id="businessTableHeader">
+      <div id="userTableTitle">
+          <h2>Företag</h2>
+          <button type="submit" id="refresh"><i id="refreshIcon" class="fa-solid fa-arrow-rotate-left"></i></button>
+      </div>
+      <div id="register"><a href="http://localhost:3000/admin/business/register" id="registerButton" type="submit">Lägg
+          till nytt Företag</a></div>
+  </div>
+    <table id="businessTable">
+      <thead>
+        <tr>
+          <th>UUID</th>
+          <th>Företag</th>
+          <th>Seat</th>
+          <th>Ändra</th>
+
+        </tr>
+      </thead>
+
+      <tbody id="businessTableBody">
+
+        </div>
+      </tbody>
+
+
+    </table>
+    <div id="outerConfirmDeletePrompt">
+      <div id="confirmDeletePrompt">
+        <div id="textDiv">
+          <p>Confirm delete</p>
+        </div>
+        <div id="buttonsDiv">
+          <button id="confirm">Confirm</button>
+          <button id="cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="../../js/admin/business.js"> </script>
+
 </body>
 
 </html>
