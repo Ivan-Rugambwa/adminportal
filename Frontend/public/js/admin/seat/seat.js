@@ -1,39 +1,45 @@
 import {baseUrl, userApiUrl} from "../../shared.js";
+import {adminPage} from "../../auth/adminPage.js";
 
-const businessTable = document.getElementById('businessTable');
+const seatTable = document.getElementById('seatTable');
 
 let isBlurred = false;
 
-const getBusinesses = async () => {
-    const url = `${userApiUrl}/api/admin/business`;
+const getSeats = async () => {
+    const url = `${userApiUrl}/api/admin/seat`;
     const response = await fetch(url, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
         }
     });
-    let businesses = await response.json();
+    let seats = await response.json();
 
 
-    businesses.sort((a, b) => {
-        if (a['name'] === null) return +1;
-        if (b['name'] === null) return -1;
-        return a['name'].localeCompare(b['name'])
+    seats.sort((a, b) => {
+        if (a['businessName'] === null) return +1;
+        if (b['businessName'] === null) return -1;
+        return a['businessName'].localeCompare(b['businessName'])
     });
-    return businesses;
+    return seats;
 }
 
-const fillTable = (businesses) => {
-    document.getElementById('businessTableBody').innerHTML = '';
-    let tableBody = document.getElementById('businessTableBody');
+const fillTable = (seats) => {
+    document.getElementById('seatTableBody').innerHTML = '';
+    let tableBody = document.getElementById('seatTableBody');
 
-    businesses.forEach(business => {
+    seats.forEach(seat => {
 
-        const uuid = business['uuid'];
+        const uuid = seat['uuid'];
         const row = tableBody.insertRow();
         row.insertCell().innerHTML = uuid;
-        row.insertCell().innerHTML = business['name'];
-        row.insertCell().innerHTML = business['seatBaseline'];
+        row.insertCell().innerHTML = seat['businessName'];
+        row.insertCell().innerHTML = seat['businessBaseline'];
+        row.insertCell().innerHTML = seat['completedByEmail'];
+        row.insertCell().innerHTML = seat['status'];
+        row.insertCell().innerHTML = seat['lastChangeDate'];
+        row.insertCell().innerHTML = seat['seatUsed'];
+        row.insertCell().innerHTML = seat['forYearMonth'];
         row.insertCell()
             .appendChild(createEdit(uuid))
             .appendChild(createDelete(uuid));
@@ -44,7 +50,7 @@ const createEdit = (uuid) => {
     const editSpan = document.createElement('span');
     const edit = document.createElement('a');
     edit.setAttribute('class', 'editIcon');
-    const href = `${baseUrl}/admin/business/edit?business=${uuid}`;
+    const href = `${baseUrl}/admin/seat/edit?seat=${uuid}`;
     const editIcon = document.createElement('i');
     editIcon.setAttribute('class', 'fa-regular fa-pen-to-square');
     edit.appendChild(editIcon);
@@ -63,9 +69,9 @@ const createDelete = (uuid) => {
     return delSpan;
 }
 
-const deleteBusiness = async (uuid) => {
+const deleteSeat = async (uuid) => {
 
-    const response = await fetch(`${userApiUrl}/api/admin/business/${uuid}`, {
+    const response = await fetch(`${userApiUrl}/api/admin/seat/${uuid}`, {
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
@@ -78,7 +84,7 @@ const deleteBusiness = async (uuid) => {
     await updateTables();
 }
 const updateTables = async () => {
-    document.getElementById('businessTableBody').innerHTML = '';
+    document.getElementById('seatTableBody').innerHTML = '';
     refresh.style.cursor = 'wait';
     refresh.disabled = true;
     const spinning = 'fa-solid fa-arrow-rotate-right fa-spin';
@@ -87,8 +93,8 @@ const updateTables = async () => {
     refreshIcon.setAttribute('class', spinning);
     refreshIcon.style.pointerEvents = 'none';
 
-    const businesses = getBusinesses();
-    const promises = await Promise.all([businesses, new Promise(r => setTimeout(r, 400))])
+    const seats = getSeats();
+    const promises = await Promise.all([seats, new Promise(r => setTimeout(r, 400))])
 
     const timer = new Promise(r => setTimeout(r, 1600));
     fillTable(promises[0]);
@@ -115,6 +121,7 @@ const toggleBlur = () => {
 }
 
 window.addEventListener('load', async ev => {
+    await adminPage();
     await updateTables()
     console.log("loading tables");
 })
@@ -124,7 +131,7 @@ const cancel = document.getElementById('cancel');
 const confirm = document.getElementById('confirm');
 const refresh = document.getElementById('refresh');
 
-businessTable.addEventListener('click', async ev => {
+seatTable.addEventListener('click', async ev => {
     if (ev.target.getAttribute('class').includes('deleteButton')) {
         ev.preventDefault();
         const uuid = ev.target.getAttribute('uuid');

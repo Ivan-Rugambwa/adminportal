@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Document</title>
+</head>
+<body>
+<form id="editTable">
+    <label for="uuid">UUID:</label>
+    <input disabled id="uuid" name="uuid" required type="text" value="">
+
+    <label for="businessName">Företag:</label>
+    <input id="businessName" name="businessName" required type="businessName" value="">
+
+    <label for="businessBaseline">Baseline:</label>
+    <input id="businessBaseline" name="businessBaseline" required type="text" value="">
+
+    <label for="completedByEmail">Avslutad Av:</label>
+    <input id="completedByEmail" name="completedByEmail" required type="text" value="">
+
+    <label for="business-select">Företag:</label>
+    <select id="business-select" name="businesses"></select>
+
+    <button type="submit">Uppdatera</button>
+</form>
+</body>
+<script src="../../../js/admin/seat/editSeat.js"></script>
+</html>
