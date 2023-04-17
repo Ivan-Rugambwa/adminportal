@@ -8,7 +8,7 @@
     <link href="../../../css/global.css" rel="stylesheet" type="text/css">
     <link href="../../../css/menu.css" rel="stylesheet" type="text/css">
     <link href="../../../css/admin/admin.css" rel="stylesheet" type="text/css">
-    <link href="../../../css/navbar.css" rel="stylesheet">
+    <link href="../../../css/admin/navbar.css" rel="stylesheet">
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/6c0cfcbd8b.js"></script>
     <title>Adminsida</title>
 </head>
@@ -71,6 +71,25 @@
             </tbody>
         </table>
     </section>
+    <section id="pending">
+        <div id="pendingTableHeader">
+            <div><h2>Ej färdigregistrerade användare</h2></div>
+        </div>
+        <table id="pendingTable">
+            <thead>
+            <tr>
+                <th>UUID</th>
+                <th>E-postadress</th>
+                <th>Förnamn</th>
+                <th>Efternamn</th>
+                <th>Företag</th>
+                <th>Ändra</th>
+            </tr>
+            </thead>
+            <tbody id="pendingTableBody">
+            </tbody>
+        </table>
+    </section>
 </div>
 
 <div id="outerConfirmDeletePrompt">
@@ -84,6 +103,6 @@
 </div>
 
 <script src="../../../js/admin/user/user.js" type="module"></script>
-<script src="../../../js/navbar.js" type="module"></script>
+<script src="../../../js/admin/navbar.js" type="module"></script>
 </body>
 </html>

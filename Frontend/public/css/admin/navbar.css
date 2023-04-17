@@ -20,6 +20,7 @@ nav {
 
 #navLinks a:hover {
     background-color: #99CC00;
+    color: white;
 }
 
 .navLink {
@@ -34,7 +35,6 @@ nav {
 
 .active {
     color: #99CC00;
-    background-color: #333;
 }
 
 
@@ -44,6 +44,7 @@ body {
 }
 
 #navIcon {
+    margin-top: 5px;
     width: 7rem;
     min-width: 1rem;
     margin-left: 2rem;

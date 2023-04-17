@@ -1,7 +1,7 @@
-import {baseUrl} from "./shared.js";
-import {logoutUser} from "./auth/auth.js";
+import {baseUrl} from "../shared.js";
+import {isAuthenticated, logoutUser} from "../auth/auth.js";
 
-window.addEventListener('load', ev => {
+window.addEventListener('load', async ev => {
     createNavBar();
     logoutListener();
 })

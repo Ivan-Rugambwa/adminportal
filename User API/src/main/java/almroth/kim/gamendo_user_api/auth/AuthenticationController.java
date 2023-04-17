@@ -1,9 +1,6 @@
 package almroth.kim.gamendo_user_api.auth;
 
-import almroth.kim.gamendo_user_api.auth.dto.AuthenticationRequest;
-import almroth.kim.gamendo_user_api.auth.dto.RefreshTokenRequest;
-import almroth.kim.gamendo_user_api.auth.dto.RegisterRequest;
-import almroth.kim.gamendo_user_api.auth.dto.ValidateRequest;
+import almroth.kim.gamendo_user_api.auth.dto.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -39,8 +36,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(service.register(request));
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterWithPreRegisterRequest request) {
+        return ResponseEntity.ok(service.registerWithPreRegister(request));
     }
 
     @PostMapping("/validate")

@@ -5,7 +5,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("notion")
 public record NotionConfigProperties(
         String secret,
-        String aes_key
+        String aes_key,
+        String email,
+        String password,
+        String registerUrl
 
 ) {
 }

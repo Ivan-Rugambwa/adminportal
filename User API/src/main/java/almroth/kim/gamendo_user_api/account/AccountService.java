@@ -118,4 +118,7 @@ public class AccountService {
     public Account getAccountByEmail(String email) {
         return accountRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("No account with that email"));
     }
+    public boolean doesAccountExistByEmail(String email){
+        return  accountRepository.existsByEmail(email);
+    }
 }
