@@ -1,5 +1,5 @@
 import {getJwtPayload, isAuthenticated, isUser} from "../auth/auth.js";
-import {userApiUrl, baseUrl} from "../shared.js";
+import {baseUrl, userApiUrl} from "../shared.js";
 
 const getSeat = async () => {
     const urlParams = new URLSearchParams(window.location.search);

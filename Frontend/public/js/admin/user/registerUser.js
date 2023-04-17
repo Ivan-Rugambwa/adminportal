@@ -11,7 +11,7 @@ window.addEventListener('submit', async ev => {
     ev.preventDefault();
     const form = document.getElementById('userForm');
     console.log(form.elements['business-select'].value)
-    if (form.elements['business-select'].value === ''){
+    if (form.elements['business-select'].value === '') {
         console.log('No business chosen')
     }
     // await postRegister();
