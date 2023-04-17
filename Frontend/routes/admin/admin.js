@@ -6,7 +6,7 @@ router.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/html/admin/adminportal.html'))
 })
 router.get("/user", (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/html/admin/user.html'))
+    res.sendFile(path.join(__dirname, '../../public/html/admin/user/user.html'))
 })
 router.get("/user/edit", (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/html/admin/user/editUser.html'))
