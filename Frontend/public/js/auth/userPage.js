@@ -2,7 +2,10 @@ import {getJwtPayload, isAuthenticated, loginWithRedirect} from "./auth.js";
 import {baseUrl} from "../shared.js";
 
 window.addEventListener('load', async ev => {
-    await userPage();
+    while (true) {
+        const timer = await new Promise(r => setTimeout(r, 900000));
+        await userPage();
+    }
 })
 
 window.addEventListener('click', async ev => {
