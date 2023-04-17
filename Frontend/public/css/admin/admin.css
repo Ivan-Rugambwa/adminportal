@@ -19,12 +19,20 @@
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    align-items: end;
 }
 
 #register, #registerAdmin {
     display: flex;
     align-items: end;
-    margin-bottom: 0.4rem;
+    margin: 0.2rem;
+    height: fit-content;
+    /*border: 1px solid royalblue;*/
+    border-radius: 5px;
+}
+
+.registerButton {
+    padding: 3px;
 }
 
 #confirmDeletePrompt {
@@ -104,7 +112,7 @@
 }
 
 #userTableTitle i {
-    font-size: 22px;
+    font-size: 18px;
     pointer-events: none;
 }
 

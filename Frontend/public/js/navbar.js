@@ -1,16 +1,27 @@
 import {baseUrl} from "./shared.js";
+import {logoutUser} from "./auth/auth.js";
 
 window.addEventListener('load', ev => {
     createNavBar();
+    logoutListener();
 })
 
 export const createNavBar = () => {
+    const leftLogoDiv = document.createElement('div');
+    leftLogoDiv.setAttribute('id', 'navLogo');
+    const rightLinkDiv = document.createElement('div');
+    rightLinkDiv.setAttribute('id', 'navLinks');
+
+    const icon = document.createElement('i');
+    icon.setAttribute('class', 'fa-solid fa-at fa-xl');
+    icon.setAttribute('id', 'navIcon');
     const nav = document.querySelector('nav');
     const home = document.createElement('a');
     const user = document.createElement('a');
     const business = document.createElement('a');
     const seat = document.createElement('a');
     const logout = document.createElement('a');
+    logout.setAttribute('id', 'logout');
 
     home.innerText = 'Hem';
     user.innerText = 'Användare';
@@ -37,9 +48,20 @@ export const createNavBar = () => {
     seat.setAttribute('href', `${baseUrl}/admin/seat`);
     logout.setAttribute('href', `${baseUrl}/`);
 
-    nav.appendChild(home);
-    nav.appendChild(user);
-    nav.appendChild(business);
-    nav.appendChild(seat);
-    nav.appendChild(logout);
+    leftLogoDiv.appendChild(icon)
+    rightLinkDiv.appendChild(home);
+    rightLinkDiv.appendChild(user);
+    rightLinkDiv.appendChild(business);
+    rightLinkDiv.appendChild(seat);
+    rightLinkDiv.appendChild(logout);
+
+    nav.appendChild(leftLogoDiv);
+    nav.appendChild(rightLinkDiv);
+}
+const logoutListener = () => {
+    let logout = document.getElementById('logout');
+    logout.addEventListener('click', ev => {
+        ev.preventDefault();
+        logoutUser();
+    })
 }

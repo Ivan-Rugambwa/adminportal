@@ -1,7 +1,6 @@
 import {baseUrl, userApiUrl} from "../../shared.js";
+import {adminPage} from "../../auth/adminPage.js";
 
-const userTable = document.getElementById('userTable');
-const register = document.getElementById('registerButton');
 let isBlurred = false;
 
 const getUsers = async () => {
@@ -89,6 +88,8 @@ const deleteUser = async (uuid) => {
 const updateTables = async () => {
     document.getElementById('userTableBody').innerHTML = '';
     document.getElementById('adminTableBody').innerHTML = '';
+    refresh.style.cursor = 'wait';
+    refresh.disabled = true;
     const spinning = 'fa-solid fa-arrow-rotate-right fa-spin';
     const still = 'fa-solid fa-arrow-rotate-right';
     const refreshIcon = document.getElementById('refreshIcon');
@@ -104,6 +105,8 @@ const updateTables = async () => {
     await Promise.all([timer]);
     refreshIcon.setAttribute('class', still);
     refreshIcon.style.pointerEvents = 'auto';
+    refresh.disabled = false;
+    refresh.style.cursor = 'pointer';
 
 }
 
@@ -122,15 +125,17 @@ const toggleBlur = () => {
 }
 
 window.addEventListener('load', async ev => {
-    await updateTables()
+    await adminPage();
+    await updateTables();
 })
 
+const tables = document.getElementById('tables');
 const cancel = document.getElementById('cancel');
 const confirm = document.getElementById('confirm');
 const refresh = document.getElementById('refresh');
 
-userTable.addEventListener('click', async ev => {
-    if (ev.target.getAttribute('class').includes('deleteButton')) {
+tables.addEventListener('click', async ev => {
+    if (ev.target.classList.contains('deleteButton')) {
         ev.preventDefault();
         const uuid = ev.target.getAttribute('uuid');
         console.log(uuid)
@@ -153,10 +158,8 @@ confirm.addEventListener('click', async ev => {
 })
 
 refresh.addEventListener('click', async ev => {
-    ev.target.disabled = true;
     ev.preventDefault();
     await updateTables();
-    ev.target.disabled = false;
 })
 
 

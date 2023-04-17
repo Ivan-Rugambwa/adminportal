@@ -4,36 +4,46 @@ nav {
     height: 3rem;
     background-color: #8bc34a;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     flex-direction: row;
 }
 
-
-nav a {
+#navLinks {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 7rem;
-    height: 95%;
-    background-color: #111;
-    margin: 2px;
+    width: fit-content;
+    height: 100%;
 }
 
-nav a:hover {
+#navLinks a:hover {
     background-color: #333;
 }
 
 .navLink {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 7rem;
     text-decoration: none;
     color: white;
 }
 
 .active {
     color: #8bc34a;
+    background-color: #333;
 }
+
 
 body {
     margin: 0;
     padding: 0;
+}
+
+#navIcon {
+    width: 7rem;
+    min-width: 1rem;
+    margin-left: 2rem;
 }
