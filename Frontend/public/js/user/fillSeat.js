@@ -37,18 +37,46 @@ const fillAll = async (seats) => {
         return b['forYearMonth'].localeCompare(a['forYearMonth']);
     })
     seats.forEach((seat) => {
-        const anchor = document.createElement('a');
-        anchor.textContent = `${seat['businessName']} - ${seat['forYearMonth']}`;
-        anchor.href = `${baseUrl}/seat/report?uuid=${seat['uuid']}`;
-        document.querySelector('#for').appendChild(anchor);
-        document.querySelector('#for').appendChild(document.createElement('br'));
-    })
+        createSeatRow(seat);
+    });
+
+}
+const createSeatRow = (seat) => {
+    const seatFrame = document.getElementById('seatFrame');
+    const anchor = document.createElement('a');
+    anchor.setAttribute('class', 'seatLink');
+    const seatName = document.createElement('div');
+    seatName.setAttribute('class', 'seatName');
+    const seatStatus = document.createElement('div');
+    seatStatus.setAttribute('class', 'seatStatus');
+
+    seatName.innerText = `${seat['businessName']} - ${seat['forYearMonth']}`;
+    anchor.href = `${baseUrl}/seat/report?uuid=${seat['uuid']}`;
+
+    seatStatus.innerText = (seat['status'] === 'FILL') ? 'Ej ifylld' : (seat['status'] === 'REVIEW') ? 'Granskas' : 'Godkänd';
+    switch (seat['status']) {
+        case 'FILL':
+            seatStatus.innerText = 'Ej ifylld';
+            seatStatus.style.color = '#E34234'
+            break;
+        case 'REVIEW':
+            seatStatus.innerText = 'Granskas';
+            seatStatus.style.color = '#FAE500'
+            break;
+        case 'COMPLETE':
+            seatStatus.innerText = 'Godkänd';
+            seatStatus.style.color = '#99CC00'
+            break;
+    }
+
+    anchor.appendChild(seatName);
+    anchor.appendChild(seatStatus);
+    seatFrame.appendChild(anchor);
 }
 const fillSingle = async (seat) => {
-    document.querySelector('#for').innerText = `${seat['businessName']} - ${seat['forYearMonth']}`;
     if (seat['status'] === 'COMPLETE') {
         document.getElementById('form-box').innerText = 'Seatanvänding: ' + seat['seatUsed'] +
-            '\nDenna rapport har blivit ifylld.' +
+            '\nDenna rapport har blivit godkänd.' +
             '\nIfylld av: ' + seat['completedByEmail'];
     } else if (seat['status'] === 'REVIEW') {
         document.getElementById('form-box').innerText = 'Seatanvänding: ' + seat['seatUsed'] +
@@ -60,8 +88,6 @@ const fillSingle = async (seat) => {
 }
 const fill = async () => {
     const seat = await getSeat();
-    const payload = await getJwtPayload();
-    document.querySelector('#user').innerText = `Inloggad som\n${payload.sub}`;
     if (Array.isArray(seat)) {
         await fillAll(seat)
     } else {
@@ -71,7 +97,6 @@ const fill = async () => {
 }
 const getAllSeatsByBusiness = async () => {
     const payload = await getJwtPayload();
-    console.log(payload['organization'])
     const url = `${userApiUrl}/api/user/seat/business/${payload['organization']}`;
     let res;
     await fetch(url, {
@@ -82,7 +107,7 @@ const getAllSeatsByBusiness = async () => {
     })
         .then(response => res = response.json())
         .catch(error => {
-            console.error(error)
+            console.error(error);
         })
     return res;
 }
@@ -153,7 +178,6 @@ window.addEventListener('submit', async (event) => {
     event.preventDefault();
     const form = document.forms['seat-form'];
     const url = 'http://localhost:9001/api/message';
-    console.log(url)
     const body = {
         "amountOfSeatsUsed": form['seat'].value,
         "business": form['businessName'].value,
@@ -162,7 +186,6 @@ window.addEventListener('submit', async (event) => {
         "message": "report-response",
         "seatUuid": form['uuid'].value
     }
-    console.log(body)
     await fetch(url, {
         method: 'POST',
         headers: {
@@ -176,7 +199,7 @@ window.addEventListener('submit', async (event) => {
         })
     await fill();
 })
-window.addEventListener('load', async ev => {
+window.addEventListener('load', async () => {
     if (!(await isUser())) {
         window.location.assign(`${baseUrl}/auth/unauthorized`)
     }
