@@ -15,6 +15,9 @@ export const createNavBar = () => {
     const icon = document.createElement('img');
     icon.setAttribute('src', '../images/apendo-logga-green-large.png');
     icon.setAttribute('id', 'navIcon');
+    const navTitle = document.createElement('div');
+    navTitle.setAttribute('id', 'navTitle');
+    navTitle.innerText = 'Adminportal';
     const nav = document.querySelector('nav');
     const home = document.createElement('a');
     const user = document.createElement('a');
@@ -49,6 +52,7 @@ export const createNavBar = () => {
     logout.setAttribute('href', `${baseUrl}/`);
 
     leftLogoDiv.appendChild(icon)
+    leftLogoDiv.appendChild(navTitle);
     rightLinkDiv.appendChild(home);
     rightLinkDiv.appendChild(user);
     rightLinkDiv.appendChild(business);

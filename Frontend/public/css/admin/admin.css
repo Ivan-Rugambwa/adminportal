@@ -28,7 +28,6 @@
     align-items: end;
     margin: 0.2rem;
     height: fit-content;
-    /*border: 1px solid royalblue;*/
     border-radius: 5px;
 }
 
@@ -37,10 +36,6 @@
 }
 
 #confirmDeletePrompt {
-    /*display: block;*/
-    /*!*position: absolute;*!*/
-    /*right: -2.5vw;*/
-    /*margin-right: 50px;*/
     height: fit-content;
     width: fit-content;
     border: 2px solid chartreuse;
@@ -86,11 +81,9 @@
 #buttonsDiv {
     height: fit-content;
     width: fit-content;
-    /*margin: 0 5px;*/
 }
 
 #admins {
-    /*display: none;*/
 }
 
 #userTableTitle {

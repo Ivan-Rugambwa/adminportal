@@ -37,6 +37,20 @@ nav {
     color: #99CC00;
 }
 
+#navLogo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.7rem;
+}
+
+#navTitle {
+    color: white;
+    text-align: center;
+    width: fit-content;
+    font-family: century-gothic, serif;
+}
+
 
 body {
     margin: 0;
@@ -44,8 +58,8 @@ body {
 }
 
 #navIcon {
-    margin-top: 5px;
+    /*margin-top: 5px;*/
     width: 7rem;
     min-width: 1rem;
-    margin-left: 2rem;
+    margin: 0 1rem 0 2rem;
 }
