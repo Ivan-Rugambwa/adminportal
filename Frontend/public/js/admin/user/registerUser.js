@@ -1,11 +1,18 @@
 import {baseUrl, userApiUrl} from "../../shared.js";
 import {isAuthenticated} from "../../auth/auth.js";
 
-window.addEventListener('load', async ev => {
+window.addEventListener('load', async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const role = urlParams.get('role');
     await isAuthenticated();
-    let businesses = await getBusinesses();
-    fillForm(businesses);
-
+    if (role !== 'admin') {
+        document.getElementById('business-div').style.visibility = 'visible';
+        document.getElementById('titleText').innerText += ' användare';
+        let businesses = await getBusinesses();
+        fillForm(businesses);
+    } else {
+        document.getElementById('titleText').innerText += ' administratör';
+    }
 })
 
 const cancel = document.querySelector('.cancelButton');
@@ -14,9 +21,6 @@ const load = document.getElementById('load');
 const loadIcon = document.getElementById('loadIcon');
 form.addEventListener('submit', async ev => {
     ev.preventDefault();
-    if (form.elements['business-select'].value === '') {
-        console.log('No business chosen');
-    }
     load.innerText = '';
     loadIcon.style.display = 'flex';
     try {
@@ -38,7 +42,7 @@ form.addEventListener('submit', async ev => {
 })
 cancel.addEventListener('click', ev => {
     ev.preventDefault();
-    window.location.assign(`${baseUrl}/admin/user`)
+    window.location.assign(`${baseUrl}/admin/user`);
 })
 
 const getBusinesses = async () => {

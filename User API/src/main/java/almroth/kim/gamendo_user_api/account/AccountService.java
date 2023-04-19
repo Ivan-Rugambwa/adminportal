@@ -1,7 +1,7 @@
 package almroth.kim.gamendo_user_api.account;
 
 import almroth.kim.gamendo_user_api.account.dto.SimpleResponse;
-import almroth.kim.gamendo_user_api.account.dto.UpdateAccountAdminRequest;
+import almroth.kim.gamendo_user_api.account.dto.UpdateAccountRequest;
 import almroth.kim.gamendo_user_api.account.model.Account;
 import almroth.kim.gamendo_user_api.business.BusinessRepository;
 import almroth.kim.gamendo_user_api.business.BusinessService;
@@ -49,7 +49,7 @@ public class AccountService {
         return simpleData;
     }
 
-    public List<SimpleResponse> getUserAccounts(){
+    public List<SimpleResponse> getUserAccounts() {
         System.out.println("Getting user accounts only...");
         var accounts = accountRepository.findAll();
         var userAccounts = accounts.stream().filter(account -> account.getRoles().stream().allMatch(role -> role.getName() == RoleType.USER)).toList();
@@ -61,7 +61,7 @@ public class AccountService {
         return simpleData;
     }
 
-    public Set<SimpleResponse> getAccountsByBusiness(String businessName){
+    public Set<SimpleResponse> getAccountsByBusiness(String businessName) {
         var accounts = accountRepository.findAllByProfile_Business_Name(businessName).orElse(new HashSet<>());
         var simpleAccounts = new HashSet<SimpleResponse>();
         for (var account :
@@ -85,27 +85,37 @@ public class AccountService {
                 .orElseThrow(() -> new IllegalStateException("No account with id: " + uuid));
         return mapper.SIMPLE_RESPONSE(account);
     }
+
     public Account getAccountByUuid(String uuid) {
         return accountRepository
                 .findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new IllegalStateException("No account with id: " + uuid));
     }
 
-    public SimpleResponse updateAccount(String accountId, UpdateAccountAdminRequest request) {
+    public SimpleResponse updateAccount(UUID accountId, UpdateAccountRequest request) {
         Account account = accountRepository
-                .findById(UUID.fromString(accountId))
+                .findById(accountId)
                 .orElseThrow(() -> new IllegalStateException("No account with id: " + accountId));
 
-        if (!Objects.equals(account.getEmail(), request.getEmail())
-                && accountRepository.existsByEmail(request.getEmail()))
-            throw new EmailAlreadyTakenException("That email is unavailable.");
 
-        var business = businessService.GetByUuid(request.getBusiness());
+        if (!request.getEmail().isBlank()) {
+            if (!Objects.equals(account.getEmail(), request.getEmail()) && accountRepository.existsByEmail(request.getEmail())) {
+                throw new EmailAlreadyTakenException("That email is unavailable.");
+            } else {
+                account.setEmail(request.getEmail());
+            }
+        }
 
-        account.setEmail(request.getEmail());
-        account.setFirstName(request.getFirstName());
-        account.setLastName(request.getLastName());
-        account.getProfile().setBusiness(business);
+        if (!request.getFirstName().isBlank())
+            account.setFirstName(request.getFirstName());
+
+        if (!request.getLastName().isBlank())
+            account.setLastName(request.getLastName());
+
+        if (!request.getBusiness().isBlank() && account.getRoles().stream().noneMatch(role -> role.getName() == RoleType.ADMIN)) {
+            var business = businessService.GetByName(request.getBusiness());
+            account.getProfile().setBusiness(business);
+        }
 
         accountRepository.saveAndFlush(account);
         return mapper.SIMPLE_RESPONSE(account);
@@ -118,7 +128,8 @@ public class AccountService {
     public Account getAccountByEmail(String email) {
         return accountRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("No account with that email"));
     }
-    public boolean doesAccountExistByEmail(String email){
-        return  accountRepository.existsByEmail(email);
+
+    public boolean doesAccountExistByEmail(String email) {
+        return accountRepository.existsByEmail(email);
     }
 }

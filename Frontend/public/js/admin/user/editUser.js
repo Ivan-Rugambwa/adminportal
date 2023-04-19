@@ -1,4 +1,4 @@
-import {userApiUrl} from "../../shared.js";
+import {baseUrl, userApiUrl} from "../../shared.js";
 import {isAuthenticated} from "../../auth/auth.js";
 
 window.addEventListener('load', async ev => {
@@ -10,14 +10,38 @@ window.addEventListener('load', async ev => {
     console.log(businesses)
     fillForm(user, businesses);
 
-})
+});
 
+const cancel = document.querySelector('.cancelButton');
+const form = document.getElementById('form');
+const load = document.getElementById('load');
+const loadIcon = document.getElementById('loadIcon');
+const registerButton = document.getElementById('registerButton');
 window.addEventListener('submit', async ev => {
     ev.preventDefault();
-    const form = document.getElementById('userForm');
-    console.log(form.elements['business-select'].value);
-    await putUpdate()
-})
+    console.log(form.elements['business-select'].value ?? null);
+    load.innerText = '';
+    loadIcon.style.display = 'flex';
+    registerButton.style.pointerEvents = 'none';
+    try {
+        const post = putUpdate();
+        await Promise.all([post, new Promise(r => setTimeout(r, 1000))])
+        load.innerText = 'Kunden har uppdaterats.';
+        load.style.color = '#99CC00';
+    } catch (e) {
+        load.innerText = 'Kunde inte uppdatera, försök igen senare eller kontakta support.';
+        load.style.color = 'red';
+        console.log(e);
+    }
+    loadIcon.style.display = 'none';
+    registerButton.style.pointerEvents = 'auto';
+});
+
+cancel.addEventListener('click', ev => {
+    ev.preventDefault();
+    window.location.assign(`${baseUrl}/admin/user`);
+});
+
 const getUser = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const uuid = urlParams.get('user');
@@ -59,25 +83,33 @@ const getBusinesses = async () => {
 }
 
 const fillForm = (user, businesses) => {
+    console.log(user)
     document.getElementById('uuid').setAttribute('value', user['uuid']);
     document.getElementById('email').setAttribute('value', user['email']);
     document.getElementById('firstName').setAttribute('value', user['firstName']);
     document.getElementById('lastName').setAttribute('value', user['lastName']);
+    document.getElementById('role').setAttribute('value', user['roleNames']);
     const select = document.getElementById('business-select');
-    const currentBusiness = document.createElement('option');
-    currentBusiness.setAttribute('value', user['businessUuid']);
-    currentBusiness.innerText = user['businessName'];
-    select.appendChild(currentBusiness);
-    businesses.forEach(business => {
-        const option = document.createElement('option');
-        option.setAttribute('value', business['uuid']);
-        option.innerText = business['name'];
-        select.appendChild(option);
-    });
+    if (user['roleNames'].some(role => role === 'ADMIN')) {
+        document.getElementById('label-business-select').style.display = 'none';
+        select.style.display = 'none';
+    } else {
+        document.getElementById('label-business-select').style.display = 'block';
+        select.style.display = 'block';
+        const currentBusiness = document.createElement('option');
+        currentBusiness.setAttribute('value', user['businessName']);
+        currentBusiness.innerText = user['businessName'];
+        select.appendChild(currentBusiness);
+        businesses.forEach(business => {
+            const option = document.createElement('option');
+            option.setAttribute('value', business['name']);
+            option.innerText = business['name'];
+            select.appendChild(option);
+        });
+    }
 }
 
 const putUpdate = async () => {
-    const form = document.getElementById('userForm');
     const body = {
         email: form.elements['email'].value,
         firstName: form.elements['firstName'].value,

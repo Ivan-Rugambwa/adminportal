@@ -70,13 +70,18 @@ body {
     background-color: red;
 }
 
+#business-div {
+    visibility: hidden;
+}
+
 #registerButton, #loginButton {
     background-color: #99CC00;
 }
 
 #loginButton {
     display: none;
-    background-color: yellow;
+    background-color: #222222;
+    color: #eeeeee;
 }
 
 #load {

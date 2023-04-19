@@ -16,7 +16,7 @@
 
     <form id="form">
         <div id="title">
-            <p>Registrera användare</p>
+            <p id="titleText">Registrera</p>
         </div>
         <div>
             <label for="email">Email</label>
@@ -33,9 +33,9 @@
             <input id="lastName" name="lastName" required type="text" value="">
         </div>
 
-        <div>
-            <label for="business-select">Företag</label>
-            <select id="business-select" name="businesses"></select>
+        <div id="business-div">
+            <label class="business-div" for="business-select">Företag</label>
+            <select class="business-div" id="business-select" name="businesses"></select>
         </div>
         <div id="load">
             <i id="loadIcon" class="fa-solid fa-arrow-rotate-right fa-spin"></i>

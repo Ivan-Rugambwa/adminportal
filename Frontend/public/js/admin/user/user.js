@@ -1,5 +1,5 @@
 import {baseUrl, userApiUrl} from "../../shared.js";
-import {isAuthenticated} from "../../auth/auth.js";
+import {getJwtPayload, isAuthenticated} from "../../auth/auth.js";
 
 let isBlurred = false;
 
@@ -38,10 +38,12 @@ const getPending = async () => {
     return pendingUsers;
 }
 
-const fillTable = (users, pendingUsers) => {
+const fillTable = async (users, pendingUsers) => {
     document.getElementById('userTableBody').innerHTML = '';
     document.getElementById('adminTableBody').innerHTML = '';
     document.getElementById('pendingTableBody').innerHTML = '';
+    const jwt = await getJwtPayload();
+    const jwtEmail = jwt['sub'];
     let tableBody;
 
     users.forEach(user => {
@@ -59,9 +61,14 @@ const fillTable = (users, pendingUsers) => {
         if (tableBody.id !== 'adminTableBody') {
             row.insertCell().innerHTML = user['businessName'];
         }
-        row.insertCell()
-            .appendChild(createEdit(uuid, 'user'))
-            .appendChild(createDelete(uuid, 'user'));
+        if (user['email'] !== jwtEmail) {
+            row.insertCell()
+                .appendChild(createEdit(uuid, 'user'))
+                .appendChild(createDelete(uuid, 'user'));
+        } else {
+            row.insertCell().innerHTML = 'N/A';
+        }
+
     })
     const pendingTableBody = document.getElementById('pendingTableBody');
     pendingUsers.forEach(pending => {
@@ -117,7 +124,7 @@ const deleteUser = async (uuid) => {
     }
 }
 const deletePending = async (uuid) => {
-
+    console.log('deleting')
     const response = await fetch(`${userApiUrl}/api/admin/preregister/${uuid}`, {
         method: 'DELETE',
         headers: {
@@ -184,8 +191,10 @@ tables.addEventListener('click', async ev => {
     if (ev.target.classList.contains('deleteButton')) {
         ev.preventDefault();
         const uuid = ev.target.getAttribute('uuid');
+        const type = ev.target.getAttribute('type');
         console.log(uuid)
         document.getElementById('confirm').setAttribute('uuid', uuid);
+        document.getElementById('confirm').setAttribute('type', type);
         toggleBlur();
     }
 })
@@ -199,7 +208,12 @@ confirm.addEventListener('click', async ev => {
     ev.preventDefault()
     toggleBlur();
     const uuid = ev.target.getAttribute('uuid');
-    await deleteUser(uuid);
+    const type = ev.target.getAttribute('type');
+    if (type === 'pending') {
+        await deletePending(uuid);
+    } else {
+        await deleteUser(uuid);
+    }
     await updateTables();
 })
 

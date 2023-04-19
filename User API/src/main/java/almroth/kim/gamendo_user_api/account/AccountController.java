@@ -1,10 +1,11 @@
 package almroth.kim.gamendo_user_api.account;
 
 import almroth.kim.gamendo_user_api.account.dto.SimpleResponse;
-import almroth.kim.gamendo_user_api.account.dto.UpdateAccountAdminRequest;
+import almroth.kim.gamendo_user_api.account.dto.UpdateAccountRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class AccountController {
     public List<SimpleResponse> getAccounts() {
         return accountService.getAccounts();
     }
+
     @GetMapping("/only")
     public List<SimpleResponse> getUserAccounts() {
         return accountService.getUserAccounts();
@@ -42,13 +44,15 @@ public class AccountController {
     public ResponseEntity<?> getAccountById(@PathVariable("accountId") String uuid) {
         return ResponseEntity.ok(accountService.getSimpleAccountByUuid(uuid));
     }
+
     @PatchMapping(path = "/{accountId}")
-    public ResponseEntity<?> putAccount(@PathVariable String accountId, @RequestBody UpdateAccountAdminRequest request) {
+    public ResponseEntity<?> putAccount(@PathVariable UUID accountId, @Validated @RequestBody UpdateAccountRequest request) {
 
         return ResponseEntity.ok(accountService.updateAccount(accountId, request));
     }
+
     @DeleteMapping(path = "{accountId}")
-    public ResponseEntity<?> deleteAccount(@PathVariable String accountId){
+    public ResponseEntity<?> deleteAccount(@PathVariable String accountId) {
         accountService.removeAccountByUUID(UUID.fromString(accountId));
         return ResponseEntity.noContent().build();
     }
