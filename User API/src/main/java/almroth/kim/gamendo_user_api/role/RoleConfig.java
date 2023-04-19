@@ -54,11 +54,11 @@ public class RoleConfig {
         var acc4 = RegisterRequest.builder().email("jane@smith.com").password("testtest").firstName("jane").lastName("smith").business("MAX").build();
         var acc5 = RegisterRequest.builder().email("harry@stone.com").password("testtest").firstName("harry").lastName("stone").business("IKEA").build();
 
-        authenticationService.register(acc1);
-        authenticationService.register(acc2);
-        authenticationService.register(acc3);
-        authenticationService.register(acc4);
-        authenticationService.register(acc5);
+        authenticationService.register(acc1, true);
+        authenticationService.register(acc2, false);
+        authenticationService.register(acc3, false);
+        authenticationService.register(acc4, false);
+        authenticationService.register(acc5, false);
     }
     @Transactional
     public void CreateBusiness(BusinessRepository repository){

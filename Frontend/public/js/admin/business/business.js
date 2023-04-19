@@ -1,4 +1,5 @@
 import {baseUrl, userApiUrl} from "../../shared.js";
+import {isAuthenticated} from "../../auth/auth.js";
 
 const businessTable = document.getElementById('businessTable');
 
@@ -115,6 +116,7 @@ const toggleBlur = () => {
 }
 
 window.addEventListener('load', async ev => {
+    await isAuthenticated();
     await updateTables()
     console.log("loading tables");
 })

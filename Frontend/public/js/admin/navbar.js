@@ -1,7 +1,7 @@
-import {baseUrl} from "./shared.js";
-import {logoutUser} from "./auth/auth.js";
+import {baseUrl} from "../shared.js";
+import {isAuthenticated, logoutUser} from "../auth/auth.js";
 
-window.addEventListener('load', ev => {
+window.addEventListener('load', async ev => {
     createNavBar();
     logoutListener();
 })
@@ -12,8 +12,8 @@ export const createNavBar = () => {
     const rightLinkDiv = document.createElement('div');
     rightLinkDiv.setAttribute('id', 'navLinks');
 
-    const icon = document.createElement('i');
-    icon.setAttribute('class', 'fa-solid fa-at fa-xl');
+    const icon = document.createElement('img');
+    icon.setAttribute('src', '../images/apendo-logga-green-large.png');
     icon.setAttribute('id', 'navIcon');
     const nav = document.querySelector('nav');
     const home = document.createElement('a');

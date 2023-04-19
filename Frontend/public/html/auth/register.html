@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="se">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrera</title>
+    <link rel="stylesheet" href="../../css/auth/register.css">
+    <link href="../../../css/shared/form.css" rel="stylesheet">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/6c0cfcbd8b.js"></script>
+</head>
+<body>
+<div id="failDiv">
+    <div id="failBox">
+        <p>Vi kunde inte hitta en registration med denna länk.</p>
+        <p>Om du tror att det är ett misstag vänligen kontakta support.</p>
+    </div>
+</div>
+
+<div id="formBox">
+    <form id="form">
+        <div id="title">
+            <p>Registrera</p>
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" required type="email" disabled value="">
+        </div>
+
+        <div>
+            <label for="business">Företag</label>
+            <input id="business" name="business" required type="text" disabled value="">
+        </div>
+
+        <div>
+            <label for="password">Lösenord</label>
+            <input id="password" name="password" required type="password" value="">
+        </div>
+
+        <div>
+            <label for="confirmPassword">Upprepa lösenord</label>
+            <input id="confirmPassword" name="confirmPassword" required type="password" value="">
+        </div>
+        <div id="load">
+            <i id="loadIcon" class="fa-solid fa-arrow-rotate-right fa-spin"></i>
+        </div>
+        <div class="buttons">
+            <button id="registerButton" type="submit">Registrera</button>
+            <button id="loginButton" type="button">Logga in</button>
+        </div>
+    </form>
+</div>
+<script type="module" src="../../js/auth/register.js"></script>
+</body>
+</html>

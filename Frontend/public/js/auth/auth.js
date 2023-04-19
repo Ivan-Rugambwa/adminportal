@@ -15,6 +15,7 @@ export const isAuthenticated = async () => {
         return true;
     }
     console.log('Authentication failed');
+    loginWithRedirect();
     return false;
 }
 export const loginWithRedirect = () => {
@@ -80,9 +81,6 @@ const useRefreshToken = async () => {
     }
 }
 export const getJwtPayload = async () => {
-    // if (await isAuthenticated() === false) {
-    //     throw Error('Not logged in');
-    // }
     if (window.localStorage.getItem("jwt") === null) {
         throw Error('No jwt');
     }
@@ -98,7 +96,7 @@ export const getJwtPayload = async () => {
 
 export const logoutUser = () => {
     window.localStorage.removeItem('jwt');
-    // window.localStorage.removeItem('refreshToken');
+    window.localStorage.removeItem('refreshToken');
     window.location.assign(`${baseUrl}/`);
 }
 

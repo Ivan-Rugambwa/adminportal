@@ -10,6 +10,8 @@ import almroth.kim.gamendo_user_api.config.JwtService;
 import almroth.kim.gamendo_user_api.config.NotionConfigProperties;
 import almroth.kim.gamendo_user_api.error.customException.DataBadCredentialsException;
 import almroth.kim.gamendo_user_api.error.customException.EmailAlreadyTakenException;
+import almroth.kim.gamendo_user_api.preRegister.PreRegisterRepository;
+import almroth.kim.gamendo_user_api.preRegister.PreRegisterService;
 import almroth.kim.gamendo_user_api.refreshToken.RefreshTokenService;
 import almroth.kim.gamendo_user_api.role.RoleService;
 import almroth.kim.gamendo_user_api.role.RoleType;
@@ -37,17 +39,39 @@ public class AuthenticationService {
     private final RefreshTokenService refreshTokenService;
     private final AccountProfileService profileService;
     private final BusinessService businessService;
+    private final PreRegisterService preRegisterService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final NotionConfigProperties env;
 
     @Transactional
-    public RegisterResponse register(RegisterRequest request) {
+    public RegisterResponse registerWithPreRegister(RegisterWithPreRegisterRequest request) {
+
+        if (!request.getPassword().equals(request.getConfirmPassword())){
+            throw new IllegalArgumentException("Password must match");
+        }
+        var preRegister = preRegisterService.GetByUuid(request.getPreRegisterUuid());
+
+        var registerRequest = RegisterRequest.builder()
+                .email(preRegister.getEmail())
+                .password(request.getPassword())
+                .firstName(preRegister.getFirstName())
+                .lastName(preRegister.getLastName())
+                .business(preRegister.getBusinessName())
+                .build();
+
+        var registerResponse = register(registerRequest, false);
+        preRegisterService.DeleteByUuid(preRegister.getUuid());
+        return registerResponse;
+    }
+    @Transactional
+    public RegisterResponse register(RegisterRequest request, boolean isAdmin) {
         if (accountRepository.findByEmail(request.getEmail()).isPresent()) {
             System.out.println("Email already taken");
             throw new EmailAlreadyTakenException("Email already taken");
         }
+
         var encodedPassword = passwordEncoder.encode((request.getPassword()));
         System.out.println(encodedPassword.length());
         var account = Account
@@ -58,10 +82,10 @@ public class AuthenticationService {
                 .password(encodedPassword)
                 .build();
 
-
-        if (account.getEmail().contains("@test.com")) {
+        if (isAdmin) {
             account.setRoles(Set.of(roleService.getRoleByName(RoleType.ADMIN)));
-        } else account.setRoles(Set.of(roleService.getRoleByName(RoleType.USER)));
+        } else
+            account.setRoles(Set.of(roleService.getRoleByName(RoleType.USER)));
 
         accountRepository.save(account);
 
@@ -74,8 +98,6 @@ public class AuthenticationService {
 
             profileService.Create(profile);
         }
-
-
 
         var jwt = jwtService.generateToken(account);
         var refreshToken = refreshTokenService.createRefreshToken(account);

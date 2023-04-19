@@ -3,25 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="../../../css/admin/editUser.css" rel="stylesheet">
+    <link href="../../../css/menu.css" rel="stylesheet" type="text/css">
+    <link href="../../../css/shared/form.css" rel="stylesheet">
+    <link href="../../../css/admin/admin.css" rel="stylesheet" type="text/css">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/6c0cfcbd8b.js"></script>
 </head>
 <body>
-<form id="userForm">
+<header>
+    <h1>Adminsida</h1>
+</header>
+<div id="formBox">
 
-    <label for="email">Email:</label>
-    <input id="email" name="email" required type="email" value="">
+    <form id="form">
+        <div id="title">
+            <p id="titleText">Registrera</p>
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" required type="email" value="">
+        </div>
 
-    <label for="firstName">Förnamn:</label>
-    <input id="firstName" name="firstName" required type="text" value="">
+        <div>
+            <label for="firstName">Förnamn</label>
+            <input id="firstName" name="firstName" required type="text" value="">
+        </div>
 
-    <label for="lastName">Efternamn:</label>
-    <input id="lastName" name="lastName" required type="text" value="">
+        <div>
+            <label for="lastName">Efternamn</label>
+            <input id="lastName" name="lastName" required type="text" value="">
+        </div>
 
-    <label for="business-select">Företag:</label>
-    <select id="business-select" name="businesses"></select>
-
-    <button type="submit">Registrera</button>
-</form>
+        <div id="business-div">
+            <label class="business-div" for="business-select">Företag</label>
+            <select class="business-div" id="business-select" name="businesses"></select>
+        </div>
+        <div id="load">
+            <i id="loadIcon" class="fa-solid fa-arrow-rotate-right fa-spin"></i>
+        </div>
+        <div class="buttons">
+            <button id="registerButton" type="submit">Registrera</button>
+            <button class="cancelButton" type="button">Gå tillbaka</button>
+        </div>
+    </form>
+</div>
 <script src="../../../js/admin/user/registerUser.js" type="module"></script>
 <script src="../../../js/auth/adminPage.js" type="module"></script>
 </body>
