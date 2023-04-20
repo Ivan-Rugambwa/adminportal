@@ -1,4 +1,4 @@
-import {getJwtPayload, isAuthenticated, loginWithRedirect} from "./auth.js";
+import {getJwtPayload, isAuthenticatedWithRedirect, loginWithRedirect} from "./auth.js";
 import {baseUrl} from "../shared.js";
 
 // window.addEventListener('click', async ev => {
@@ -8,14 +8,13 @@ import {baseUrl} from "../shared.js";
 //     await adminPage();
 // })
 
-window.addEventListener('load', async ev => {
-    while (true) {
-        const timer = await new Promise(r => setTimeout(r, 900000));
+window.addEventListener('load', async () => {
+    setInterval(async () => {
         await adminPage();
-    }
+    }, 900000)
 })
 export const adminPage = async () => {
-    if (await isAuthenticated() === false) {
+    if (await isAuthenticatedWithRedirect() === false) {
         console.log('bad');
         loginWithRedirect();
     }

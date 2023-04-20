@@ -1,5 +1,5 @@
 import {baseUrl, userApiUrl} from "../../shared.js";
-import {getJwtPayload, isAuthenticated} from "../../auth/auth.js";
+import {getJwtPayload, isAuthenticatedWithRedirect} from "../../auth/auth.js";
 
 let isBlurred = false;
 
@@ -183,8 +183,8 @@ const toggleBlur = () => {
     }
 }
 
-window.addEventListener('load', async ev => {
-    await isAuthenticated();
+window.addEventListener('load', async () => {
+    await isAuthenticatedWithRedirect();
     await updateTables();
 })
 
@@ -225,6 +225,6 @@ confirm.addEventListener('click', async ev => {
 
 refresh.addEventListener('click', async ev => {
     ev.preventDefault();
-    await isAuthenticated();
+    await isAuthenticatedWithRedirect();
     await updateTables();
 })

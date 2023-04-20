@@ -1,9 +1,13 @@
 import {baseUrl, userApiUrl} from "../shared.js";
 
 
+export const isAuthenticatedWithRedirect = async () => {
+    if (await isAuthenticated() === false) {
+        loginWithRedirect();
+    }
+}
+
 export const isAuthenticated = async () => {
-    console.log(window.localStorage.getItem('jwt'));
-    console.log(window.localStorage.getItem('refreshToken'));
     console.log('Checking jwt...');
     if (await verifyJwt() === 200) {
         console.log('Jwt valid');
@@ -15,9 +19,9 @@ export const isAuthenticated = async () => {
         return true;
     }
     console.log('Authentication failed');
-    loginWithRedirect();
     return false;
 }
+
 export const loginWithRedirect = () => {
     const currentUrl = window.location.pathname;
     window.location.assign(`${baseUrl}/auth/login?redirect=${currentUrl}`);

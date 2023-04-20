@@ -1,32 +1,40 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>HTML5 Login Form with validation Example</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-<link rel="stylesheet" href="../css/admin/style.css">
+    <meta charset="UTF-8">
+    <title>HTML5 Login Form with validation Example</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="../css/index.css">
 
 </head>
 <body>
 <!-- partial:index.partial.html -->
 <div id="login-form-wrap">
-  <h2>Login</h2>
-  <form id="login-form">
-    <p>
-    <input type="email" id="email" name="email" placeholder="Email" required><i class="validation"><span></span><span></span></i>
-    </p>
-    <p>
-    <input type="password" id="password" name="password" placeholder="Lösenord" required><i class="validation"><span></span><span></span></i>
-    </p>
-    <p>
-    <input type="submit" id="login" value="Login">
-    </p>
-  </form>
-  <div id="create-account-wrap">
-    
-  </div><!--create-account-wrap-->
+    <div id="logoFrame">
+        <img id="logo" src="../images/apendo-logga-green-large.png" alt="Apendo logo">
+        <h2>Seatportal</h2>
+    </div>
+
+    <form id="login-form">
+        <p>
+            <label for="email"></label>
+            <input type="email" id="email" name="email" placeholder="Email" required><i
+                class="validation"><span></span><span></span></i>
+        </p>
+        <p>
+            <label for="password"></label>
+            <input type="password" id="password" name="password" placeholder="Lösenord" required><i
+                class="validation"><span></span><span></span></i>
+        </p>
+        <p>
+            <input type="submit" id="login" value="Logga in">
+        </p>
+    </form>
+    <div id="create-account-wrap">
+
+    </div><!--create-account-wrap-->
 </div><!--login-form-wrap-->
 <!-- partial -->
-  <script  src="../js/index.js" type="module"></script>
+<script src="../js/index.js" type="module"></script>
 </body>
 </html>

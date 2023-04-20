@@ -1,10 +1,10 @@
 import {baseUrl, userApiUrl} from "../../shared.js";
-import {isAuthenticated} from "../../auth/auth.js";
+import {isAuthenticatedWithRedirect} from "../../auth/auth.js";
 
 window.addEventListener('load', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const role = urlParams.get('role');
-    await isAuthenticated();
+    await isAuthenticatedWithRedirect();
     if (role !== 'admin') {
         document.getElementById('business-div').style.visibility = 'visible';
         document.getElementById('titleText').innerText += ' användare';

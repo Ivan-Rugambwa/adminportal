@@ -1,4 +1,4 @@
-import {isAdmin, isAuthenticated, isUser} from "./auth.js";
+import {isAdmin, isAuthenticatedWithRedirect, isUser} from "./auth.js";
 import {baseUrl, userApiUrl} from "../shared.js";
 
 async function getInfo() {
@@ -40,7 +40,7 @@ window.addEventListener('submit', async (event) => {
     event.preventDefault();
     console.log("logging in");
     await getInfo();
-    if (await isAuthenticated() === false) return window.location.assign(`${baseUrl}/error`);
+    if (await isAuthenticatedWithRedirect() === false) return window.location.assign(`${baseUrl}/error`);
 
     const urlParams = new URLSearchParams(window.location.search);
     const redirectUrl = urlParams.get('redirect');

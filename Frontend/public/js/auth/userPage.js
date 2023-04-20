@@ -1,15 +1,14 @@
-import {getJwtPayload, isAuthenticated, loginWithRedirect} from "./auth.js";
+import {getJwtPayload, isAuthenticatedWithRedirect, loginWithRedirect} from "./auth.js";
 import {baseUrl} from "../shared.js";
 
 window.addEventListener('load', async () => {
-    while (true) {
-        await new Promise(r => setTimeout(r, 900000));
+    setInterval(async () => {
         await userPage();
-    }
+    }, 900000)
 })
 
 const userPage = async () => {
-    if (await isAuthenticated() === false) {
+    if (await isAuthenticatedWithRedirect() === false) {
         loginWithRedirect();
     }
     const payload = await getJwtPayload();

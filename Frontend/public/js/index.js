@@ -1,12 +1,11 @@
-import {isAdmin, isAuthenticated, isUser} from "../js/auth/auth.js";
-import {baseUrl, userApiUrl} from "../js/shared.js";
+import {isAdmin, isAuthenticated, isUser} from "./auth/auth.js";
+import {baseUrl, userApiUrl} from "./shared.js";
 
-async function getInfo() {
+async function postLogin() {
 
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     const apiUrl = `${userApiUrl}/api/auth/authenticate`;
-
 
     function requestBody(email, password) {
         let payload = {
@@ -16,30 +15,26 @@ async function getInfo() {
         return JSON.stringify(payload);
     }
 
-    await fetch(apiUrl, {
+    const response = await fetch(apiUrl, {
         method: "POST",
         body: requestBody(email, password),
         headers: {
             "Content-Type": "application/json",
         },
-    })
-        .then((response) => response.json())
-
-        .then(data => {
-            window.localStorage.setItem("jwt", data.accessToken);
-            window.localStorage.setItem("refreshToken", data.refreshToken);
-        }).catch((error) => {
-            console.error("Login error:", error);
-            // Display an error message
-            alert("An error occurred while logging in");
-        });
-
+    });
+    if (response.status === 400) {
+        console.log('Fel email eller lösenord')
+        return;
+    }
+    const json = await response.json();
+    window.localStorage.setItem("jwt", json.accessToken);
+    window.localStorage.setItem("refreshToken", json.refreshToken);
 }
 
 window.addEventListener('submit', async (event) => {
     event.preventDefault();
     console.log("logging in");
-    await getInfo();
+    await postLogin();
     if (await isAuthenticated() === false) return window.location.assign(`${baseUrl}/error`);
 
     const urlParams = new URLSearchParams(window.location.search);
