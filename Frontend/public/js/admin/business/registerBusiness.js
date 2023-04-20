@@ -1,25 +1,35 @@
-import {userApiUrl} from "../../shared.js";
+import {baseUrl, userApiUrl} from "../../shared.js";
+import {isAuthenticated} from "../../auth/auth.js";
+
+const cancel = document.querySelector('.cancelButton');
+const form = document.getElementById('form');
+const load = document.getElementById('load');
+const loadIcon = document.getElementById('loadIcon');
+const registerButton = document.getElementById('registerButton');
+
+
+cancel.addEventListener('click', ev => {
+    ev.preventDefault();
+    window.location.assign(`${baseUrl}/admin/business`);
+});
 
 window.addEventListener('load', async ev => {
     let businesses = await getBusinesses();
     console.log(businesses)
-    fillForm(businesses);
+    //fillForm(businesses);
 
 })
 
 window.addEventListener('submit', async ev => {
     ev.preventDefault();
-    const form = document.getElementById('userForm');
-    console.log(form.elements['business-select'].value)
-    if (form.elements['business-select'].value === '') {
-        console.log('No business chosen')
-    }
-    // await postRegister();
+    const form = document.getElementById('form');
+   
+     await postRegister();
 })
 
 const getBusinesses = async () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const uuid = urlParams.get('user');
+    const uuid = urlParams.get('business');
     const url = `${userApiUrl}/api/admin/business`
     let response;
     await fetch(url, {
@@ -37,31 +47,13 @@ const getBusinesses = async () => {
     return response;
 }
 
-const fillForm = (businesses) => {
-    const select = document.getElementById('business-select');
-    select.setAttribute('required', '')
-    const currentBusiness = document.createElement('option');
-    currentBusiness.setAttribute('disabled', '');
-    currentBusiness.setAttribute('hidden', '');
-    currentBusiness.setAttribute('selected', '');
-    currentBusiness.setAttribute('value', '');
-    currentBusiness.innerText = 'Välj företag';
-    select.appendChild(currentBusiness);
-    businesses.forEach(business => {
-        const option = document.createElement('option');
-        option.setAttribute('value', business['name']);
-        option.innerText = business['name'];
-        select.appendChild(option);
-    });
-}
+
 
 const postRegister = async () => {
-    const form = document.getElementById('userForm');
+    const form = document.getElementById('form');
     const body = {
-        uuid: form.elements['uuid'].value,
-        firstName: form.elements['firstName'].value,
-        lastName: form.elements['lastName'].value,
-        business: form.elements['business-select'].value
+        seatBaseline: form.elements['seatBaseline'].value,
+        name: form.elements['business-name'].value
     }
     console.log(body)
     return await fetch(`${userApiUrl}/api/admin/business`, {

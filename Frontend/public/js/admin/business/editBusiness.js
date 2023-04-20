@@ -53,25 +53,26 @@ const getBusiness = async () => {
     const uuid = urlParams.get('business');
     const url = `${userApiUrl}/api/admin/business/${uuid}`
     let response;
-    console.log(url);
+
     await fetch(url, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${window.localStorage.getItem("jwt")}`
         }
     })
-        .then(res => {
-            response = res.json()
+        .then(async res => {
+            response = await res.json()
         })
         .catch(error => {
             console.error(error);
         })
+        console.log(response);
     return response;
 }
 
 const fillForm = (business) => {
     document.getElementById('uuid').setAttribute('value', business['uuid']);
-    document.getElementById('seatBasline').setAttribute('value', business['seatBasline']);
+    document.getElementById('seatBaseline').setAttribute('value', business['seatBaseline']);
     document.getElementById('business-name').setAttribute('value', business['name']);
     
     
@@ -79,9 +80,8 @@ const fillForm = (business) => {
 }
 
 const putUpdate = async () => {
-    const form = document.getElementById('editTable');
+    const form = document.getElementById('form');
     const body = {
-        uuid: form.elements['uuid'].value,
         seatBaseline: form.elements['seatBaseline'].value,
         name: form.elements['business-name'].value
         
