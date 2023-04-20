@@ -14,8 +14,12 @@ router.get("/user/edit", (req, res) => {
 router.get("/user/register", (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/html/admin/user/registerUser.html'))
 })
+
 router.get("/business", (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/html/admin/business/business.html'))
+})
+router.get("/business/edit", (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/html/admin/business/editBusiness.html'))
 })
 router.get("/seat", (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/html/admin/seat/seat.html'))

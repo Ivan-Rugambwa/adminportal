@@ -1,30 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="se">
+
 <head>
     <meta charset="UTF-8">
-    <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Document</title>
+    <title>Title</title>
+    <link href="../../../css/admin/editUser.css" rel="stylesheet">
+    <link href="../../../css/shared/form.css" rel="stylesheet">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/6c0cfcbd8b.js"></script>
 </head>
+
 <body>
-<form id="editTable">
-    <label for="uuid">UUID:</label>
-    <input disabled id="uuid" name="uuid" required type="text" value="">
+    <!--<form id="form">-->
+    <!--<label for="uuid">UUID</label>-->
+    <!--<input disabled id="uuid" name="uuid" required type="text" value="">-->
 
-    <label for="ID">AccountID:</label>
-    <input id="email" name="email" required type="email" value="">
+    <!--<label for="email">Email</label>-->
+    <!--<input id="email" name="email" required type="email" value="">-->
 
-    <label for="firstName">Förnamn:</label>
-    <input id="firstName" name="firstName" required type="text" value="">
+    <!--<label for="firstName">Förnamn</label>-->
+    <!--<input id="firstName" name="firstName" required type="text" value="">-->
 
-    <label for="lastName">Efternamn:</label>
-    <input id="lastName" name="lastName" required type="text" value="">
+    <!--<label for="lastName">Efternamn</label>-->
+    <!--<input id="lastName" name="lastName" required type="text" value="">-->
 
-    <label for="business-select">Företag:</label>
-    <select id="business-select" name="businesses"></select>
+    <!--<label id="label-business-select" for="business-select">Företag</label>-->
+    <!--<select id="business-select" name="businesses"></select>-->
 
-    <button type="submit">Uppdatera</button>
-</form>
+    <!--    <button type="submit">Uppdatera</button>-->
+    <!--</form>-->
+    <div id="formBox">
+
+        <form id="form">
+            <div id="title">
+                <p>Uppdatera Företag</p>
+            </div>
+
+            <div>
+                <label for="uuid">UUID</label>
+                <input disabled id="uuid" name="uuid" required type="text" value="">
+            </div>
+
+            <div>
+                <label for="seatBaseline">Seat Baseline:</label>
+                <input id="seatBaseline" name="seatBaseline" required type="seatBaseline" value="">
+            </div>
+
+            <div>
+                <label for="business-name">Företags Namn:</label>
+                <input id="business-name" name="business-name"></input>
+            </div>
+            <div id="load">
+                <i id="loadIcon" class="fa-solid fa-arrow-rotate-right fa-spin"></i>
+            </div>
+            <div class="buttons">
+                <button id="registerButton" type="submit">Uppdatera</button>
+                <button class="cancelButton" type="button">Gå tillbaka</button>
+            </div>
+        </form>
+    </div>
+    <script src="../../../js/admin/business/editBusiness.js" type="module"></script>
+    <script src="../../../js/auth/adminPage.js" type="module"></script>
 </body>
-<script src="../../../js/admin/business/updateBusiness.js"></script>
+
 </html>
