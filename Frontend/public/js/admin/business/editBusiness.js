@@ -1,12 +1,26 @@
-import {userApiUrl} from "../../shared.js";
+import {userApiUrl,baseUrl} from "../../shared.js";
 import {adminPage} from "../../auth/adminPage.js";
+
+const cancel = document.querySelector('.cancelButton');
+const form = document.getElementById('form');
+const load = document.getElementById('load');
+const loadIcon = document.getElementById('loadIcon');
+const registerButton = document.getElementById('registerButton');
+
+cancel.addEventListener('click', ev => {
+    ev.preventDefault();
+    window.location.assign(`${baseUrl}/admin/business`);
+});
 
 window.addEventListener('load', async ev => {
     await adminPage();
 
-    fillForm();
+    const business = await getBusiness();
+
+    fillForm(business);
 
 })
+
 
 window.addEventListener('submit', async ev => {
     ev.preventDefault();
@@ -39,6 +53,7 @@ const getBusiness = async () => {
     const uuid = urlParams.get('business');
     const url = `${userApiUrl}/api/admin/business/${uuid}`
     let response;
+    console.log(url);
     await fetch(url, {
         method: "GET",
         headers: {

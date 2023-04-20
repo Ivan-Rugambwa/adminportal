@@ -2,30 +2,51 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <link href="../../../css/admin/editUser.css" rel="stylesheet">
-    <title>Document</title>
+    <title>Title</title>
+    <link href="../../../css/menu.css" rel="stylesheet" type="text/css">
+    <link href="../../../css/shared/form.css" rel="stylesheet">
+    <link href="../../../css/admin/admin.css" rel="stylesheet" type="text/css">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/6c0cfcbd8b.js"></script>
 </head>
 <body>
-<form id="editTable">
-    <label for="uuid">UUID:</label>
-    <input disabled id="uuid" name="uuid" required type="text" value="">
+<header>
+    <h1>Business</h1>
+</header>
+<div id="formBox">
 
-    <label for="ID">AccountID:</label>
-    <input id="email" name="email" required type="email" value="">
+    <form id="form">
+        <div id="title">
+            <p id="titleText">Registrera</p>
+        </div>
+        <div>
+            <label for="uuid">UUID</label>
+            <input disabled id="uuid" name="uuid" required type="text" value="">
+        </div>
 
-    <label for="firstName">Förnamn:</label>
-    <input id="firstName" name="firstName" required type="text" value="">
+        <div>
+            <label for="firstName">Förnamn</label>
+            <input id="firstName" name="firstName" required type="text" value="">
+        </div>
 
-    <label for="lastName">Efternamn:</label>
-    <input id="lastName" name="lastName" required type="text" value="">
+        <div>
+            <label for="lastName">Efternamn</label>
+            <input id="lastName" name="lastName" required type="text" value="">
+        </div>
 
-    <label for="business-select">Företag:</label>
-    <select id="business-select" name="businesses"></select>
-
-    <button type="submit">Registrera</button>
-</form>
+        <div id="business-div">
+            <label class="business-div" for="business-select">Företag</label>
+            <select class="business-div" id="business-select" name="businesses"></select>
+        </div>
+        <div id="load">
+            <i id="loadIcon" class="fa-solid fa-arrow-rotate-right fa-spin"></i>
+        </div>
+        <div class="buttons">
+            <button id="registerButton" type="submit">Registrera</button>
+            <button class="cancelButton" type="button">Gå tillbaka</button>
+        </div>
+    </form>
+</div>
+<script src="../../../js/admin/business/registerBusiness.js" type="module"></script>
+<script src="../../../js/auth/adminPage.js" type="module"></script>
 </body>
-<script src="../../../js/admin/business/registerBusiness.js"></script>
 </html>
