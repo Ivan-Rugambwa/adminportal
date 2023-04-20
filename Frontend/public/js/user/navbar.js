@@ -39,7 +39,7 @@ export const createNavBar = async () => {
     seat.classList.add('active');
 
 
-    seat.setAttribute('href', `${baseUrl}/seat/report`);
+    seat.setAttribute('href', `${baseUrl}/seat`);
     logout.setAttribute('href', `${baseUrl}/`);
 
     leftLogoDiv.appendChild(icon)

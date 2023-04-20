@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="se">
+<head>
+    <meta charset="UTF-8">
+    <title>Rapportera</title>
+    <link rel="stylesheet" href="../../css/user/navbar.css">
+    <link rel="stylesheet" href="../../css/user/report.css">
+    <!--    <link href="../../css/shared/form.css" rel="stylesheet">-->
+    <script src="../../js/user/navbar.js" type="module"></script>
+</head>
+<body>
+<nav></nav>
+<div id="seatFrame">
+    <div id="seat">
+        <div id="title">Rapport</div>
+        <div class="row">
+            <div class="seatName">Företag</div>
+            <div class="seatData" id="business"></div>
+        </div>
+        <div class="row">
+            <div class="seatName">Baseline</div>
+            <div class="seatData" id="baseline"></div>
+        </div>
+        <div class="row">
+            <div class="seatName">Datum</div>
+            <div class="seatData" id="forYearMonth"></div>
+        </div>
+        <div class="row">
+            <div class="seatName">Ifylld av</div>
+            <div class="seatData" id="changedBy"></div>
+        </div>
+        <div class="row">
+            <div class="seatName">Status</div>
+            <div class="seatData" id="status"></div>
+        </div>
+        <div class="row" hidden>
+            <div class="seatName">Seatanvänding</div>
+            <div class="seatData" id="seatAmount"></div>
+        </div>
+        <div id="reportFrame">
+            <div id="text"></div>
+            <form id="form">
+                <div id="formFields">
+                    <div id="inputDiv">
+                        <label for="amount">Seatanvänding</label>
+                        <input id="amount" name="formAmount" required type="number" value="">
+                    </div>
+                    <div id="lowWarning">Ditt inrapporterade värde är mycket lägre än eran Baseline, är du säker på att
+                        det
+                        stämmer?
+                    </div>
+                    <div id="highWarning">Ditt inrapporterade värde är mycket högre än eran Baseline, är du säker på att
+                        det
+                        stämmer?
+                    </div>
+                    <div id="extraWarning">Du har skrivit in ett värde som är högre än eran baseline, ni kommer att bli
+                        fakturerad för eran överanvändning:
+                        <div id="overuseText"></div>
+                    </div>
+                </div>
+                <div id="bottomWarning"></div>
+                <div class="buttons">
+                    <button id="registerButton" type="submit">Skicka in</button>
+                    <button class="cancelButton" type="button">Gå tillbaka</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="../../js/user/report.js" type="module"></script>
+</body>
+</html>

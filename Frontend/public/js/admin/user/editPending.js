@@ -81,7 +81,6 @@ const getBusinesses = async () => {
 }
 
 const fillForm = (user, businesses) => {
-    console.log(user)
     document.getElementById('uuid').setAttribute('value', user['uuid']);
     document.getElementById('email').setAttribute('value', user['email']);
     document.getElementById('firstName').setAttribute('value', user['firstName']);
