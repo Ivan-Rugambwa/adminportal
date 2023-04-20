@@ -19,21 +19,28 @@ public class BusinessController {
     final BusinessService service;
 
     @GetMapping
-    public List<BusinessResponse> getBusinesses() {
-        return service.GetAll();
+    public ResponseEntity<?> getBusinesses() {
+        return ResponseEntity.ok(service.GetAll());
+    }
+
+    @GetMapping("/{uuid}")
+    public ResponseEntity<?> getBusiness(@PathVariable UUID uuid) {
+        return ResponseEntity.ok(service.GetResponseByUuid(uuid));
     }
 
     @PostMapping
     public void postBusiness(@RequestBody CreateBusinessRequest request) {
         service.Create(request);
     }
+
     @DeleteMapping("/{uuid}")
-    public ResponseEntity<?> deleteBusiness(@PathVariable UUID uuid){
+    public ResponseEntity<?> deleteBusiness(@PathVariable UUID uuid) {
         service.Delete(uuid);
         return ResponseEntity.noContent().build();
     }
+
     @PatchMapping("/{uuid}")
-    public ResponseEntity<?> updateBusiness(@RequestBody UpdateBusinessRequest request, @PathVariable UUID uuid){
+    public ResponseEntity<?> updateBusiness(@RequestBody UpdateBusinessRequest request, @PathVariable UUID uuid) {
         var response = service.Update(request, uuid);
         return ResponseEntity.ok(response);
     }

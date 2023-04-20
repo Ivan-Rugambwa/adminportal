@@ -58,6 +58,8 @@ public class JwtService {
     public String generateToken(Map<String, Object> extraClaims, Account userDetails) {
         if (userDetails.getProfile() != null && userDetails.getRoles().stream().noneMatch(role -> role.getName() == RoleType.ADMIN)) {
             extraClaims.put("organization", userDetails.getProfile().getBusiness().getName());
+            extraClaims.put("firstName", userDetails.getFirstName());
+            extraClaims.put("lastName", userDetails.getLastName());
         }
         return Jwts.builder()
                 .setClaims(extraClaims)

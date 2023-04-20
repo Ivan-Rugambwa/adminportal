@@ -16,6 +16,7 @@ nav {
     align-items: center;
     width: fit-content;
     height: 100%;
+
 }
 
 #navLinks a:hover {
@@ -51,6 +52,11 @@ nav {
     font-family: century-gothic, serif;
 }
 
+#navUserName {
+    color: white;
+    text-align: center;
+    margin-right: 2rem;
+}
 
 body {
     margin: 0;
@@ -58,8 +64,7 @@ body {
 }
 
 #navIcon {
-    /*margin-top: 5px;*/
     width: 7rem;
     min-width: 1rem;
-    margin: 0 1rem 0 2rem;
+    padding: 0 1rem 0 2rem;
 }

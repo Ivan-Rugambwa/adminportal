@@ -30,10 +30,12 @@ public class PreRegister {
     @Pattern(regexp = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", message = "Wrong email format, see correct example: test@domain.com")
     @Column(unique = true)
     private String email;
-    @NotBlank(message = "Email is required")
+    @NotBlank(message = "First Name is required")
     private String firstName;
-    @NotBlank(message = "Email is required")
+    @NotBlank(message = "Last Name is required")
     private String lastName;
-    @NotBlank(message = "Email is required")
+
     private String businessName;
+    @NotBlank(message = "Role name is required")
+    private String roleName;
 }

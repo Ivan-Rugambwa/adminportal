@@ -12,14 +12,10 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 public class PreRegisterResponse {
-    @NotNull
     private UUID uuid;
-    @NotBlank(message = "Email is required")
     private String email;
-    @NotBlank(message = "Email is required")
     private String firstName;
-    @NotBlank(message = "Email is required")
     private String lastName;
-    @NotBlank(message = "Email is required")
     private String businessName;
+    private String roleName;
 }

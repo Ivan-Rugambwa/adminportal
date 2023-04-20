@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Base64;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -48,7 +49,7 @@ public class AuthenticationService {
     @Transactional
     public RegisterResponse registerWithPreRegister(RegisterWithPreRegisterRequest request) {
 
-        if (!request.getPassword().equals(request.getConfirmPassword())){
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
             throw new IllegalArgumentException("Password must match");
         }
         var preRegister = preRegisterService.GetByUuid(request.getPreRegisterUuid());
@@ -61,10 +62,13 @@ public class AuthenticationService {
                 .business(preRegister.getBusinessName())
                 .build();
 
-        var registerResponse = register(registerRequest, false);
+        var isAdmin = (Objects.equals(preRegister.getRoleName(), "ADMIN"));
+
+        var registerResponse = register(registerRequest, isAdmin);
         preRegisterService.DeleteByUuid(preRegister.getUuid());
         return registerResponse;
     }
+
     @Transactional
     public RegisterResponse register(RegisterRequest request, boolean isAdmin) {
         if (accountRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -89,7 +93,7 @@ public class AuthenticationService {
 
         accountRepository.save(account);
 
-        if (request.getBusiness() != null){
+        if (request.getBusiness() != null) {
             var business = businessService.GetByName(request.getBusiness());
             var profile = AccountProfile.builder()
                     .account(account)
