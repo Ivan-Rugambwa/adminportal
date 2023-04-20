@@ -15,11 +15,9 @@ const getSeats = async () => {
     });
     let seats = await response.json();
 
-
     seats.sort((a, b) => {
-        if (a['businessName'] === null) return +1;
-        if (b['businessName'] === null) return -1;
-        return a['businessName'].localeCompare(b['businessName'])
+        if (a['businessName'] === b['businessName']) return b['forYearMonth'].localeCompare(a['forYearMonth']);
+        return a['businessName'].localeCompare(b['businessName']);
     });
     return seats;
 }

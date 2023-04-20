@@ -24,7 +24,6 @@ public class BusinessService {
 
     public Business GetByName(String name) {
         return repository.findBusinessByName(name).orElseThrow(() -> new IllegalArgumentException("No such Business: " + name));
-        
     }
 
     public Business GetByUuid(UUID uuid) {
@@ -50,15 +49,15 @@ public class BusinessService {
         if (request.getAccountUUID() != null) {
             var account = accountService.getAccountByUuid(request.getAccountUUID());
             business.getAccountProfiles().add(account.getProfile());
-            System.out.println("Adding account");
         }
         if (request.getSeatBaseline() != null) {
             business.setSeatBaseline(request.getSeatBaseline());
-            System.out.println("Changing seat baseline");
         }
         if (request.getName() != null) {
+            if (repository.existsBusinessByName(request.getName()))
+                throw new IllegalArgumentException("Business with that name already exists");
+
             business.setName(request.getName());
-            System.out.println("Changing name");
         }
 
         repository.save(business);
