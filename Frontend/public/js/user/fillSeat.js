@@ -1,4 +1,4 @@
-import {getJwtPayload, isAuthenticated, isUser} from "../auth/auth.js";
+import {getJwtPayload, isAuthenticatedWithRedirect, isUser} from "../auth/auth.js";
 import {baseUrl, userApiUrl} from "../shared.js";
 
 const getSeat = async () => {
@@ -203,7 +203,7 @@ window.addEventListener('load', async () => {
     if (!(await isUser())) {
         window.location.assign(`${baseUrl}/auth/unauthorized`)
     }
-    if (await isAuthenticated() === false) {
+    if (await isAuthenticatedWithRedirect() === false) {
     }
     await fill();
 })

@@ -1,8 +1,8 @@
 import {baseUrl, userApiUrl} from "../../shared.js";
-import {isAuthenticated} from "../../auth/auth.js";
+import {isAuthenticatedWithRedirect} from "../../auth/auth.js";
 
-window.addEventListener('load', async ev => {
-    await isAuthenticated();
+window.addEventListener('load', async () => {
+    await isAuthenticatedWithRedirect();
     const user = await getUser();
     let businesses = await getBusinesses();
     businesses = businesses.filter(business => business['name'] !== user['businessName'])
@@ -63,8 +63,6 @@ const getUser = async () => {
 }
 
 const getBusinesses = async () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const uuid = urlParams.get('user');
     const url = `${userApiUrl}/api/admin/business`
     let response;
     await fetch(url, {
