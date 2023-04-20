@@ -41,7 +41,7 @@ const getPending = async () => {
 const fillTable = async (users, pendingUsers) => {
     document.getElementById('userTableBody').innerHTML = '';
     document.getElementById('adminTableBody').innerHTML = '';
-    document.getElementById('pendingTableBody').innerHTML = '';
+    document.getElementById('pendingUsersTableBody').innerHTML = '';
     const jwt = await getJwtPayload();
     const jwtEmail = jwt['sub'];
     let tableBody;
@@ -70,15 +70,22 @@ const fillTable = async (users, pendingUsers) => {
         }
 
     })
-    const pendingTableBody = document.getElementById('pendingTableBody');
+    let pendingUsersTableBody;
     pendingUsers.forEach(pending => {
+        if (pending['roleName'] === 'ADMIN') {
+            pendingUsersTableBody = document.getElementById('pendingAdminsTableBody');
+        } else {
+            pendingUsersTableBody = document.getElementById('pendingUsersTableBody');
+        }
         const uuid = pending['uuid'];
-        const row = pendingTableBody.insertRow();
+        const row = pendingUsersTableBody.insertRow();
         row.insertCell().innerHTML = uuid;
         row.insertCell().innerHTML = pending['email'];
         row.insertCell().innerHTML = pending['firstName'];
         row.insertCell().innerHTML = pending['lastName'];
-        row.insertCell().innerHTML = pending['businessName'];
+        if (pendingUsersTableBody.id !== 'pendingAdminsTableBody') {
+            row.insertCell().innerHTML = pending['businessName'];
+        }
         row.insertCell()
             .appendChild(createEdit(uuid, 'pending'))
             .appendChild(createDelete(uuid, 'pending'));
@@ -124,7 +131,6 @@ const deleteUser = async (uuid) => {
     }
 }
 const deletePending = async (uuid) => {
-    console.log('deleting')
     const response = await fetch(`${userApiUrl}/api/admin/preregister/${uuid}`, {
         method: 'DELETE',
         headers: {
@@ -139,7 +145,7 @@ const deletePending = async (uuid) => {
 const updateTables = async () => {
     document.getElementById('userTableBody').innerHTML = '';
     document.getElementById('adminTableBody').innerHTML = '';
-    document.getElementById('pendingTableBody').innerHTML = '';
+    document.getElementById('pendingUsersTableBody').innerHTML = '';
     refresh.style.cursor = 'wait';
     refresh.disabled = true;
     const spinning = 'fa-solid fa-arrow-rotate-right fa-spin';
@@ -219,7 +225,6 @@ confirm.addEventListener('click', async ev => {
 
 refresh.addEventListener('click', async ev => {
     ev.preventDefault();
+    await isAuthenticated();
     await updateTables();
 })
-
-

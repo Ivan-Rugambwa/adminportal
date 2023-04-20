@@ -65,7 +65,11 @@ const loadForm = async (preRegister) => {
     const business = document.getElementById('business');
 
     email.value = preRegister['email'];
-    business.value = preRegister['businessName'];
+    if (preRegister['businessName'])
+        business.value = preRegister['businessName'];
+    else
+        document.getElementById('business-div').style.display = 'none';
+
 }
 
 const getPreRegister = async () => {

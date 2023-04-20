@@ -31,7 +31,7 @@ public class SeatService {
     private final JwtService jwtService;
     private final SeatMapper mapper = Mappers.getMapper(SeatMapper.class);
 
-    public Set<SeatResponse> GetAllSeats(){
+    public Set<SeatResponse> GetAllSeats() {
         var seats = repository.findAll();
         Set<SeatResponse> seatResponses = new HashSet<>();
 
@@ -41,17 +41,21 @@ public class SeatService {
         }
         return seatResponses;
     }
-    public SeatResponse GetByUuid(UUID uuid){
+
+    public SeatResponse GetByUuid(UUID uuid) {
         var seat = repository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("No such seat"));
         return mapper.SEAT_RESPONSE(seat);
     }
-    public SeatResponse GetByUuidWithMatchingBusiness(UUID seatUuid, String token){
+
+    public SeatResponse GetByUuidWithMatchingBusiness(UUID seatUuid, String token) {
         var seat = repository.findById(seatUuid).orElseThrow(() -> new IllegalArgumentException("No such seat"));
         var claim = jwtService.extractClaim(token.substring(7), claims -> claims.get("organization")).toString();
-        if (!Objects.equals(seat.getBusiness().getName(), claim)) throw new IllegalArgumentException("Account business and Seat business does not match.");
+        if (!Objects.equals(seat.getBusiness().getName(), claim))
+            throw new IllegalArgumentException("Account business and Seat business does not match.");
         return mapper.SEAT_RESPONSE(seat);
     }
-    public SeatResponse CreateSeatBase(CreateSeatRequest request){
+
+    public SeatResponse CreateSeatBase(CreateSeatRequest request) {
         System.out.println("Creating seat...");
         var business = businessService.GetByUuid(request.getBusinessUuid());
 
@@ -72,11 +76,12 @@ public class SeatService {
         System.out.println("Successfully created seat.");
         return mapper.SEAT_RESPONSE(savedSeat);
     }
-    public void UpdateSeat(UpdateSeatRequest request, UUID seatUuid){
+
+    public void UpdateSeat(UpdateSeatRequest request, UUID seatUuid) {
         System.out.println("Updating seat...");
         var seat = repository.findById(seatUuid).orElseThrow(() -> new IllegalArgumentException("No seat with id: " + seatUuid));
 
-        if (request.getUpdatedByEmail() != null){
+        if (request.getUpdatedByEmail() != null) {
             var account = accountService.getAccountByEmail(request.getUpdatedByEmail());
             seat.setCompletedBy(account);
         }
@@ -99,6 +104,7 @@ public class SeatService {
         }
         return seatResponses;
     }
+
     public Set<SeatResponse> GetAllSeatsByBusinessUuid(UUID uuid) {
         var seats = repository.findAllByBusiness_Uuid(uuid).orElseThrow(() -> new IllegalArgumentException("No seats with business uuid: " + uuid));
         Set<SeatResponse> seatResponses = new HashSet<>();
@@ -109,7 +115,4 @@ public class SeatService {
         return seatResponses;
     }
 
-//    public SeatResponse GetSeatByCurrentMonthAndBusinessName(String name, String forYearMonth) {
-//        var seat = repository.findByBusiness_NameAndForYearMonthEquals(name, forYearMonth);
-//    }
 }

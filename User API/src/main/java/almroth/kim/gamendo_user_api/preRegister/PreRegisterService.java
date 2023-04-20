@@ -7,7 +7,10 @@ import almroth.kim.gamendo_user_api.config.NotionConfigProperties;
 import almroth.kim.gamendo_user_api.mapper.PreRegisterMapper;
 import almroth.kim.gamendo_user_api.preRegister.dto.PreRegisterRequest;
 import almroth.kim.gamendo_user_api.preRegister.dto.PreRegisterResponse;
+import almroth.kim.gamendo_user_api.preRegister.dto.UpdatePreRegisterRequest;
 import almroth.kim.gamendo_user_api.preRegister.model.PreRegister;
+import almroth.kim.gamendo_user_api.role.RoleService;
+import almroth.kim.gamendo_user_api.role.RoleType;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import jakarta.transaction.Transactional;
@@ -19,6 +22,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.function.UnaryOperator.identity;
 
 @Service
 @RequiredArgsConstructor
@@ -31,11 +38,13 @@ public class PreRegisterService {
     @Autowired
     private final JwtService jwtService;
     @Autowired
+    private final RoleService roleService;
+    @Autowired
     private final NotionConfigProperties env;
 
     private final PreRegisterMapper mapper = Mappers.getMapper(PreRegisterMapper.class);
 
-    public Set<PreRegisterResponse> GetAllPreRegisters(){
+    public Set<PreRegisterResponse> GetAllPreRegisters() {
         var preRegisters = repository.findAll();
         Set<PreRegisterResponse> preRegisterResponses = new HashSet<>();
 
@@ -45,27 +54,36 @@ public class PreRegisterService {
         }
         return preRegisterResponses;
     }
-    public PreRegisterResponse GetByUuid(UUID uuid){
+
+    public PreRegisterResponse GetByUuid(UUID uuid) {
         var preRegister = repository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("No such preregister"));
         return mapper.TO_RESPONSE(preRegister);
     }
 
     @Transactional
-    public PreRegisterResponse Create(PreRegisterRequest request){
+    public PreRegisterResponse Create(PreRegisterRequest request) {
 
-        if (repository.findByEmail(request.getEmail()).isPresent()){
+        if (repository.findByEmail(request.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email already registered");
         }
         if (accountService.doesAccountExistByEmail(request.getEmail())) {
             throw new IllegalArgumentException("Email already registered");
         }
 
-        var preRegister = PreRegister.builder()
+        var preRegisterBuilder = PreRegister.builder()
                 .email(request.getEmail())
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
-                .businessName(request.getBusinessName())
-                .build();
+                .roleName(request.getRoleName());
+
+        if (Objects.equals(request.getRoleName(), "USER")) {
+            if (request.getBusinessName() != null)
+                preRegisterBuilder.businessName(request.getBusinessName());
+            else
+                throw new IllegalArgumentException("Business is required if role is user");
+        }
+
+        var preRegister = preRegisterBuilder.build();
 
         repository.save(preRegister);
         try {
@@ -75,6 +93,7 @@ public class PreRegisterService {
         }
         return mapper.TO_RESPONSE(preRegister);
     }
+
     @Transactional
     public void DeleteByUuid(UUID uuid) {
         var preRegister = repository.findById(uuid)
@@ -117,14 +136,14 @@ public class PreRegisterService {
     }
 
     @Transactional
-    public PreRegisterResponse Update(PreRegisterRequest request, UUID uuid) {
+    public PreRegisterResponse Update(UpdatePreRegisterRequest request, UUID uuid) {
         var mailUpdated = false;
         var preRegister = repository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("No such preregister"));
         if (request.getBusinessName() != null) preRegister.setBusinessName(request.getBusinessName());
         if (request.getFirstName() != null) preRegister.setFirstName(request.getFirstName());
         if (request.getLastName() != null) preRegister.setLastName(request.getLastName());
         if (request.getEmail() != null) {
-            if (repository.findByEmail(request.getEmail()).isPresent()){
+            if (repository.findByEmail(request.getEmail()).isPresent()) {
                 throw new IllegalArgumentException("Email already registered");
             }
             if (accountService.doesAccountExistByEmail(request.getEmail())) {
@@ -133,9 +152,16 @@ public class PreRegisterService {
             preRegister.setEmail(request.getEmail());
             mailUpdated = true;
         }
+        if (request.getRoleName() != null) {
+            var roles = Stream.of(Arrays.toString(RoleType.values())).collect(Collectors.toSet());
+            if (roles.contains(request.getRoleName().toUpperCase()))
+                preRegister.setRoleName(request.getRoleName());
+            else
+                throw new IllegalArgumentException("No such role");
+        }
 
         repository.save(preRegister);
-        if (mailUpdated){
+        if (mailUpdated) {
             try {
                 sendMail(request.getEmail(), uuid.toString());
             } catch (MessagingException e) {

@@ -22,11 +22,18 @@ public class BusinessService {
     private final AccountService accountService;
     private final BusinessMapper mapper = Mappers.getMapper(BusinessMapper.class);
 
-    public Business GetByName(String name){
+    public Business GetByName(String name) {
         return repository.findBusinessByName(name).orElseThrow(() -> new IllegalArgumentException("No such Business: " + name));
+        
     }
-    public Business GetByUuid(String uuid){
-        return repository.findById(UUID.fromString(uuid)).orElseThrow(() -> new IllegalArgumentException("No Business with id: " + uuid));
+
+    public Business GetByUuid(UUID uuid) {
+        return repository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("No Business with id: " + uuid));
+    }
+
+    public BusinessResponse GetResponseByUuid(UUID uuid) {
+        var business = repository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("No Business with id: " + uuid));
+        return mapper.TO_RESPONSE(business);
     }
 
     public void Create(CreateBusinessRequest model) {
@@ -40,16 +47,16 @@ public class BusinessService {
         var business = repository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("No such Business"));
         System.out.println("Updating business....");
 
-        if (request.getAccountUUID() != null){
+        if (request.getAccountUUID() != null) {
             var account = accountService.getAccountByUuid(request.getAccountUUID());
             business.getAccountProfiles().add(account.getProfile());
             System.out.println("Adding account");
         }
-        if (request.getSeatBaseline() != null){
+        if (request.getSeatBaseline() != null) {
             business.setSeatBaseline(request.getSeatBaseline());
             System.out.println("Changing seat baseline");
         }
-        if (request.getName() != null){
+        if (request.getName() != null) {
             business.setName(request.getName());
             System.out.println("Changing name");
         }

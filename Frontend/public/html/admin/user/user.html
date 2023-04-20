@@ -22,7 +22,7 @@
             <div id="userTableTitle">
                 <h2>Användare</h2>
                 <button id="refresh" type="submit">
-                    <i class="fa-solid fa-arrow-rotate-left" id="refreshIcon"></i>
+                    <i class="fa-solid fa-arrow-rotate-right" id="refreshIcon"></i>
                 </button>
             </div>
             <div id="register">
@@ -69,11 +69,11 @@
             </tbody>
         </table>
     </section>
-    <section id="pending">
-        <div id="pendingTableHeader">
-            <div><h2>Ej färdigregistrerade användare</h2></div>
+    <section id="pendingUsers">
+        <div id="pendingUsersTableHeader">
+            <div><h2>Användare som väntar på att bli aktiverade</h2></div>
         </div>
-        <table id="pendingTable">
+        <table id="pendingUsersTable">
             <thead>
             <tr>
                 <th>UUID</th>
@@ -84,7 +84,25 @@
                 <th>Ändra</th>
             </tr>
             </thead>
-            <tbody id="pendingTableBody">
+            <tbody id="pendingUsersTableBody">
+            </tbody>
+        </table>
+    </section>
+    <section id="pendingAdmins">
+        <div id="pendingAdminsTableHeader">
+            <div><h2>Administratörer som väntar på att bli aktiverade</h2></div>
+        </div>
+        <table id="pendingAdminsTable">
+            <thead>
+            <tr>
+                <th>UUID</th>
+                <th>E-postadress</th>
+                <th>Förnamn</th>
+                <th>Efternamn</th>
+                <th>Ändra</th>
+            </tr>
+            </thead>
+            <tbody id="pendingAdminsTableBody">
             </tbody>
         </table>
     </section>

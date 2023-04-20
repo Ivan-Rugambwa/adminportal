@@ -78,12 +78,15 @@ const fillForm = (businesses) => {
 }
 
 const postRegister = async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const role = (urlParams.get('role') === 'admin') ? 'ADMIN' : 'USER';
     const form = document.getElementById('form');
     const body = {
         email: form.elements['email'].value,
         firstName: form.elements['firstName'].value,
         lastName: form.elements['lastName'].value,
-        businessName: form.elements['business-select'].value
+        businessName: form.elements['business-select'].value,
+        roleName: role
     }
     const response = await fetch(`${userApiUrl}/api/admin/preregister`, {
         method: 'POST',
