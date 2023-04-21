@@ -8,23 +8,18 @@ export const isAuthenticatedWithRedirect = async () => {
 }
 
 export const isAuthenticated = async () => {
-    console.log('Checking jwt...');
     if (await verifyJwt() === 200) {
-        console.log('Jwt valid');
         return true;
     }
-    console.log('Checking refresh token...');
     if (await useRefreshToken() === 200) {
-        console.log('Refresh token valid');
         return true;
     }
-    console.log('Authentication failed');
     return false;
 }
 
 export const loginWithRedirect = () => {
     const currentUrl = window.location.pathname;
-    window.location.assign(`${baseUrl}/auth/login?redirect=${currentUrl}`);
+    window.location.assign(`${baseUrl}?redirect=${currentUrl}`);
 }
 const verifyJwt = async () => {
     let status = 500;

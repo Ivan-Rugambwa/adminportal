@@ -1,5 +1,5 @@
 import {baseUrl, userApiUrl} from "../../shared.js";
-import {adminPage} from "../../auth/adminPage.js";
+import {isAuthenticatedWithRedirect} from "../../auth/auth.js";
 
 const seatTable = document.getElementById('seatTable');
 
@@ -119,7 +119,7 @@ const toggleBlur = () => {
 }
 
 window.addEventListener('load', async ev => {
-    await adminPage();
+    await isAuthenticatedWithRedirect();
     await updateTables()
     console.log("loading tables");
 })

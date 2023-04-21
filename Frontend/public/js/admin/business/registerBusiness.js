@@ -1,6 +1,8 @@
 import {userApiUrl} from "../../shared.js";
+import {isAuthenticatedWithRedirect} from "../../auth/auth.js";
 
 window.addEventListener('load', async ev => {
+    await isAuthenticatedWithRedirect();
     let businesses = await getBusinesses();
     console.log(businesses)
     fillForm(businesses);
