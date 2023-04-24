@@ -1,7 +1,7 @@
 body {
-    background-color: #4a494a;
+    background-color: #525252;
     font-size: 1.6rem;
-    font-family: "Open Sans", sans-serif;
+    font-family: century-gothic, serif;
     color: #2b3e51;
 }
 
@@ -149,7 +149,7 @@ input[type="submit"]:hover {
 }
 
 #create-account-wrap {
-    background-color: #333;
+    background-color: #444;
     color: #8a8b8e;
     font-size: 14px;
     width: 100%;

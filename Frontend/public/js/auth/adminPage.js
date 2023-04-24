@@ -11,7 +11,7 @@ import {baseUrl} from "../shared.js";
 window.addEventListener('load', async () => {
     setInterval(async () => {
         await adminPage();
-    }, 900000)
+    }, 900000);
 })
 export const adminPage = async () => {
     if (await isAuthenticatedWithRedirect() === false) {

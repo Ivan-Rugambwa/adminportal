@@ -1,5 +1,6 @@
-import {userApiUrl,baseUrl} from "../../shared.js";
+import {userApiUrl, baseUrl} from "../../shared.js";
 import {adminPage} from "../../auth/adminPage.js";
+import {isAuthenticatedWithRedirect} from "../../auth/auth.js";
 
 const cancel = document.querySelector('.cancelButton');
 const form = document.getElementById('form');
@@ -13,7 +14,7 @@ cancel.addEventListener('click', ev => {
 });
 
 window.addEventListener('load', async ev => {
-    await adminPage();
+    await isAuthenticatedWithRedirect();
 
     const business = await getBusiness();
 
@@ -25,7 +26,7 @@ window.addEventListener('load', async ev => {
 window.addEventListener('submit', async ev => {
     ev.preventDefault();
     const form = document.getElementById('editTable');
-    
+
     await putUpdate()
 })
 const getBusinesses = async () => {
@@ -74,9 +75,8 @@ const fillForm = (business) => {
     document.getElementById('uuid').setAttribute('value', business['uuid']);
     document.getElementById('seatBaseline').setAttribute('value', business['seatBaseline']);
     document.getElementById('business-name').setAttribute('value', business['name']);
-    
-    
-    
+
+
 }
 
 const putUpdate = async () => {
@@ -84,7 +84,7 @@ const putUpdate = async () => {
     const body = {
         seatBaseline: form.elements['seatBaseline'].value,
         name: form.elements['business-name'].value
-        
+
     }
     console.log(body)
     return await fetch(`${userApiUrl}/api/admin/business/${form.elements['uuid'].value}`, {

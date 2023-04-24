@@ -1,0 +1,168 @@
+body {
+    background-color: #ddd;
+}
+
+#title {
+    font-size: 32px;
+    margin-bottom: 1rem;
+}
+
+#seatFrame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 6rem 4rem 6rem;
+}
+
+#seat {
+    padding: 1rem 4rem;
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #eee;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+}
+
+.row {
+    display: flex;
+    width: 26rem;
+    height: fit-content;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid #555;
+    font-size: 20px;
+    background-color: #444;
+}
+
+.seatName {
+    padding: 2px 2px 2px 10px;
+    display: flex;
+    flex: 35;
+    color: #99CC00;
+}
+
+.seatData {
+    padding: 2px 2px 2px 10px;
+    display: flex;
+    flex: 65;
+    color: white;
+}
+
+#text {
+    display: flex;
+    font-size: 20px;
+    margin: 20px 0 0 0;
+    padding: 1rem 0;
+    justify-content: center;
+    background-color: #222;
+    color: white;
+    border-radius: 5px 5px 0 0;
+}
+
+#reportFrame {
+    width: 26rem;
+
+}
+
+#formFields, #registerButton {
+    display: none;
+}
+
+#inputDiv {
+    font-size: 20px;
+    background-color: #222;
+    color: white;
+    padding: 6px 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+#amount {
+    width: max-content;
+    border-radius: 4px;
+}
+
+#amount:focus {
+    outline: none;
+}
+
+.warning {
+    border: 2px solid darkorange;
+}
+
+#extraWarning, #overuseAmount {
+    /*max-width: 25rem;*/
+    font-size: 18px;
+    color: darkorange;
+    background-color: #222;
+    padding: 0.5rem 1rem;
+    display: none;
+}
+
+#lowWarning, #highWarning {
+    /*max-width: 25rem;*/
+    font-size: 18px;
+    color: red;
+    background-color: #222;
+    padding: 0.5rem 1rem;
+    display: none;
+}
+
+#bottomWarning {
+    padding-bottom: 1rem;
+    background-color: #222;
+    border-radius: 0 0 4px 4px;
+}
+
+.buttons * {
+    margin: 2rem 10px 4px 10px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-evenly;
+    margin-bottom: 1rem;
+}
+
+.buttons button {
+    width: 10rem;
+    border-radius: 5px;
+    border-color: transparent;
+    cursor: pointer;
+    padding: 0.5rem 0;
+}
+
+.cancelButton {
+    background-color: #383838;
+    color: white;
+}
+
+.cancelButton:hover {
+    background-color: #4b4b4b;
+}
+
+#registerButton {
+    background-color: #99CC00;
+}
+
+#registerButton:hover {
+    background-color: #a9e500;
+}
+
+#load {
+    margin-top: 1rem;
+    /*display: flex;*/
+    justify-content: center;
+    align-items: center;
+}
+
+#loadIcon {
+    display: none;
+    color: royalblue;
+    font-size: 32px;
+}

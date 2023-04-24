@@ -37,7 +37,7 @@ form.addEventListener('submit', async ev => {
 });
 loginButton.addEventListener('click', ev => {
     ev.preventDefault();
-    window.location.assign(`${baseUrl}/auth/login`);
+    window.location.assign(`${baseUrl}/`);
 })
 const isValid = () => {
     const password = document.getElementById('password').value;
@@ -63,12 +63,14 @@ const isValid = () => {
 const loadForm = async (preRegister) => {
     const email = document.getElementById('email');
     const business = document.getElementById('business');
-
+    const userBusiness = preRegister['businessName'];
     email.value = preRegister['email'];
-    if (preRegister['businessName'])
-        business.value = preRegister['businessName'];
-    else
-        document.getElementById('business-div').style.display = 'none';
+    console.log(preRegister['businessName'])
+
+    if (userBusiness) {
+        business.value = userBusiness;
+        document.getElementById('business-div').style.visibility = 'visible';
+    }
 
 }
 

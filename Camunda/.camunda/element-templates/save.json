@@ -1,0 +1,96 @@
+{
+  "$schema": "https://unpkg.com/@camunda/zeebe-element-templates-json-schema/resources/schema.json",
+  "name": "Save seat",
+  "id": "apendo.save.seat.template",
+  "description": "Save seat data",
+  "version": 1,
+  "documentationRef": "https://docs.camunda.io/docs/components/connectors/out-of-the-box-connectors/available-connectors-overview/",
+  "icon": {
+    "contents": "https://icons-for-free.com/iconfiles/png/512/save+icon-1320167995084087448.png"
+  },
+  "category": {
+    "id": "connectors",
+    "name": "Connectors"
+  },
+  "appliesTo": [
+    "bpmn:Task"
+  ],
+  "elementType": {
+    "value": "bpmn:ServiceTask"
+  },
+  
+  "properties": [
+    {
+      "type": "Hidden",
+      "value": "apendo:save:1",
+      "binding": {
+        "type": "zeebe:taskDefinition:type"
+      }
+    },
+    {
+      "label": "Url",
+      "description": "The url to the api",
+      "type": "String",
+      "value": "=\"secrets.API_URL\"",
+      "feel": "required",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "apiUrl"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Email",
+      "description": "The email to use",
+      "type": "String",
+      "value": "=\"secrets.EMAIL\"",
+      "feel": "required",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "email"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Password",
+      "description": "The password to use",
+      "type": "String",
+      "value": "=\"secrets.PASSWORD\"",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "password"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Seat uuid",
+      "description": "The uuid of the seat to be saved",
+      "type": "String",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "seatUuid"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Result Variable",
+      "description": "Name of variable to store the response in",
+      "group": "output",
+      "type": "String",
+      "binding": {
+        "type": "zeebe:taskHeader",
+        "key": "resultVariable"
+      }
+    }
+  ]
+}

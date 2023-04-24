@@ -67,7 +67,12 @@ body {
 }
 
 .cancelButton {
-    background-color: red;
+    background-color: #383838;
+    color: white;
+}
+
+.cancelButton:hover {
+    background-color: #4b4b4b;
 }
 
 #business-div {
@@ -76,6 +81,10 @@ body {
 
 #registerButton, #loginButton {
     background-color: #99CC00;
+}
+
+#registerButton:hover, #loginButton:hover {
+    background-color: #a9e500;
 }
 
 #loginButton {

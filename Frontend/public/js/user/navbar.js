@@ -20,7 +20,7 @@ export const createNavBar = async () => {
     icon.setAttribute('id', 'navIcon');
     const navTitle = document.createElement('div');
     navTitle.setAttribute('id', 'navTitle');
-    navTitle.innerText = 'Seatportal';
+    navTitle.innerText = 'Caasportal';
 
     midDiv.innerText = `${jwt['firstName']} ${jwt['lastName']}\n${jwt['organization']}`;
 
@@ -39,7 +39,7 @@ export const createNavBar = async () => {
     seat.classList.add('active');
 
 
-    seat.setAttribute('href', `${baseUrl}/seat/report`);
+    seat.setAttribute('href', `${baseUrl}/seat`);
     logout.setAttribute('href', `${baseUrl}/`);
 
     leftLogoDiv.appendChild(icon)

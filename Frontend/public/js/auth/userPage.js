@@ -5,7 +5,7 @@ window.addEventListener('load', async () => {
     setInterval(async () => {
         await userPage();
     }, 900000)
-})
+});
 
 const userPage = async () => {
     if (await isAuthenticatedWithRedirect() === false) {

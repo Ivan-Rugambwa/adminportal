@@ -1,5 +1,5 @@
 import {baseUrl, userApiUrl} from "../../shared.js";
-import {isAuthenticated} from "../../auth/auth.js";
+import {isAuthenticated, isAuthenticatedWithRedirect} from "../../auth/auth.js";
 
 const cancel = document.querySelector('.cancelButton');
 const form = document.getElementById('form');
@@ -14,6 +14,7 @@ cancel.addEventListener('click', ev => {
 });
 
 window.addEventListener('load', async ev => {
+    await isAuthenticatedWithRedirect();
     let businesses = await getBusinesses();
     console.log(businesses)
     //fillForm(businesses);

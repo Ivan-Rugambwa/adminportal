@@ -16,18 +16,19 @@ public class SeatUserController {
     final SeatService service;
 
     @GetMapping("{uuid}")
-    public ResponseEntity<?> GetSeatIfMatchingBusiness(@PathVariable UUID uuid, @RequestHeader("Authorization") String token){
+    public ResponseEntity<?> GetSeatIfMatchingBusiness(@PathVariable UUID uuid, @RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(service.GetByUuidWithMatchingBusiness(uuid, token));
     }
 
     @GetMapping(path = "/business/{name}")
-    public ResponseEntity<?> GetAllByBusinessName(@PathVariable String name, @RequestHeader("Authorization") String token){
+    public ResponseEntity<?> GetAllByBusinessName(@PathVariable String name, @RequestHeader("Authorization") String token) {
         var seats = service.GetAllSeatsByBusinessName(name, token);
         return ResponseEntity.ok().body(seats);
     }
+
     @PatchMapping(path = "{uuid}")
-    public ResponseEntity<?> Update(@Valid @RequestBody UpdateSeatRequest request, @PathVariable UUID uuid){
-        service.UpdateSeat(request, uuid);
+    public ResponseEntity<?> Update(@Valid @RequestBody UpdateSeatRequest request, @PathVariable UUID uuid) {
+        service.UpdateSeatUser(request, uuid);
         return ResponseEntity.noContent().build();
     }
 }
