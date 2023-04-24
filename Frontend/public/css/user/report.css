@@ -125,7 +125,7 @@ body {
 .buttons {
     display: flex;
     flex-direction: row-reverse;
-    justify-content: center;
+    justify-content: space-evenly;
     margin-bottom: 1rem;
 }
 
@@ -152,4 +152,17 @@ body {
 
 #registerButton:hover {
     background-color: #a9e500;
+}
+
+#load {
+    margin-top: 1rem;
+    /*display: flex;*/
+    justify-content: center;
+    align-items: center;
+}
+
+#loadIcon {
+    display: none;
+    color: royalblue;
+    font-size: 32px;
 }

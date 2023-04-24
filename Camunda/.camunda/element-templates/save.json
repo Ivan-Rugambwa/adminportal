@@ -1,12 +1,12 @@
 {
   "$schema": "https://unpkg.com/@camunda/zeebe-element-templates-json-schema/resources/schema.json",
-  "name": "Get user data",
-  "id": "apendo.get.data.template",
-  "description": "Get user data",
+  "name": "Save seat",
+  "id": "apendo.save.seat.template",
+  "description": "Save seat data",
   "version": 1,
   "documentationRef": "https://docs.camunda.io/docs/components/connectors/out-of-the-box-connectors/available-connectors-overview/",
   "icon": {
-    "contents": "https://icons-for-free.com/iconfiles/png/512/user+icon-1320183705947339583.png"
+    "contents": "https://icons-for-free.com/iconfiles/png/512/save+icon-1320167995084087448.png"
   },
   "category": {
     "id": "connectors",
@@ -22,9 +22,23 @@
   "properties": [
     {
       "type": "Hidden",
-      "value": "apendo:get:2",
+      "value": "apendo:save:1",
       "binding": {
         "type": "zeebe:taskDefinition:type"
+      }
+    },
+    {
+      "label": "Url",
+      "description": "The url to the api",
+      "type": "String",
+      "value": "=\"secrets.API_URL\"",
+      "feel": "required",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "apiUrl"
+      },
+      "constraints": {
+        "notEmpty": true
       }
     },
     {
@@ -56,13 +70,13 @@
       }
     },
     {
-      "label": "Business name",
-      "description": "The name of the business the user belongs to",
+      "label": "Seat uuid",
+      "description": "The uuid of the seat to be saved",
       "type": "String",
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
-        "name": "businessName"
+        "name": "seatUuid"
       },
       "constraints": {
         "notEmpty": true

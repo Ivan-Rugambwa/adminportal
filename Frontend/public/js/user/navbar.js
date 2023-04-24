@@ -20,7 +20,7 @@ export const createNavBar = async () => {
     icon.setAttribute('id', 'navIcon');
     const navTitle = document.createElement('div');
     navTitle.setAttribute('id', 'navTitle');
-    navTitle.innerText = 'Seatportal';
+    navTitle.innerText = 'Caasportal';
 
     midDiv.innerText = `${jwt['firstName']} ${jwt['lastName']}\n${jwt['organization']}`;
 

@@ -6,7 +6,7 @@
   "version": 1,
   "documentationRef": "https://docs.camunda.io/docs/components/connectors/out-of-the-box-connectors/available-connectors-overview/",
   "icon": {
-    "contents": "https://icons-for-free.com/iconfiles/png/512/user+icon-1320183705947339583.png"
+    "contents": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%2218%22%20width%3D%2218%22%20viewBox%3D%220%200%2010%2010%22%20shape-rendering%3D%22geometricPrecision%22%3E%3Ctitle%3ESlack%3C%2Ftitle%3E%3Cg%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M0%2C0%20L0%2C10%20L10%2C10%20L10%2C0%20z%22%20fill%3D%22%23ecb12f%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"
   },
   "category": {
     "id": "connectors",
@@ -22,47 +22,19 @@
   "properties": [
     {
       "type": "Hidden",
-      "value": "apendo:get:2",
+      "value": "apendo:get-data:1",
       "binding": {
         "type": "zeebe:taskDefinition:type"
       }
     },
     {
-      "label": "Email",
-      "description": "The email to use",
-      "type": "String",
-      "value": "=\"secrets.EMAIL\"",
-      "feel": "required",
-      "binding": {
-        "type": "zeebe:input",
-        "name": "email"
-      },
-      "constraints": {
-        "notEmpty": true
-      }
-    },
-    {
-      "label": "Password",
-      "description": "The password to use",
-      "type": "String",
-      "value": "=\"secrets.PASSWORD\"",
-      "feel": "optional",
-      "binding": {
-        "type": "zeebe:input",
-        "name": "password"
-      },
-      "constraints": {
-        "notEmpty": true
-      }
-    },
-    {
-      "label": "Business name",
-      "description": "The name of the business the user belongs to",
+      "label": "Token",
+      "description": "The jwt token for authentication.",
       "type": "String",
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
-        "name": "businessName"
+        "name": "token"
       },
       "constraints": {
         "notEmpty": true

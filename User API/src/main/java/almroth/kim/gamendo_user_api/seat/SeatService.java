@@ -115,4 +115,14 @@ public class SeatService {
         return seatResponses;
     }
 
+    public void UpdateSeatUser(UpdateSeatRequest request, UUID uuid) {
+
+        var updateRequest = UpdateSeatRequest.builder()
+                .updatedByEmail(request.getUpdatedByEmail())
+                .usedSeat(request.getUsedSeat())
+                .status("REVIEW")
+                .build();
+
+        UpdateSeat(updateRequest, uuid);
+    }
 }

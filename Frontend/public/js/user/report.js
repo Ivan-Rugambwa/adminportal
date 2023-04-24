@@ -1,7 +1,32 @@
-import {baseUrl, userApiUrl} from "../shared.js";
+import {baseUrl, camundaApiUrl, userApiUrl} from "../shared.js";
 import {getJwtPayload, isAuthenticatedWithRedirect} from "../auth/auth.js";
 
 const cancel = document.querySelector('.cancelButton');
+const form = document.getElementById('form');
+const load = document.getElementById('load');
+const loadIcon = document.getElementById('loadIcon');
+const registerButton = document.getElementById('registerButton');
+// loadIcon.style.display = 'flex';
+
+form.addEventListener('submit', async ev => {
+    ev.preventDefault();
+    load.innerText = '';
+    console.log(loadIcon)
+    loadIcon.style.display = 'flex';
+    registerButton.style.pointerEvents = 'none';
+    try {
+        const post = postReport();
+        await Promise.all([post, new Promise(r => setTimeout(r, 1000))])
+        load.innerText = 'Kunden har uppdaterats.';
+        load.style.color = '#99CC00';
+    } catch (e) {
+        load.innerText = 'Kunde inte uppdatera, försök igen senare eller kontakta support.';
+        load.style.color = 'red';
+        console.log(e);
+    }
+    loadIcon.style.display = 'none';
+    registerButton.style.pointerEvents = 'auto';
+})
 
 cancel.addEventListener('click', ev => {
     ev.preventDefault();
@@ -13,11 +38,38 @@ window.addEventListener('load', async () => {
     const seat = await getSeat();
     fillForm(seat);
 });
+const postReport = async () => {
+    const uuid = document.getElementById('uuid').innerText;
+    const changedBy = document.getElementById('changedBy').innerText;
+    const forYearMonth = document.getElementById('forYearMonth').innerText;
+    const business = document.getElementById('business').innerText;
+    const seatAmount = document.getElementById('seatAmount').innerText;
+    let response;
+
+    response = await fetch(`${camundaApiUrl}/api/message`, {
+        method: 'POST',
+        headers: {
+            "Authorization": "Bearer " + window.localStorage.getItem('jwt'),
+        },
+        body: {
+            "message": "report-response",
+            "email": changedBy,
+            "forYearMonth": forYearMonth,
+            "business": business,
+            "seatUuid": uuid,
+            "amountOfSeatUsed": seatAmount
+        }
+    });
+    if (response.status !== 200) {
+        console.log('something went wrong')
+    }
+
+};
 
 const seatInput = document.getElementById('amount');
 seatInput.addEventListener('input', async () => {
     const jwt = await getJwtPayload();
-    const seatAmount = document.getElementById('seatAmount')
+    const seatAmount = document.getElementById('seatAmount');
     seatAmount.innerText = (seatInput.value === '') ? 'Ej ifylld' : seatInput.value;
     document.getElementById('changedBy').innerText = (seatAmount.innerText === 'Ej ifylld') ? 'Ej ifylld' : jwt['sub'];
     document.getElementById('status').innerText = (seatAmount.innerText === 'Ej ifylld') ? 'Ej ifylld' : 'Ej inskickad';
@@ -85,6 +137,7 @@ const getSeat = async () => {
 }
 
 const fillForm = (seat) => {
+    document.getElementById('uuid').innerText = seat['uuid'];
     document.getElementById('baseline').innerText = seat['businessBaseline'];
     document.getElementById('changedBy').innerText = seat['completedByEmail'] ?? 'Ej ifylld';
     document.getElementById('forYearMonth').innerText = seat['forYearMonth'];
