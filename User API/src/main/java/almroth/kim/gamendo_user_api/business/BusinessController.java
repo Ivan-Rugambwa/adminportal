@@ -29,8 +29,8 @@ public class BusinessController {
     }
 
     @PostMapping
-    public void postBusiness(@RequestBody CreateBusinessRequest request) {
-        service.Create(request);
+    public ResponseEntity<?> postBusiness(@Valid @RequestBody CreateBusinessRequest request) {
+        return ResponseEntity.ok(service.Create(request));
     }
 
     @DeleteMapping("/{uuid}")
