@@ -5,17 +5,17 @@ import io.camunda.connector.api.outbound.OutboundConnectorContext;
 import io.camunda.connector.api.outbound.OutboundConnectorFunction;
 import io.camunda.connector.viewmodels.LoginRequest;
 import io.camunda.connector.viewmodels.LoginResponse;
+import io.camunda.connector.viewmodels.SeatReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @OutboundConnector(
     name = "Save seat data.",
-    inputVariables = {"email", "password", "seatUuid", "apiUrl"},
+    inputVariables = {"email", "password", "seatUuid", "status", "apiUrl"},
     type = "apendo:save:1")
 public class SaveDataFunction implements OutboundConnectorFunction {
 
@@ -62,7 +62,7 @@ public class SaveDataFunction implements OutboundConnectorFunction {
 
   public static void updateSeatReport(SeatReportClient client, String token, SaveDataRequest request){
     var seatReport = new SeatReport();
-    seatReport.setStatus("COMPLETE");
+    seatReport.setStatus(request.getStatus());
     try {
       client.updateSeatReport("Bearer " + token, request.getSeatUuid(), seatReport).get();
     } catch (Exception e) {

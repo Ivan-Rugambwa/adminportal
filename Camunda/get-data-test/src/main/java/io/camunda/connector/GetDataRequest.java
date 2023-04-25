@@ -12,6 +12,8 @@ public class GetDataRequest {
     private String email;
     @Secret
     private String password;
+    @Secret
+    private String apiUrl;
     private String businessName;
     private String token;
 

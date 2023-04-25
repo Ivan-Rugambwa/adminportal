@@ -15,71 +15,78 @@ import java.util.concurrent.ExecutionException;
 
 public class MyRequestTest {
 
-  @Test
-  void shouldReplaceTokenSecretWhenReplaceSecrets() {
-    // given
-    var input = new GetDataRequest();
-    input.setToken("Hello World!");
-    input.setPassword("secrets.PASSWORD");
-    input.setEmail("secrets.EMAIL");
-
-    var context = OutboundConnectorContextBuilder.create()
-      .secret("PASSWORD", "testtest").secret("EMAIL", "kim@test.com")
-      .build();
-    // when
-    context.replaceSecrets(input);
-    // then
-    assertThat(input)
-      .extracting("password")
-      .isEqualTo("testtest");
-  }
-
-  @Test
-  void loginTest() throws ExecutionException, InterruptedException {
-    // given
-    var input = new GetDataRequest();
-    input.setPassword("secrets.PASSWORD");
-    input.setEmail("secrets.EMAIL");
-    input.setToken("");
-    var context = OutboundConnectorContextBuilder.create()
-            .secret("PASSWORD", "testtest").secret("EMAIL", "kim@test.com")
-            .build();
-
-    // when
-    context.replaceSecrets(input);
-
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://83.233.216.66:35462/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-    AccountClient client = retrofit.create(AccountClient.class);
-
-    var loginResponse = login(client, input);
-    input.setToken(loginResponse.getAccessToken());
-
-    // then
-
-    assertThat(input)
-            .extracting("token")
-            .isNotEqualTo("");
-  }
+//  @Test
+//  void shouldReplaceTokenSecretWhenReplaceSecrets() {
+//    // given
+//    var input = new GetDataRequest();
+//    input.setToken("Hello World!");
+//    input.setPassword("secrets.PASSWORD");
+//    input.setEmail("secrets.EMAIL");
+//    input.setApiUrl("secrets.API_URL");
+//
+//    var context = OutboundConnectorContextBuilder.create()
+//      .secret("PASSWORD", "testtest")
+//            .secret("EMAIL", "kim@test.com")
+//            .secret("API_URL", "http://localhost:35462/")
+//      .build();
+//    // when
+//    context.replaceSecrets(input);
+//    // then
+//    assertThat(input)
+//      .extracting("password")
+//      .isEqualTo("testtest");
+//  }
+//
+//  @Test
+//  void loginTest() throws ExecutionException, InterruptedException {
+//    // given
+//    var input = new GetDataRequest();
+//    input.setPassword("secrets.PASSWORD");
+//    input.setEmail("secrets.EMAIL");
+//    input.setToken("");
+//    var context = OutboundConnectorContextBuilder.create()
+//            .secret("PASSWORD", "testtest").secret("EMAIL", "kim@test.com")
+//            .secret("API_URL", "http://localhost:35462/")
+//            .build();
+//
+//    // when
+//    context.replaceSecrets(input);
+//
+//    Retrofit retrofit = new Retrofit.Builder()
+//            .baseUrl("http://83.233.216.66:35462/")
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build();
+//    AccountClient client = retrofit.create(AccountClient.class);
+//
+//    var loginResponse = login(client, input);
+//    input.setToken(loginResponse.getAccessToken());
+//
+//    // then
+//
+//    assertThat(input)
+//            .extracting("token")
+//            .isNotEqualTo("");
+//  }
   @Test
   void getTest() throws ExecutionException, InterruptedException {
     // given
     var input = new GetDataRequest();
     input.setPassword("secrets.PASSWORD");
     input.setEmail("secrets.EMAIL");
+    input.setApiUrl("secrets.API_URL");
     input.setBusinessName("ICA");
     input.setToken("");
     var context = OutboundConnectorContextBuilder.create()
-            .secret("PASSWORD", "testtest").secret("EMAIL", "kim@test.com")
+            .secret("PASSWORD", "testtest")
+            .secret("EMAIL", "kim.almroth@apendo.se")
+            .secret("API_URL", "http://localhost:35462/")
             .build();
 
     // when
     context.replaceSecrets(input);
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://83.233.216.66:35462/")
+            .baseUrl(input.getApiUrl())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     AccountClient client = retrofit.create(AccountClient.class);

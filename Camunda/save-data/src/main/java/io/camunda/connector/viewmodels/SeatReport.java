@@ -1,4 +1,4 @@
-package io.camunda.connector;
+package io.camunda.connector.viewmodels;
 
 import lombok.Data;
 

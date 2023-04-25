@@ -21,7 +21,7 @@ import java.util.Set;
 
 @OutboundConnector(
     name = "Create seat",
-    inputVariables = {"email", "password", "today"},
+    inputVariables = {"email", "password", "today", "apiUrl"},
     type = "apendo:create-seat:1")
 public class SeatFunction implements OutboundConnectorFunction {
 
@@ -39,7 +39,7 @@ public class SeatFunction implements OutboundConnectorFunction {
 
     OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://83.233.216.66:35462/")
+            .baseUrl(request.getApiUrl())
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient.build())
             .build();

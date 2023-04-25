@@ -28,6 +28,20 @@
       }
     },
     {
+      "label": "Url",
+      "description": "The url to the api",
+      "type": "String",
+      "value": "=\"secrets.API_URL\"",
+      "feel": "required",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "apiUrl"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
       "label": "Email",
       "description": "The email to use",
       "type": "String",

@@ -65,22 +65,29 @@ services:
       - elasticsearch
 
   connectors: # https://docs.camunda.io/docs/components/integration-framework/connectors/out-of-the-box-connectors/available-connectors-overview/
-    image: camunda/connectors-bundle:${CAMUNDA_CONNECTORS_VERSION}
+    image: camunda/connectors:0.7.0
     container_name: connectors
     ports:
       - "8085:8080"
     environment:
       - ZEEBE_CLIENT_BROKER_GATEWAY-ADDRESS=zeebe:26500
       - ZEEBE_CLIENT_SECURITY_PLAINTEXT=true
+      - CAMUNDA_OPERATE_CLIENT_KEYCLOAK-URL=http://keycloak:8080
+      - CAMUNDA_OPERATE_CLIENT_CLIENT-ID=connectors
+      - CAMUNDA_OPERATE_CLIENT_CLIENT-SECRET=c0nn3ct0rsAr3Aw3s0me
+      - CAMUNDA_OPERATE_CLIENT_KEYCLOAK-REALM=camunda-platform
       - CAMUNDA_OPERATE_CLIENT_URL=http://operate:8080
-      - CAMUNDA_OPERATE_CLIENT_USERNAME=demo
-      - CAMUNDA_OPERATE_CLIENT_PASSWORD=demo
     env_file: connector-secrets.txt
     networks:
       - camunda-platform
     depends_on:
       - zeebe
       - operate
+    volumes:
+      - "./get-data-test-with-dependencies.jar:/opt/app/get-data.jar"
+      - "./send-email-test-with-dependencies.jar:/opt/app/send-email.jar"
+      - "./create-seat-test-with-dependencies.jar:/opt/app/create-seat.jar"
+      - "./save-data-test-with-dependencies.jar:/opt/app/save-seat.jar"
 
   elasticsearch: # https://hub.docker.com/_/elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}

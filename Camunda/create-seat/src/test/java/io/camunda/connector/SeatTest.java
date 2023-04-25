@@ -14,10 +14,12 @@ public class SeatTest {
     input.setEmail("secrets.EMAIL");
     input.setPassword("secrets.PASSWORD");
     input.setToday("2020-01-01");
+    input.setApiUrl("http://localhost:35462");
     var function = new SeatFunction();
     var context = OutboundConnectorContextBuilder.create()
-            .secret("EMAIL", "kim@test.com")
+            .secret("EMAIL", "kim.almroth@apendo.se")
             .secret("PASSWORD", "testtest")
+            .secret("API_URL", "http://localhost:35462")
       .variables(input)
       .build();
     // when

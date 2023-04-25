@@ -9,5 +9,7 @@ public class SeatRequest {
     private String email;
     @Secret
     private String password;
+    @Secret
+    private String apiUrl;
     private String today;
 }

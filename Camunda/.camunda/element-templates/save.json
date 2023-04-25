@@ -83,6 +83,19 @@
       }
     },
     {
+      "label": "Status",
+      "description": "The status to set, COMPLETE or FILL",
+      "type": "String",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "status"
+      },
+      "constraints": {
+        "pattern": "^(FILL|COMPLETE)$"
+      }
+    },
+    {
       "label": "Result Variable",
       "description": "Name of variable to store the response in",
       "group": "output",

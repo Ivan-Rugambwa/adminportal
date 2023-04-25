@@ -36,7 +36,7 @@ public class MessageService {
                 .correlationKey(correlationKey)
                 .messageId(UUID.randomUUID().toString())
                 .timeToLive(Duration.ofSeconds(10))
-                .variables(Map.of("seatUsedAmount", request.getAmountOfSeatsUsed()))
+                .variables(Map.of("seatUsedAmount", request.getAmountOfSeatsUsed(), "filledByEmail", request.getEmail()))
                 .send().join();
         System.out.println("Message published");
 
@@ -44,7 +44,7 @@ public class MessageService {
     }
 
     public boolean isTokenValid(String token) throws Exception {
-        var authUrl = "http://83.233.216.66:35462/api/auth/validate";
+        var authUrl = "http://localhost:35462/api/auth/validate";
         token = token.substring(7).trim();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -63,7 +63,7 @@ public class MessageService {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://83.233.216.66:35462/")
+                .baseUrl("http://localhost:35462/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();

@@ -8,12 +8,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQLDialect
+      dialect: org.hibernate.dialect.SQLServerDialect
+    database: sql_server
   sql:
     init:
       mode: always
-      platform: mysql
   main:
     banner-mode: off
 logging:

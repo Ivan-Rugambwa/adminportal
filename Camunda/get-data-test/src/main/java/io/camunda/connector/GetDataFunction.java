@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutionException;
 
 @OutboundConnector(
     name = "Get user data.",
-    inputVariables = {"email", "password", "businessName"},
+    inputVariables = {"email", "password", "businessName", "apiUrl"},
     type = "apendo:get:2")
 public class GetDataFunction implements OutboundConnectorFunction {
 
@@ -38,7 +38,7 @@ public class GetDataFunction implements OutboundConnectorFunction {
     LOGGER.info("Executing my connector with request {}", connectorRequest);
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://83.233.216.66:35462/")
+            .baseUrl(connectorRequest.getApiUrl())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     AccountClient client = retrofit.create(AccountClient.class);

@@ -13,6 +13,7 @@ public class SaveDataRequest {
     @Secret
     private String password;
     private String seatUuid;
+    private String status;
     private String token;
 
 }
