@@ -2,6 +2,7 @@ package io.camunda.connector;
 
 import io.camunda.connector.viewmodels.LoginRequest;
 import io.camunda.connector.viewmodels.LoginResponse;
+import io.camunda.connector.viewmodels.SeatReport;
 import retrofit2.http.*;
 
 import java.util.concurrent.CompletableFuture;

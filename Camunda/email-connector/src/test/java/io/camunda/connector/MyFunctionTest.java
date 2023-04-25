@@ -24,7 +24,7 @@ public class MyFunctionTest {
     var context = OutboundConnectorContextBuilder.create()
             .secret("HOST", "mail.smtp2go.com")
             .secret("FROM", "apendo.operations@outlook.com")
-            .secret("PASSWORD", "ny4Txg94cQZtPAgW")
+            .secret("PASSWORD", "H4SZfC%cKnnKes4HQC7k$N2WNvb!bG9L%jfktiAPgUs6nDBB*^G4D@Ty*Te!C9S")
             .secret("PORT", "2525")
             .variables(input)
             .build();

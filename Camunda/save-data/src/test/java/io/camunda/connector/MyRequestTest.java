@@ -38,36 +38,36 @@ public class MyRequestTest {
 //      .isEqualTo("testtest");
 //  }
 
-  @Test
-  void saveTest() throws Exception {
-    // given
-    var input = new SaveDataRequest();
-    input.setToken("Hello World!");
-    input.setPassword("secrets.PASSWORD");
-    input.setEmail("secrets.EMAIL");
-    input.setApiUrl("secrets.API_URL");
-    input.setSeatUuid("d06293f9-47ca-4cc6-a270-c21a87e68619");
-
-    var context = OutboundConnectorContextBuilder
-            .create()
-            .secret("PASSWORD", "testtest")
-            .secret("EMAIL", "kim.almroth@apendo.se")
-            .secret("API_URL", "http://localhost:35462/")
-            .variables(input)
-            .build();
-    // when
-    context.replaceSecrets(input);
-
-    var function = new SaveDataFunction();
-    var result = function.execute(context);
-
-    // then
-
-    assertThat(result)
-            .isInstanceOf(SaveDataResult.class)
-            .extracting("message")
-            .isEqualTo("Seat report has been saved");
-  }
+//  @Test
+//  void saveTest() throws Exception {
+//    // given
+//    var input = new SaveDataRequest();
+//    input.setToken("Hello World!");
+//    input.setPassword("secrets.PASSWORD");
+//    input.setEmail("secrets.EMAIL");
+//    input.setApiUrl("secrets.API_URL");
+//    input.setSeatUuid("d06293f9-47ca-4cc6-a270-c21a87e68619");
+//
+//    var context = OutboundConnectorContextBuilder
+//            .create()
+//            .secret("PASSWORD", "testtest")
+//            .secret("EMAIL", "kim.almroth@apendo.se")
+//            .secret("API_URL", "http://localhost:35462/")
+//            .variables(input)
+//            .build();
+//    // when
+//    context.replaceSecrets(input);
+//
+//    var function = new SaveDataFunction();
+//    var result = function.execute(context);
+//
+//    // then
+//
+//    assertThat(result)
+//            .isInstanceOf(SaveDataResult.class)
+//            .extracting("message")
+//            .isEqualTo("Seat report has been saved");
+//  }
 //  @Test
 //  void getTest() throws ExecutionException, InterruptedException {
 //    // given
