@@ -4,12 +4,12 @@
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>Flow_0dx66w8</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_0dx66w8" sourceRef="StartEvent_1" targetRef="Activity_1ldafjx" />
+    <bpmn:sequenceFlow id="Flow_0dx66w8" sourceRef="StartEvent_1" targetRef="Activity_1ewqocj" />
     <bpmn:endEvent id="Event_10zvlrw">
-      <bpmn:incoming>Flow_17zrzf1</bpmn:incoming>
+      <bpmn:incoming>Flow_0o4w6r4</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_17zrzf1" sourceRef="Activity_1ldafjx" targetRef="Event_10zvlrw" />
-    <bpmn:serviceTask id="Activity_1ldafjx" zeebe:modelerTemplate="apendo.send.email" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%2218%22%20width%3D%2218%22%20viewBox%3D%220%200%2010%2010%22%20shape-rendering%3D%22geometricPrecision%22%3E%3Ctitle%3ESlack%3C%2Ftitle%3E%3Cg%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M0%2C0%20L0%2C10%20L10%2C10%20L10%2C0%20z%22%20fill%3D%22%23ecb12f%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+    <bpmn:sequenceFlow id="Flow_0o4w6r4" sourceRef="Activity_1ewqocj" targetRef="Event_10zvlrw" />
+    <bpmn:serviceTask id="Activity_1ewqocj" zeebe:modelerTemplate="apendo.send.email" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="https://icons-for-free.com/iconfiles/png/512/mail+email+mail+message+messagesent+online+send+icon-1320168115193956831.png">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="apendo:send-email:1" />
         <zeebe:ioMapping>
@@ -18,15 +18,15 @@
           <zeebe:input source="=&#34;secrets.FROM_PASSWORD&#34;" target="password" />
           <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
           <zeebe:input source="kim.almroth@apendo.se" target="to" />
-          <zeebe:input source="från camunda connector" target="subject" />
-          <zeebe:input source="det här är ett testmail" target="text" />
+          <zeebe:input source="test" target="subject" />
+          <zeebe:input source="testtest" target="text" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
-          <zeebe:header key="resultVariable" value="testEmail" />
+          <zeebe:header key="resultVariable" value="test" />
         </zeebe:taskHeaders>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0dx66w8</bpmn:incoming>
-      <bpmn:outgoing>Flow_17zrzf1</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0o4w6r4</bpmn:outgoing>
     </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -37,15 +37,15 @@
       <bpmndi:BPMNShape id="Event_10zvlrw_di" bpmnElement="Event_10zvlrw">
         <dc:Bounds x="432" y="99" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1nqqjn2_di" bpmnElement="Activity_1ldafjx">
-        <dc:Bounds x="270" y="77" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_1r50auj_di" bpmnElement="Activity_1ewqocj">
+        <dc:Bounds x="260" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0dx66w8_di" bpmnElement="Flow_0dx66w8">
         <di:waypoint x="215" y="117" />
-        <di:waypoint x="270" y="117" />
+        <di:waypoint x="260" y="117" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_17zrzf1_di" bpmnElement="Flow_17zrzf1">
-        <di:waypoint x="370" y="117" />
+      <bpmndi:BPMNEdge id="Flow_0o4w6r4_di" bpmnElement="Flow_0o4w6r4">
+        <di:waypoint x="360" y="117" />
         <di:waypoint x="432" y="117" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

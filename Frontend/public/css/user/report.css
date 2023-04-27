@@ -119,7 +119,7 @@ body {
 }
 
 .buttons * {
-    margin: 2rem 10px 4px 10px;
+    margin: 1rem 10px 4px 10px;
 }
 
 .buttons {
@@ -156,13 +156,28 @@ body {
 
 #load {
     margin-top: 1rem;
-    /*display: flex;*/
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-height: 2rem;
 }
 
 #loadIcon {
-    display: none;
     color: royalblue;
     font-size: 32px;
+}
+
+#loadText {
+    height: 2rem;
+    padding: 0 1rem;
+    margin: 0 1rem
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.none {
+    display: none !important;
 }

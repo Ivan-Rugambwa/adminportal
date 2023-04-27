@@ -12,6 +12,7 @@ import almroth.kim.gamendo_user_api.role.RoleType;
 import com.password4j.BcryptFunction;
 import com.password4j.Password;
 import com.password4j.types.Bcrypt;
+import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -107,10 +108,10 @@ public class AccountService {
         }
 
         if (!request.getFirstName().isBlank())
-            account.setFirstName(request.getFirstName());
+            account.setFirstName(StringUtils.capitalize(request.getFirstName()));
 
         if (!request.getLastName().isBlank())
-            account.setLastName(request.getLastName());
+            account.setLastName(StringUtils.capitalize(request.getLastName()));
 
         if (!request.getBusiness().isBlank() && account.getRoles().stream().noneMatch(role -> role.getName() == RoleType.ADMIN)) {
             var business = businessService.GetByName(request.getBusiness());
@@ -119,10 +120,6 @@ public class AccountService {
 
         accountRepository.saveAndFlush(account);
         return mapper.SIMPLE_RESPONSE(account);
-    }
-
-    private String generateHashedPassword(String password) {
-        return Password.hash(password).with(bcrypt).getResult();
     }
 
     public Account getAccountByEmail(String email) {

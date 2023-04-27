@@ -34,6 +34,7 @@ public class SaveDataFunction implements OutboundConnectorFunction {
   private SaveDataResult executeConnector(final SaveDataRequest connectorRequest) throws InterruptedException, ExecutionException {
     // TODO: implement connector logic
     LOGGER.info("Executing my connector with request {}", connectorRequest);
+    System.out.println("Executing my connector with request: " + connectorRequest);
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(connectorRequest.getApiUrl())

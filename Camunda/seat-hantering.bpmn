@@ -38,7 +38,7 @@
       "label": "Anledning till nekad rapport",
       "type": "textarea",
       "id": "Field_0w2y6hu",
-      "key": "field_0evc47t",
+      "key": "denialReason",
       "description": "Meddelandet skickas till kunden",
       "conditional": {
         "hide": "=approved = null or approved = \"true\""
@@ -74,7 +74,7 @@
         <bpmn:outgoing>Flow_18vqjm7</bpmn:outgoing>
       </bpmn:exclusiveGateway>
       <bpmn:sequenceFlow id="Flow_0yg342n" name="No" sourceRef="Gateway_1pu6miy" targetRef="Gateway_0ku2471">
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=seatUsedAmount &lt;= baseline</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=seatUsedAmount &lt;= seat.businessBaseline</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:endEvent id="Event_1vaxsxj" name="Case checked successfully">
         <bpmn:incoming>Flow_0bdmqt8</bpmn:incoming>
@@ -122,7 +122,7 @@
       </bpmn:startEvent>
       <bpmn:sequenceFlow id="Flow_0sqz3ng" sourceRef="Event_0afylyt" targetRef="Activity_04q1tda" />
       <bpmn:sequenceFlow id="Flow_18vqjm7" name="Yes" sourceRef="Gateway_1pu6miy" targetRef="Gateway_0dvzr0j">
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=seatUsedAmount &gt; baseline</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=seatUsedAmount &gt; seat.businessBaseline</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:endEvent id="Event_16lsqom" name="Mail sent">
         <bpmn:incoming>Flow_16hs5a5</bpmn:incoming>
@@ -167,7 +167,7 @@
               <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
               <zeebe:input source="kim.almroth@apendo.se" target="to" />
               <zeebe:input source="Seatrapportera" target="subject" />
-              <zeebe:input source="Seatrapportera" target="text" />
+              <zeebe:input source="=&#34;Seatrapportera &#34; + user.firstName + &#34; &#34; + user.lastName" target="text" />
             </zeebe:ioMapping>
             <zeebe:taskHeaders>
               <zeebe:header key="resultVariable" value="sendMailResult" />
@@ -184,11 +184,11 @@
         <bpmn:outgoing>Flow_0cto84q</bpmn:outgoing>
       </bpmn:exclusiveGateway>
       <bpmn:sequenceFlow id="Flow_09q3xyc" name="No" sourceRef="Gateway_1uqo6f1" targetRef="Activity_1nh3302">
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=seatUsedAmount &gt; (seat.business.seatBaseline * 1.2) or seatUsedAmount &lt; (seat.business.seatBaseline * 0.8)</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=seatUsedAmount &gt; (seat.businessBaseline * 1.2) or seatUsedAmount &lt; (seat.businessBaseline * 0.8)</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="Flow_0cto84q" name="Yes" sourceRef="Gateway_1uqo6f1" targetRef="Gateway_18kut5n">
         <bpmn:extensionElements />
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=seatUsedAmount &lt;= (seat.business.seatBaseline * 1.2) and seatUsedAmount &gt;= (seat.business.seatBaseline * 0.8)</bpmn:conditionExpression>
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=seatUsedAmount &lt;= (seat.businessBaseline * 1.2) and seatUsedAmount &gt;= (seat.businessBaseline * 0.8)</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
       <bpmn:exclusiveGateway id="Gateway_18kut5n">
         <bpmn:incoming>Flow_1h5asax</bpmn:incoming>
@@ -277,7 +277,7 @@
             <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
             <zeebe:input source="kim.almroth@apendo.se" target="to" />
             <zeebe:input source="Seatrapport ej godkänd" target="subject" />
-            <zeebe:input source="=filledByEmail" target="text" />
+            <zeebe:input source="=filledByEmail + &#34;\n&#34; + denialReason" target="text" />
           </zeebe:ioMapping>
           <zeebe:taskHeaders>
             <zeebe:header key="resultVariable" value="emailDeniedResult" />
@@ -342,7 +342,7 @@
           <zeebe:input source="=&#34;secrets.API_URL&#34;" target="apiUrl" />
           <zeebe:input source="=&#34;secrets.EMAIL&#34;" target="email" />
           <zeebe:input source="=&#34;secrets.PASSWORD&#34;" target="password" />
-          <zeebe:input source="=today()" target="today" />
+          <zeebe:input source="=&#34;2020-05-01&#34;" target="today" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
           <zeebe:header key="resultVariable" value="seats" />

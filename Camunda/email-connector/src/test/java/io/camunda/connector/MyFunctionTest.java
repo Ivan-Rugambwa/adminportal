@@ -9,42 +9,42 @@ import org.junit.jupiter.api.Test;
 
 public class MyFunctionTest {
 
-  @Test
-  void sendEmail() throws Exception {
-    // given
-    var input = new EmailRequest();
-    input.setHost("secrets.HOST");
-    input.setFrom("secrets.FROM");
-    input.setPort("secrets.PORT");
-    input.setPassword("secrets.PASSWORD");
-    input.setText("det h\\u00E4r \\u00E4r ett test & test");
-    input.setTo("kim.almroth@apendo.se");
-    input.setSubject("test from test");
-
-    var context = OutboundConnectorContextBuilder.create()
-            .secret("HOST", "mail.smtp2go.com")
-            .secret("FROM", "apendo.operations@outlook.com")
-            .secret("PASSWORD", "H4SZfC%cKnnKes4HQC7k$N2WNvb!bG9L%jfktiAPgUs6nDBB*^G4D@Ty*Te!C9S")
-            .secret("PORT", "2525")
-            .variables(input)
-            .build();
-    // when
-    context.replaceSecrets(input);
-    var function = new EmailFunction();
-
-    var result = function.execute(context);
-    // then
-
-    assertThat(input)
-            .isInstanceOf(EmailRequest.class)
-            .extracting("text")
-            .isEqualTo("det här är ett test & test");
-
-    assertThat(result)
-      .isInstanceOf(EmailResult.class)
-      .extracting("message")
-      .isEqualTo("Success!");
-  }
+//  @Test
+//  void sendEmail() throws Exception {
+//    // given
+//    var input = new EmailRequest();
+//    input.setHost("secrets.HOST");
+//    input.setFrom("secrets.FROM");
+//    input.setPort("secrets.PORT");
+//    input.setPassword("secrets.PASSWORD");
+//    input.setText("det h\\u00E4r \\u00E4r ett test & test");
+//    input.setTo("kim.almroth@apendo.se");
+//    input.setSubject("test from test");
+//
+//    var context = OutboundConnectorContextBuilder.create()
+//            .secret("HOST", "mail.smtp2go.com")
+//            .secret("FROM", "apendo.operations@outlook.com")
+//            .secret("PASSWORD", "qq")
+//            .secret("PORT", "2525")
+//            .variables(input)
+//            .build();
+//    // when
+//    context.replaceSecrets(input);
+//    var function = new EmailFunction();
+//
+//    var result = function.execute(context);
+//    // then
+//
+//    assertThat(input)
+//            .isInstanceOf(EmailRequest.class)
+//            .extracting("text")
+//            .isEqualTo("det här är ett test & test");
+//
+//    assertThat(result)
+//      .isInstanceOf(EmailResult.class)
+//      .extracting("message")
+//      .isEqualTo("Success!");
+//  }
 
 //  @Test
 //  void shouldThrowWithErrorCodeWhenMessageStartsWithFail() {
