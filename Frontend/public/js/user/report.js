@@ -1,5 +1,5 @@
 import {baseUrl, camundaApiUrl, userApiUrl} from "../shared.js";
-import {getJwtPayload, isAuthenticatedWithRedirect} from "../auth/auth.js";
+import {getJwtPayload, isAuthenticatedWithRedirect, isUser} from "../auth/auth.js";
 
 const cancel = document.querySelector('.cancelButton');
 const form = document.getElementById('form');
@@ -36,7 +36,11 @@ cancel.addEventListener('click', ev => {
 });
 
 window.addEventListener('load', async () => {
-    await isAuthenticatedWithRedirect();
+    if (await isAuthenticatedWithRedirect() === false) {
+    }
+    if (!(await isUser())) {
+        window.location.assign(`${baseUrl}/auth/unauthorized`)
+    }
     const seat = await getSeat();
     fillForm(seat);
 });
