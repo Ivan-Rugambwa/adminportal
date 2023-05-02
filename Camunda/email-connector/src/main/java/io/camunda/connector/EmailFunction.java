@@ -66,8 +66,11 @@ public class EmailFunction implements OutboundConnectorFunction {
             System.out.println("Email sent successfully!");
         } catch (MessagingException mex) {
             mex.printStackTrace();
-            emailResult.setMessage("Could not send email...");
+            emailResult.setMessage("Could not send email... " + mex.getLocalizedMessage());
+            emailResult.setUser(request.getFrom());
+            emailResult.setPass(request.getPassword());
         }
+
         return emailResult;
     }
 }

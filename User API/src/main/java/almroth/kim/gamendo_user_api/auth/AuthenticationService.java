@@ -18,6 +18,7 @@ import almroth.kim.gamendo_user_api.role.RoleType;
 import com.auth0.jwt.algorithms.Algorithm;
 import io.jsonwebtoken.io.Decoders;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -80,8 +81,8 @@ public class AuthenticationService {
         System.out.println(encodedPassword.length());
         var account = Account
                 .builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
+                .firstName(StringUtils.capitalize(request.getFirstName()))
+                .lastName(StringUtils.capitalize(request.getLastName()))
                 .email(request.getEmail())
                 .password(encodedPassword)
                 .build();

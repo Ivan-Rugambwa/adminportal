@@ -18,8 +18,7 @@ export const isAuthenticated = async () => {
 }
 
 export const loginWithRedirect = () => {
-    const currentUrl = window.location.pathname;
-    window.location.assign(`${baseUrl}?redirect=${currentUrl}`);
+    window.location.assign(`${baseUrl}?redirect=${window.location.pathname}${window.location.search}`);
 }
 const verifyJwt = async () => {
     let status = 500;

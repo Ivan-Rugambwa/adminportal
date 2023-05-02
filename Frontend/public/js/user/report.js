@@ -1,30 +1,32 @@
 import {baseUrl, camundaApiUrl, userApiUrl} from "../shared.js";
-import {getJwtPayload, isAuthenticatedWithRedirect} from "../auth/auth.js";
+import {getJwtPayload, isAuthenticatedWithRedirect, isUser} from "../auth/auth.js";
 
 const cancel = document.querySelector('.cancelButton');
 const form = document.getElementById('form');
-const load = document.getElementById('load');
+const loadText = document.getElementById('loadText');
 const loadIcon = document.getElementById('loadIcon');
 const registerButton = document.getElementById('registerButton');
-// loadIcon.style.display = 'flex';
 
-form.addEventListener('submit', async ev => {
+window.addEventListener('submit', async ev => {
     ev.preventDefault();
-    load.innerText = '';
-    console.log(loadIcon)
-    loadIcon.style.display = 'flex';
+    loadText.innerText = '';
+    loadText.classList.add('none');
+    loadIcon.classList.remove('none');
     registerButton.style.pointerEvents = 'none';
     try {
         const post = postReport();
         await Promise.all([post, new Promise(r => setTimeout(r, 1000))])
-        load.innerText = 'Kunden har uppdaterats.';
-        load.style.color = '#99CC00';
+        loadText.innerText = 'Rapporten har skickats.';
+        loadText.style.color = 'green';
+        const seat = await getSeat();
+        fillForm(seat);
     } catch (e) {
-        load.innerText = 'Kunde inte uppdatera, försök igen senare eller kontakta support.';
-        load.style.color = 'red';
+        loadText.innerText = 'Kunde inte uppdatera, försök igen senare eller kontakta support.';
+        loadText.style.color = 'red';
         console.log(e);
     }
-    loadIcon.style.display = 'none';
+    loadText.classList.remove('none');
+    loadIcon.classList.add('none');
     registerButton.style.pointerEvents = 'auto';
 })
 
@@ -34,7 +36,11 @@ cancel.addEventListener('click', ev => {
 });
 
 window.addEventListener('load', async () => {
-    await isAuthenticatedWithRedirect();
+    if (await isAuthenticatedWithRedirect() === false) {
+    }
+    if (!(await isUser())) {
+        window.location.assign(`${baseUrl}/auth/unauthorized`)
+    }
     const seat = await getSeat();
     fillForm(seat);
 });
@@ -44,26 +50,27 @@ const postReport = async () => {
     const forYearMonth = document.getElementById('forYearMonth').innerText;
     const business = document.getElementById('business').innerText;
     const seatAmount = document.getElementById('seatAmount').innerText;
+    const body = {
+        "message": "report-response",
+        "email": changedBy,
+        "forYearMonth": forYearMonth,
+        "business": business,
+        "seatUuid": uuid,
+        "amountOfSeatsUsed": seatAmount
+    }
     let response;
 
     response = await fetch(`${camundaApiUrl}/api/message`, {
         method: 'POST',
         headers: {
             "Authorization": "Bearer " + window.localStorage.getItem('jwt'),
+            'Content-Type': 'application/json'
         },
-        body: {
-            "message": "report-response",
-            "email": changedBy,
-            "forYearMonth": forYearMonth,
-            "business": business,
-            "seatUuid": uuid,
-            "amountOfSeatUsed": seatAmount
-        }
+        body: JSON.stringify(body)
     });
     if (response.status !== 200) {
-        console.log('something went wrong')
+        throw Error('something went wrong');
     }
-
 };
 
 const seatInput = document.getElementById('amount');
@@ -158,9 +165,13 @@ const fillText = (seat) => {
             break;
         case 'REVIEW':
             text.innerText = 'Denna rapport är under granskning';
+            document.getElementById('formFields').style.display = 'none';
+            document.getElementById('registerButton').style.display = 'none';
             break;
         case 'COMPLETE':
             text.innerText = 'Denna rapport har blivit godkänd!';
+            document.getElementById('formFields').style.display = 'none';
+            document.getElementById('registerButton').style.display = 'none';
             text.style.color = '#99CC00';
             break;
     }

@@ -34,7 +34,7 @@
       "label": "Anledning till nekad rapport",
       "type": "textarea",
       "id": "Field_0w2y6hu",
-      "key": "field_0evc47t",
+      "key": "denialReason",
       "description": "Meddelandet skickas till kunden",
       "conditional": {
         "hide": "=approved = null or approved = \"true\""

@@ -2,6 +2,7 @@ package com.example.javazeebee;
 
 import com.example.javazeebee.message.dto.PublishRequest;
 import com.example.javazeebee.message.dto.UpdateSeatRequest;
+import com.example.javazeebee.start.dto.StartRequest;
 import io.camunda.zeebe.client.ZeebeClient;
 import lombok.Data;
 import okhttp3.OkHttpClient;
@@ -20,10 +21,11 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 @Data
 @Service
-public class MessageService {
+public class CamundaService {
     @Qualifier("zeebeClientLifecycle")
     @Autowired
     private ZeebeClient client;
@@ -84,5 +86,15 @@ public class MessageService {
         }
         System.out.println(response.code());
         return true;
+    }
+
+    public void startInstance(StartRequest request, String token) throws ExecutionException, InterruptedException {
+        System.out.println("Starting new instance of process: " + request.getProcessId());
+        client.newCreateInstanceCommand()
+                .bpmnProcessId(request.getProcessId())
+                .latestVersion()
+                .variables(request.getVariables())
+                .send()
+                .get();
     }
 }

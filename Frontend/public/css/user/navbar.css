@@ -8,6 +8,7 @@ nav {
     align-items: center;
     flex-direction: row;
     border-top: #99CC00 2px solid;
+    font-family: Century Gothic, sans-serif !important;
 }
 
 #navLinks {
@@ -49,7 +50,6 @@ nav {
     color: white;
     text-align: center;
     width: fit-content;
-    font-family: century-gothic, serif;
 }
 
 #navUserName {

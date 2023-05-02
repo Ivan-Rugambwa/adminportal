@@ -16,6 +16,10 @@
     color: royalblue;
 }
 
+.Container td {
+    min-width: 55px;
+}
+
 #userTableHeader, #adminTableHeader, #seatTableHeader {
     display: flex;
     justify-content: space-between;
