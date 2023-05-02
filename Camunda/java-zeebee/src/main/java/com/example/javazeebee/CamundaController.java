@@ -2,19 +2,21 @@ package com.example.javazeebee;
 
 
 import com.example.javazeebee.message.dto.PublishRequest;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.example.javazeebee.start.dto.StartRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.ExecutionException;
+
 @RestController()
-@RequestMapping("api/message")
-public class MessageController {
+@RequestMapping("api")
+public class CamundaController {
 
     @Autowired
-    MessageService service;
-    @PostMapping
+    CamundaService service;
+    @PostMapping("/message")
     public ResponseEntity<?> publish(@RequestBody PublishRequest request, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) throws Exception {
         System.out.println("Got message request for " + request.getBusiness() + " " + request.getForYearMonth());
         if (!service.isTokenValid(token)) {
@@ -30,5 +32,12 @@ public class MessageController {
         }
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/camunda/start")
+    public ResponseEntity<?> startInstance(@RequestBody StartRequest request, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) throws ExecutionException, InterruptedException {
+        System.out.println("Starting camunda process instance");
+        service.startInstance(request, token);
+        return ResponseEntity.noContent().build();
     }
 }
