@@ -23,7 +23,8 @@ a:active {
     transition: all 0.2s ease;
 }
 
-a:focus, a:hover,
+a:focus,
+a:hover,
 a:link:focus,
 a:link:hover,
 a:visited:focus,
@@ -86,21 +87,21 @@ input[type="email"]:focus:invalid {
     border-color: #cc1e2b;
 }
 
-input[type="password"]:valid ~ .validation,
-input[type="email"]:valid ~ .validation {
+input[type="password"]:valid~.validation,
+input[type="email"]:valid~.validation {
     display: block;
     border-color: #0C0;
 }
 
-input[type="password"]:valid ~ .validation span,
-input[type="email"]:valid ~ .validation span {
+input[type="password"]:valid~.validation span,
+input[type="email"]:valid~.validation span {
     background: #0C0;
     position: absolute;
     border-radius: 6px;
 }
 
-input[type="password"]:valid ~ .validation span:first-child,
-input[type="email"]:valid ~ .validation span:first-child {
+input[type="password"]:valid~.validation span:first-child,
+input[type="email"]:valid~.validation span:first-child {
     top: 30px;
     left: 14px;
     width: 20px;
@@ -108,8 +109,8 @@ input[type="email"]:valid ~ .validation span:first-child {
     transform: rotate(-45deg);
 }
 
-input[type="password"]:valid ~ .validation span:last-child,
-input[type="email"]:valid ~ .validation span:last-child {
+input[type="password"]:valid~.validation span:last-child,
+input[type="email"]:valid~.validation span:last-child {
     top: 35px;
     left: 8px;
     width: 11px;
@@ -170,12 +171,30 @@ input[type="submit"]:hover {
     border-bottom: 4px solid #99CC00;
     border-radius: 4px 4px 0 0;
 }
+
 #logoText {
     margin-left: 3rem;
 }
+
 #logo {
     padding-top: 1rem;
     height: 5rem;
     margin-bottom: -1.75rem;
     margin-right: 2.3rem;
 }
+
+.password-error {
+    color: #D8000C;
+    
+    
+
+}
+
+.email-error {
+    color: #D8000C;
+    
+        
+
+}
+
+
