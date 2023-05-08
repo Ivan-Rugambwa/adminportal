@@ -22,9 +22,10 @@ async function postLogin() {
             "Content-Type": "application/json",
         },
     });
-    if (response.status === 400) {
-        console.log('Fel email eller lösenord')
-        return;
+    if (response.status !== 200) {
+        throw Error('Fel email eller lösenord')
+
+        
     }
     const json = await response.json();
     window.localStorage.setItem("jwt", json.accessToken);
@@ -34,6 +35,7 @@ async function postLogin() {
 window.addEventListener('submit', async (event) => {
     event.preventDefault();
     console.log("logging in");
+    try{
     await postLogin();
     if (await isAuthenticated() === false) return window.location.assign(`${baseUrl}/error`);
 
@@ -51,6 +53,13 @@ window.addEventListener('submit', async (event) => {
         window.location.assign(`${baseUrl}/error`)
     }
     console.log("after verify");
+    } catch(e){
+        document.querySelector(".password-error").innerHTML = "Email or Password not correct";
+      document.querySelector(".password-error").style.display = "block";
+      
+        console.log(e);
+    }
+    
 });
 
 

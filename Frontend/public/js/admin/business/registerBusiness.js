@@ -68,6 +68,6 @@ const postRegister = async () => {
         .then(response => response.json())
         .catch(error => {
             console.error(error);
-            throw Error('Something went wrong updating account: ' + error)
+            throw Error('Something went wrong register business: ' + error)
         });
 }
