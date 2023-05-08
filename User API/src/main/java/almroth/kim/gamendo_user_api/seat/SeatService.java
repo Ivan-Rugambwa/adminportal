@@ -60,10 +60,10 @@ public class SeatService {
         var business = businessService.GetByUuid(request.getBusinessUuid());
 
         var seats = repository.findAllByBusiness_Uuid(business.getUuid()).orElse(new HashSet<>());
-        if (seats.stream().anyMatch(seat -> Objects.equals(seat.getForYearMonth(), request.getForYearMonth()))) {
-            System.out.println("Seat already exists");
-            throw new IllegalArgumentException("There is already a seat report for that year and month with that business");
-        }
+//        if (seats.stream().anyMatch(seat -> Objects.equals(seat.getForYearMonth(), request.getForYearMonth()))) {
+//            System.out.println("Seat already exists");
+//            throw new IllegalArgumentException("There is already a seat report for that year and month with that business");
+//        }
 
         var seat = Seat.builder()
                 .seatUsed(null)

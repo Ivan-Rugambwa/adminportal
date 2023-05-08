@@ -10,13 +10,14 @@ import almroth.kim.gamendo_user_api.config.JwtService;
 import almroth.kim.gamendo_user_api.config.NotionConfigProperties;
 import almroth.kim.gamendo_user_api.error.customException.DataBadCredentialsException;
 import almroth.kim.gamendo_user_api.error.customException.EmailAlreadyTakenException;
-import almroth.kim.gamendo_user_api.preRegister.PreRegisterRepository;
+import almroth.kim.gamendo_user_api.error.customException.PasswordResetTimeoutException;
+import almroth.kim.gamendo_user_api.passwordReset.PasswordResetService;
 import almroth.kim.gamendo_user_api.preRegister.PreRegisterService;
 import almroth.kim.gamendo_user_api.refreshToken.RefreshTokenService;
 import almroth.kim.gamendo_user_api.role.RoleService;
 import almroth.kim.gamendo_user_api.role.RoleType;
 import com.auth0.jwt.algorithms.Algorithm;
-import io.jsonwebtoken.io.Decoders;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Base64;
 import java.util.Objects;
 import java.util.Set;
@@ -37,6 +40,7 @@ import java.util.Set;
 
 public class AuthenticationService {
     private final AccountRepository accountRepository;
+    private final PasswordResetService passwordResetService;
     private final RoleService roleService;
     private final RefreshTokenService refreshTokenService;
     private final AccountProfileService profileService;
@@ -118,15 +122,8 @@ public class AuthenticationService {
         System.out.println("In Authenticate");
         var account = accountRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("No account found with email: " + request.getEmail()));
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getEmail(),
-                            request.getPassword()
-                    )
-            );
-        } catch (BadCredentialsException ex) {
-            System.out.println("Wrong username or password");
+
+        if (isLoginInvalid(request.getEmail(), request.getPassword())) {
             throw new DataBadCredentialsException("Wrong username or password", request.getEmail(), request.getPassword());
         }
 
@@ -138,6 +135,21 @@ public class AuthenticationService {
                 .accessToken(jwt)
                 .refreshToken(refreshToken.getToken())
                 .build();
+    }
+
+    private boolean isLoginInvalid(String email, String password) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            email,
+                            password
+                    )
+            );
+            return false;
+        } catch (BadCredentialsException ex) {
+            System.out.println("Wrong username or password");
+            return true;
+        }
     }
 
     public int validateAccessToken(String token) {
@@ -164,5 +176,52 @@ public class AuthenticationService {
                 .accessToken(jwtService.generateToken(refreshToken.getAccount()))
                 .build();
 
+    }
+
+    @Transactional
+    public void changePassword(UpdatePasswordRequest request) {
+        if (!request.getNewPassword().equals(request.getConfirmNewPassword())) {
+            throw new IllegalArgumentException("Password must match");
+        }
+        if (isLoginInvalid(request.getEmail(), request.getOldPassword())) {
+            throw new DataBadCredentialsException("Wrong username or password", request.getEmail(), request.getOldPassword());
+        }
+        var account = accountRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("No account found with email: " + request.getEmail()));
+        var encodedPassword = passwordEncoder.encode(request.getNewPassword());
+        account.setPassword(encodedPassword);
+        accountRepository.save(account);
+    }
+
+    public void startResetPassword(ResetRequest request) {
+        var account = accountRepository.findByEmail(request.getEmail());
+        if (account.isEmpty())
+            return;
+        var passwordReset = passwordResetService.createPasswordReset(account.get());
+        try {
+            passwordResetService.sendPasswordResetEmail(account.get().getEmail(), passwordReset.getUuid().toString());
+        } catch (MessagingException e) {
+            passwordResetService.deletePasswordResetByUuid(passwordReset.getUuid());
+            throw new RuntimeException(e.getLocalizedMessage());
+        }
+    }
+
+    @Transactional
+    public void finishResetPassword(FinishResetRequest request) {
+        var passwordReset = passwordResetService.getPasswordResetByUuid(request.getResetPasswordUuid());
+
+        var datePlus = passwordReset.getCreatedAtDate().toInstant().plus(Duration.ofMinutes(30));
+        if (Instant.now().isAfter(datePlus)) {
+            passwordResetService.deletePasswordResetByUuid(passwordReset.getUuid());
+            throw new PasswordResetTimeoutException("This link has expired, please reset your password again.");
+        }
+
+        if (!request.getNewPassword().equals(request.getConfirmNewPassword())) {
+            throw new IllegalArgumentException("Password must match");
+        }
+
+        var encodedPassword = passwordEncoder.encode(request.getNewPassword());
+        passwordReset.getAccount().setPassword(encodedPassword);
+        accountRepository.save(passwordReset.getAccount());
     }
 }

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1qkjvnq" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.9.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.1.0">
+  <bpmn:process id="Process_15ghqno" name="Montly Seat Report" isExecutable="true">
+    <bpmn:sequenceFlow id="Flow_0ei310r" sourceRef="StartEvent_1" targetRef="Gateway_1fmwrp6" />
+    <bpmn:serviceTask id="Activity_0u4tizf" name="Create seat reports" zeebe:modelerTemplate="apendo.create.seat-312323423423" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="https://icons-for-free.com/iconfiles/png/512/1-131979012758435845.png">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="apendo:create-seat:1" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=&#34;secrets.API_URL&#34;" target="apiUrl" />
+          <zeebe:input source="=&#34;secrets.EMAIL&#34;" target="email" />
+          <zeebe:input source="=&#34;secrets.PASSWORD&#34;" target="password" />
+          <zeebe:input source="=forDate" target="today" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="resultVariable" value="seat" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_029qd9s</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ti9gfm</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0ti9gfm" sourceRef="Activity_0u4tizf" targetRef="Activity_0a6q3bz" />
+    <bpmn:callActivity id="Activity_0a6q3bz" name="Send seat-reports to customers">
+      <bpmn:extensionElements>
+        <zeebe:calledElement processId="Process_1frg0mm" propagateAllChildVariables="false" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0ti9gfm</bpmn:incoming>
+      <bpmn:outgoing>Flow_1bxao2i</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics>
+        <bpmn:extensionElements>
+          <zeebe:loopCharacteristics inputCollection="=seat.seatResponses" inputElement="seat" />
+        </bpmn:extensionElements>
+      </bpmn:multiInstanceLoopCharacteristics>
+    </bpmn:callActivity>
+    <bpmn:sequenceFlow id="Flow_1bxao2i" sourceRef="Activity_0a6q3bz" targetRef="Activity_0sdgfv1" />
+    <bpmn:serviceTask id="Activity_0sdgfv1" name="Send mail that all reports are done" zeebe:modelerTemplate="apendo.send.email" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="https://icons-for-free.com/iconfiles/png/512/mail+email+mail+message+messagesent+online+send+icon-1320168115193956831.png">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="apendo:send-email:1" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=&#34;secrets.FROM&#34;" target="from" />
+          <zeebe:input source="=&#34;secrets.PORT&#34;" target="port" />
+          <zeebe:input source="=&#34;secrets.FROM_PASSWORD&#34;" target="password" />
+          <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
+          <zeebe:input source="kim.almroth@apendo.se" target="to" />
+          <zeebe:input source="Monthly done" target="subject" />
+          <zeebe:input source="Monthly done" target="text" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="resultVariable" value="allDoneResult" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1bxao2i</bpmn:incoming>
+      <bpmn:outgoing>Flow_1qrvtoa</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_1hx2jhd" name="All seat reports complete this month">
+      <bpmn:incoming>Flow_1qrvtoa</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1qrvtoa" sourceRef="Activity_0sdgfv1" targetRef="Event_1hx2jhd" />
+    <bpmn:startEvent id="StartEvent_1" name="Create seat reports first day of every month">
+      <bpmn:extensionElements>
+        <zeebe:ioMapping>
+          <zeebe:output source="=today()" target="forDate" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0ei310r</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_14p4oqd">
+        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">0 0 8 */2 * *</bpmn:timeCycle>
+      </bpmn:timerEventDefinition>
+    </bpmn:startEvent>
+    <bpmn:startEvent id="Event_1h6bgdr" name="Manual seat report creation requested">
+      <bpmn:extensionElements />
+      <bpmn:outgoing>Flow_0fkp7qt</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="Gateway_1fmwrp6">
+      <bpmn:incoming>Flow_0fkp7qt</bpmn:incoming>
+      <bpmn:incoming>Flow_0ei310r</bpmn:incoming>
+      <bpmn:outgoing>Flow_029qd9s</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0fkp7qt" sourceRef="Event_1h6bgdr" targetRef="Gateway_1fmwrp6" />
+    <bpmn:sequenceFlow id="Flow_029qd9s" sourceRef="Gateway_1fmwrp6" targetRef="Activity_0u4tizf" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_15ghqno">
+      <bpmndi:BPMNShape id="Activity_1wgnoxn_di" bpmnElement="Activity_0u4tizf">
+        <dc:Bounds x="370" y="127" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ab4h28_di" bpmnElement="Activity_0a6q3bz">
+        <dc:Bounds x="530" y="127" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1592ugy_di" bpmnElement="Activity_0sdgfv1">
+        <dc:Bounds x="690" y="127" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1hx2jhd_di" bpmnElement="Event_1hx2jhd">
+        <dc:Bounds x="852" y="149" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="834" y="192" width="73" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0fbprb8_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="222" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="159" y="265" width="77" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1h6bgdr_di" bpmnElement="Event_1h6bgdr">
+        <dc:Bounds x="179" y="82" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="162" y="125" width="71" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1fmwrp6_di" bpmnElement="Gateway_1fmwrp6" isMarkerVisible="true">
+        <dc:Bounds x="265" y="142" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0ei310r_di" bpmnElement="Flow_0ei310r">
+        <di:waypoint x="215" y="240" />
+        <di:waypoint x="290" y="240" />
+        <di:waypoint x="290" y="192" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ti9gfm_di" bpmnElement="Flow_0ti9gfm">
+        <di:waypoint x="470" y="167" />
+        <di:waypoint x="530" y="167" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1bxao2i_di" bpmnElement="Flow_1bxao2i">
+        <di:waypoint x="630" y="167" />
+        <di:waypoint x="690" y="167" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qrvtoa_di" bpmnElement="Flow_1qrvtoa">
+        <di:waypoint x="790" y="167" />
+        <di:waypoint x="852" y="167" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0fkp7qt_di" bpmnElement="Flow_0fkp7qt">
+        <di:waypoint x="215" y="100" />
+        <di:waypoint x="290" y="100" />
+        <di:waypoint x="290" y="142" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_029qd9s_di" bpmnElement="Flow_029qd9s">
+        <di:waypoint x="315" y="167" />
+        <di:waypoint x="370" y="167" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -27,14 +27,15 @@ const fillTable = (seats) => {
     let tableBody = document.getElementById('seatTableBody');
 
     seats.forEach(seat => {
+        const status = (seat['status'] === "FILL") ? "Ej ifylld" : (seat['status'] === "REVIEW") ? "Granskas" : "Slutförd";
 
         const uuid = seat['uuid'];
         const row = tableBody.insertRow();
         row.insertCell().innerHTML = uuid;
         row.insertCell().innerHTML = seat['businessName'];
         row.insertCell().innerHTML = seat['businessBaseline'];
+        row.insertCell().innerHTML = status;
         row.insertCell().innerHTML = seat['completedByEmail'];
-        row.insertCell().innerHTML = seat['status'];
         row.insertCell().innerHTML = seat['lastChangeDate'];
         row.insertCell().innerHTML = seat['seatUsed'];
         row.insertCell().innerHTML = seat['forYearMonth'];

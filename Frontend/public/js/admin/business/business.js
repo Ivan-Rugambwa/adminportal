@@ -21,6 +21,7 @@ const getBusinesses = async () => {
         if (b['name'] === null) return -1;
         return a['name'].localeCompare(b['name'])
     });
+    console.log(businesses);
     return businesses;
 }
 
@@ -29,11 +30,15 @@ const fillTable = (businesses) => {
     let tableBody = document.getElementById('businessTableBody');
 
     businesses.forEach(business => {
-
+        const emailFrequency = (business['emailFrequency'] === "MONTHLY") ? "Månadsvis" :
+            (business['emailFrequency'] === "QUARTERLY") ? "Kvartalsvis" :
+                (business['emailFrequency'] === "SEMI") ? "Halvårsvis" :
+                    (business['emailFrequency'] === "ANNUALLY") ? "Årsvis" : null;
         const uuid = business['uuid'];
         const row = tableBody.insertRow();
         row.insertCell().innerHTML = uuid;
         row.insertCell().innerHTML = business['name'];
+        row.insertCell().innerHTML = emailFrequency;
         row.insertCell().innerHTML = business['seatBaseline'];
         row.insertCell()
             .appendChild(createEdit(uuid))

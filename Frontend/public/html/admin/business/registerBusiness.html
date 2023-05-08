@@ -18,22 +18,29 @@
         <div id="title">
             <p id="titleText">Registrera</p>
         </div>
-        <div>
-            <label for="uuid">UUID</label>
-            <input disabled id="uuid" name="uuid" required type="text" value="">
-        </div>
 
         <div>
             <label for="seatBaseline">Seat Baseline:</label>
-            <input id="seatBaseline" name="seatBaseline" required type="seatBaseline" value="">
+            <input id="seatBaseline" name="seatBaseline" required type="number" value="">
         </div>
 
         <div>
             <label for="business-name">Företags Namn:</label>
             <input id="business-name" name="business-name"></input>
         </div>
+        <div>
+            <label for="email-frequency">Emailfrekvens</label>
+            <select id="email-frequency" name="email-frequency" required>
+                <option value="" selected disabled>Välj ett värde</option>
+                <option value="MONTHLY">Månadsvis</option>
+                <option value="QUARTERLY">Kvartalsvis</option>
+                <option value="SEMI">Halvårsvis</option>
+                <option value="ANNUALLY">Årsvis</option>
+            </select>
+        </div>
         <div id="load">
-            <i id="loadIcon" class="fa-solid fa-arrow-rotate-right fa-spin"></i>
+            <div id="loadText" class="none"></div>
+            <i id="loadIcon" class="fa-solid fa-arrow-rotate-right fa-spin none"></i>
         </div>
         <div class="buttons">
             <button id="registerButton" type="submit">Registrera</button>

@@ -17,42 +17,47 @@
 <div id="blur"></div>
 
 <nav></nav>
-<section>
-    <div class="Container" id="businessTableHeader">
-        <div id="userTableTitle">
-            <h2>Företag</h2>
-            <button id="refresh" type="submit"><i class="fa-solid fa-arrow-rotate-right" id="refreshIcon"></i></button>
-        </div>
-        <div id="register">
-            <a href="http://localhost:3000/admin/business/register" id="registerButton" type="submit">
-                Lägg till nytt Företag
-            </a>
-        </div>
-    </div>
-    <table id="businessTable">
-        <thead>
-        <tr>
-            <th>UUID</th>
-            <th>Företag</th>
-            <th>Seat</th>
-            <th>Ändra</th>
-        </tr>
-        </thead>
-        <tbody id="businessTableBody"></tbody>
-    </table>
-    <div id="outerConfirmDeletePrompt">
-        <div id="confirmDeletePrompt">
-            <div id="textDiv">
-                <p>Confirm delete</p>
+<div class="Container" id="tables">
+    <section>
+        <div id="businessTableHeader">
+            <div id="userTableTitle">
+                <h2>Företag</h2>
+                <button id="refresh" type="submit">
+                    <i class="fa-solid fa-arrow-rotate-right" id="refreshIcon"></i>
+                </button>
             </div>
-            <div id="buttonsDiv">
-                <button id="confirm">Confirm</button>
-                <button id="cancel">Cancel</button>
+            <div id="register">
+                <a class="registerButton" href="/admin/business/register" type="submit">
+                    Lägg till nytt Företag
+                </a>
             </div>
         </div>
-    </div>
-    <script src="../../../js/admin/business/business.js" type="module"></script>
-</section>
+        <table id="businessTable">
+            <thead>
+            <tr>
+                <th>UUID</th>
+                <th>Företag</th>
+                <th>Emailfrekvens</th>
+                <th>Seat</th>
+                <th>Ändra</th>
+            </tr>
+            </thead>
+            <tbody id="businessTableBody"></tbody>
+        </table>
+        <div id="outerConfirmDeletePrompt">
+            <div id="confirmDeletePrompt">
+                <div id="textDiv">
+                    <p>Confirm delete</p>
+                </div>
+                <div id="buttonsDiv">
+                    <button id="confirm">Confirm</button>
+                    <button id="cancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="../../../js/admin/business/business.js" type="module"></script>
 </body>
 
 </html>

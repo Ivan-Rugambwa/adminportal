@@ -1,6 +1,7 @@
 package almroth.kim.gamendo_user_api.account.model;
 
 import almroth.kim.gamendo_user_api.accountProfile.model.AccountProfile;
+import almroth.kim.gamendo_user_api.passwordReset.model.PasswordReset;
 import almroth.kim.gamendo_user_api.refreshToken.model.RefreshToken;
 import almroth.kim.gamendo_user_api.role.model.Role;
 import almroth.kim.gamendo_user_api.seat.model.Seat;
@@ -46,6 +47,9 @@ public class Account implements UserDetails {
 
     @OneToOne(mappedBy = "account", orphanRemoval = true)
     private AccountProfile profile;
+
+    @OneToOne(mappedBy = "account", orphanRemoval = true)
+    private PasswordReset passwordReset;
 
     @OneToMany(mappedBy = "completedBy")
     private Set<Seat> completedSeats;

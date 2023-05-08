@@ -5,6 +5,7 @@ import almroth.kim.gamendo_user_api.accountProfile.AccountProfileRepository;
 import almroth.kim.gamendo_user_api.accountProfile.model.AccountProfile;
 import almroth.kim.gamendo_user_api.business.dto.*;
 import almroth.kim.gamendo_user_api.business.model.Business;
+import almroth.kim.gamendo_user_api.error.customException.BusinessNameAlreadyExistsException;
 import almroth.kim.gamendo_user_api.mapper.BusinessMapper;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
@@ -37,9 +38,10 @@ public class BusinessService {
 
     public BusinessResponse Create(CreateBusinessRequest model) {
         if (repository.existsBusinessByName(model.getName()))
-            throw new IllegalArgumentException("Business with name already exists");
+            throw new BusinessNameAlreadyExistsException("Business with name already exists");
 
         model.setName(model.getName().toUpperCase());
+
         var business = repository.save(mapper.TO_MODEL(model));
 
         return mapper.TO_RESPONSE(business);
@@ -56,11 +58,14 @@ public class BusinessService {
         if (request.getSeatBaseline() != null) {
             business.setSeatBaseline(request.getSeatBaseline());
         }
-        if (request.getName() != null) {
+        if (request.getName() != null && !business.getName().equals(request.getName())) {
             if (repository.existsBusinessByName(request.getName()))
                 throw new IllegalArgumentException("Business with that name already exists");
 
             business.setName(request.getName());
+        }
+        if (request.getEmailFrequency() != null) {
+            business.setEmailFrequency(request.getEmailFrequency());
         }
 
         repository.save(business);

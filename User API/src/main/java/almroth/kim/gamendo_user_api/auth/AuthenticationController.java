@@ -3,7 +3,6 @@ package almroth.kim.gamendo_user_api.auth;
 import almroth.kim.gamendo_user_api.auth.dto.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -49,5 +48,23 @@ public class AuthenticationController {
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(@RequestBody RefreshTokenRequest refreshToken) {
         return ResponseEntity.ok(service.refreshToken(refreshToken.refreshToken));
+    }
+
+    @PostMapping("/reset/start")
+    public ResponseEntity<?> startResetPassword(@RequestBody ResetRequest request) {
+        service.startResetPassword(request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/reset/finish")
+    public ResponseEntity<?> startResetPassword(@RequestBody FinishResetRequest request) {
+        service.finishResetPassword(request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordRequest request) {
+        service.changePassword(request);
+        return ResponseEntity.noContent().build();
     }
 }

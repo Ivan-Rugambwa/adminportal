@@ -9,4 +9,6 @@ public class BusinessResponse {
     private UUID uuid;
     private String name;
     private Integer seatBaseline;
+    private String emailFrequency;
+
 }
