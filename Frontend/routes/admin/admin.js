@@ -28,4 +28,14 @@ router.get("/seat", (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/html/admin/seat/seat.html'))
 })
 
+router.get("/seat/edit", (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/html/admin/seat/editSeat.html'))
+})
+
+router.get("/seat/register", (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/html/admin/seat/registerSeat.html'))
+})
+
+
+
 module.exports = router;
