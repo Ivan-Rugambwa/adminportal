@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="se">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../../../css/menu.css" rel="stylesheet" type="text/css">
+    <link href="../../../css/shared/form.css" rel="stylesheet">
+    <link href="../../../css/admin/admin.css" rel="stylesheet" type="text/css">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/6c0cfcbd8b.js"></script>
+</head>
+<body>
+
+<div id="formBox">
+
+    <form id="form">
+        <div id="title">
+            <p id="titleText">Skapa Seat</p>
+        </div>
+       
+
+        <div>
+            <label class="date-div" for="date-select">Datum</label>
+            <input class="date-div" id="date-select" name="date" required type="date" value="">
+        </div>
+
+        <div id="business-div">
+            <label class="business-div" for="business-select">Företag</label>
+            <select class="business-div" id="business-select" name="businesses"></select>
+        </div>
+        <div id="load">
+            <i id="loadIcon" class="fa-solid fa-arrow-rotate-right fa-spin"></i>
+        </div>
+        <div class="buttons">
+            <button id="registerButton" type="submit">Skapa</button>
+            <button class="cancelButton" type="button">Gå tillbaka</button>
+        </div>
+    </form>
+</div>
+<script src="../../../js/admin/seat/registerSeat.js" type="module"></script>
+<script src="../../../js/auth/adminPage.js" type="module"></script>
+</body>
+</html>
