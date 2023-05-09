@@ -55,10 +55,12 @@ window.addEventListener('submit', async (event) => {
     console.log("after verify");
     } catch(e){
         document.querySelector(".password-error").innerHTML = "Email or Password not correct";
+        document.querySelector(".password-error").innerHTML = "Press if you forgot password & email";
       document.querySelector(".password-error").style.display = "block";
       
         console.log(e);
     }
+
     
 });
 

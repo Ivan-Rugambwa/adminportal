@@ -9,4 +9,8 @@ router.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/html/auth/register.html'))
 })
 
+router.get("/reset", (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/html/auth/reset-password.html'))
+})
+
 module.exports = router;

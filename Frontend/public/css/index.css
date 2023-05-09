@@ -181,10 +181,12 @@ input[type="submit"]:hover {
     height: 5rem;
     margin-bottom: -1.75rem;
     margin-right: 2.3rem;
+    
 }
 
 .password-error {
     color: #D8000C;
+    font-size: small;
     
     
 
