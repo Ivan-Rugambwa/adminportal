@@ -54,7 +54,7 @@ public class PasswordResetService {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress("apendo.operations@outlook.com"));
         message.setRecipients(
-                Message.RecipientType.TO, InternetAddress.parse("kim.almroth@apendo.se"));
+                Message.RecipientType.TO, InternetAddress.parse("kim.almroth@apendo.se, ivan.rugambwa@apendo.se"));
         message.setSubject("Mail Subject");
 
         String msg = "Du har förfrågat att återställa ditt lösenord på http://camcaas.apendo.se, tryck på denna länk för att skapa ett nytt lösenord: " +

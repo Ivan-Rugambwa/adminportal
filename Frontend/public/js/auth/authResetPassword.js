@@ -1,10 +1,10 @@
-import {isAdmin, isAuthenticated, isUser} from "./auth/auth.js";
-import {baseUrl, userApiUrl} from "./shared.js";
+import {isAdmin, isAuthenticated, isUser} from "../auth/auth.js";
+import {baseUrl, userApiUrl} from "../shared.js";
 
 async function postLogin() {
 
     const password = document.getElementById("reset-password").value;
-    const apiUrl = `${userApiUrl}/api/auth/authenticate`;
+    const apiUrl = `${userApiUrl}/api/auth/reset/finish`;
 
     function requestBody(password) {
         let payload = {
