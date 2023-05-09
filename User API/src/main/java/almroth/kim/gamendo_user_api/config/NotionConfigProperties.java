@@ -8,7 +8,8 @@ public record NotionConfigProperties(
         String aes_key,
         String email,
         String password,
-        String registerUrl
+        String registerUrl,
+        String resetPasswordUrl
 
 ) {
 }

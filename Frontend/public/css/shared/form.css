@@ -99,7 +99,14 @@ body {
 }
 
 #loadIcon {
-    display: none;
     color: royalblue;
     font-size: 32px;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.none {
+    display: none !important;
 }

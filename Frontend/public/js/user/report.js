@@ -21,7 +21,7 @@ window.addEventListener('submit', async ev => {
         const seat = await getSeat();
         fillForm(seat);
     } catch (e) {
-        loadText.innerText = 'Kunde inte uppdatera, försök igen senare eller kontakta support.';
+        loadText.innerText = 'Kunde inte skicka rapporten, försök igen senare eller kontakta support.';
         loadText.style.color = 'red';
         console.log(e);
     }

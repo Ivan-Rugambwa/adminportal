@@ -3,6 +3,7 @@ package almroth.kim.gamendo_user_api.business;
 import almroth.kim.gamendo_user_api.business.dto.BusinessResponse;
 import almroth.kim.gamendo_user_api.business.dto.CreateBusinessRequest;
 import almroth.kim.gamendo_user_api.business.dto.UpdateBusinessRequest;
+import almroth.kim.gamendo_user_api.error.customException.BusinessNameAlreadyExistsException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

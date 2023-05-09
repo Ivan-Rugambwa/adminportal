@@ -1,0 +1,111 @@
+{
+  "$schema": "https://unpkg.com/@camunda/zeebe-element-templates-json-schema/resources/schema.json",
+  "name": "Create single seat base report",
+  "id": "apendo.create.seat.single-312323423423",
+  "description": "Create single seat report",
+  "version": 1,
+  "documentationRef": "https://docs.camunda.io/docs/components/connectors/out-of-the-box-connectors/available-connectors-overview/",
+  "icon": {
+    "contents": "https://icons-for-free.com/iconfiles/png/512/1-131979012758435845.png"
+  },
+  "category": {
+    "id": "connectors",
+    "name": "Connectors"
+  },
+  "appliesTo": [
+    "bpmn:Task"
+  ],
+  "elementType": {
+    "value": "bpmn:ServiceTask"
+  },
+  
+  "properties": [
+    {
+      "type": "Hidden",
+      "value": "apendo:create-seat-single:1",
+      "binding": {
+        "type": "zeebe:taskDefinition:type"
+      }
+    },
+    {
+      "label": "Url",
+      "description": "The url to the api",
+      "type": "String",
+      "value": "=\"secrets.API_URL\"",
+      "feel": "required",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "apiUrl"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Email",
+      "description": "The email to use for authentication",
+      "type": "String",
+      "value": "=\"secrets.EMAIL\"",
+      "feel": "required",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "email"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Password",
+      "description": "The password to use for authentication",
+      "type": "String",
+      "value": "=\"secrets.PASSWORD\"",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "password"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Year and Month date",
+      "description": "The year and month the report is for in the format of 'yyyy-mm-dd' or 'yyyy-mm'",
+      "type": "String",
+      "value": "=today()",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "today"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Business Uuid",
+      "description": "The Uuid of the business the report is to be created for",
+      "type": "String",
+      "value": "",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "businessUuid"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Result Variable",
+      "description": "Name of variable to store the response in",
+      "group": "output",
+      "type": "String",
+      "binding": {
+        "type": "zeebe:taskHeader",
+        "key": "resultVariable"
+      }
+    }
+  ]
+}

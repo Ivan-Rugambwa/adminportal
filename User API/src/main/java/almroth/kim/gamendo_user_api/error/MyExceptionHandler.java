@@ -1,9 +1,6 @@
 package almroth.kim.gamendo_user_api.error;
 
-import almroth.kim.gamendo_user_api.error.customException.DataBadCredentialsException;
-import almroth.kim.gamendo_user_api.error.customException.EmailAlreadyTakenException;
-import almroth.kim.gamendo_user_api.error.customException.NoSuchTokenException;
-import almroth.kim.gamendo_user_api.error.customException.RefreshTokenException;
+import almroth.kim.gamendo_user_api.error.customException.*;
 import almroth.kim.gamendo_user_api.error.dto.BadCredentialsResponse;
 import almroth.kim.gamendo_user_api.error.dto.ErrorResponse;
 import almroth.kim.gamendo_user_api.error.dto.ValidationErrorResponse;
@@ -23,8 +20,28 @@ import java.util.ArrayList;
 @ControllerAdvice
 public class MyExceptionHandler {
 
+    @ExceptionHandler(PasswordResetTimeoutException.class)
+    public ResponseEntity<ErrorResponse> PasswordResetTimeout(Exception ex, WebRequest req) {
+        ErrorResponse error = new ErrorResponse();
+        error.setDate(LocalDateTime.now());
+        error.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        error.setMessage(ex.getMessage());
+
+        return ResponseEntity.status(error.getStatus()).body(error);
+    }
+
     @ExceptionHandler(EmailAlreadyTakenException.class)
     public ResponseEntity<ErrorResponse> emailAlreadyTaken(Exception ex, WebRequest req) {
+        ErrorResponse error = new ErrorResponse();
+        error.setDate(LocalDateTime.now());
+        error.setStatus(HttpServletResponse.SC_CONFLICT);
+        error.setMessage(ex.getMessage());
+
+        return ResponseEntity.status(error.getStatus()).body(error);
+    }
+
+    @ExceptionHandler(BusinessNameAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> businessNameAlreadyTaken(Exception ex, WebRequest req) {
         ErrorResponse error = new ErrorResponse();
         error.setDate(LocalDateTime.now());
         error.setStatus(HttpServletResponse.SC_CONFLICT);
@@ -101,6 +118,7 @@ public class MyExceptionHandler {
 
         return ResponseEntity.status(error.getStatus()).body(error);
     }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> Exception(HttpRequestMethodNotSupportedException ex) {
         ErrorResponse error = new ErrorResponse();
@@ -111,6 +129,7 @@ public class MyExceptionHandler {
 
         return ResponseEntity.status(error.getStatus()).body(error);
     }
+
     @ExceptionHandler(SignatureException.class)
     public ResponseEntity<ErrorResponse> SignatureException(HttpRequestMethodNotSupportedException ex) {
         ErrorResponse error = new ErrorResponse();

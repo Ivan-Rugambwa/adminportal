@@ -2,6 +2,7 @@ package com.example.javazeebee;
 
 
 import com.example.javazeebee.message.dto.PublishRequest;
+import com.example.javazeebee.message.dto.StartSingleRequest;
 import com.example.javazeebee.start.dto.StartRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +33,20 @@ public class CamundaController {
         }
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/camunda/start/single")
+    public ResponseEntity<?> startSingleReport(@RequestBody StartSingleRequest request, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) throws Exception {
+        System.out.println("Starting single seat...");
+        if (!service.isTokenValid(token)) {
+            System.out.println("Invalid JWT");
+            return ResponseEntity.status(401).body("JWT is not valid");
+        }
+        System.out.println("Token is valid");
+
+        service.startSingleReport(request);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/camunda/start")

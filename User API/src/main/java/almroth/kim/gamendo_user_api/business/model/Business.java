@@ -3,6 +3,7 @@ package almroth.kim.gamendo_user_api.business.model;
 import almroth.kim.gamendo_user_api.accountProfile.model.AccountProfile;
 import almroth.kim.gamendo_user_api.seat.model.Seat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,5 +32,7 @@ public class Business {
     private Integer seatBaseline;
     @OneToMany(mappedBy = "business")
     private Set<Seat> seats;
+    @Pattern(regexp = "^(MONTHLY|QUARTERLY|SEMI|ANNUALLY)$", message = "Need to be MONTHLY, QUARTERLY, SEMI or ANNUALLY")
+    private String emailFrequency;
 
 }

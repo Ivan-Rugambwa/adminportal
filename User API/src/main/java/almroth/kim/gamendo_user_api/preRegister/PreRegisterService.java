@@ -121,7 +121,7 @@ public class PreRegisterService {
                 Message.RecipientType.TO, InternetAddress.parse("kim.almroth@apendo.se"));
         message.setSubject("Mail Subject");
 
-        String msg = "Du har blivit tillfrågad att skapa ett konto på apendo.seat,\nVänligen tryck på denna länk för att skapa ditt konto: " + env.registerUrl() + "?uuid=" + uuid;
+        String msg = "Du har blivit tillfrågad att skapa ett konto på Apendos CaaS-Portal, http://camcaas.apendo.se/,\nVänligen tryck på denna länk för att skapa ditt konto: " + env.registerUrl() + "?uuid=" + uuid;
 
         MimeBodyPart mimeBodyPart = new MimeBodyPart();
         mimeBodyPart.setContent(msg, "text/html; charset=utf-8");

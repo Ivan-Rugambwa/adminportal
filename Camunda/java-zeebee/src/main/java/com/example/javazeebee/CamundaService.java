@@ -1,6 +1,7 @@
 package com.example.javazeebee;
 
 import com.example.javazeebee.message.dto.PublishRequest;
+import com.example.javazeebee.message.dto.StartSingleRequest;
 import com.example.javazeebee.message.dto.UpdateSeatRequest;
 import com.example.javazeebee.start.dto.StartRequest;
 import io.camunda.zeebe.client.ZeebeClient;
@@ -41,6 +42,20 @@ public class CamundaService {
                 .variables(Map.of("seatUsedAmount", request.getAmountOfSeatsUsed(), "filledByEmail", request.getEmail()))
                 .send().join();
         System.out.println("Message published");
+
+        return response.getMessageKey();
+    }
+
+    public Long startSingleReport(StartSingleRequest request) {
+        System.out.println("Starting single report...");
+        var response = client.newPublishMessageCommand()
+                .messageName("start-single-seat-report")
+                .correlationKey(request.getForDate() + "-" + request.getBusinessUuid())
+                .messageId(UUID.randomUUID().toString())
+                .timeToLive(Duration.ofSeconds(10))
+                .variables(Map.of("forDate", request.getForDate(), "businessUuid", request.getBusinessUuid()))
+                .send().join();
+        System.out.println("Started single report");
 
         return response.getMessageKey();
     }

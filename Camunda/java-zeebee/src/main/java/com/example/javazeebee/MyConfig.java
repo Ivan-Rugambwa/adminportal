@@ -18,7 +18,7 @@ public class MyConfig {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOriginPatterns(List.of("http://localhost:3000"));
+        config.setAllowedOriginPatterns(List.of("http://localhost:3000", "http://camcaas.apendo.se", "https://2598-31-208-229-4.eu.ngrok.io", "http://localhost:9001"));
         config.addAllowedHeader("*");
         config.addAllowedMethod("OPTIONS");
         config.addAllowedMethod("HEAD");
