@@ -79,4 +79,5 @@ const postRegister = async () => {
     if (response.status > 299) {
         throw Error(json.message);
     }
+
 }

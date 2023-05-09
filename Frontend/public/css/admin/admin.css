@@ -84,6 +84,7 @@
 }
 
 #buttonsDiv {
+    display: flex;
     height: fit-content;
     width: fit-content;
 }
@@ -123,3 +124,11 @@
     z-index: 899;
     backdrop-filter: blur(4px);
 }
+
+#seat{
+
+    width: 100px;
+    height: 25px;
+
+}
+
