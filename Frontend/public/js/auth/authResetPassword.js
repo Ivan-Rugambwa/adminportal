@@ -32,24 +32,9 @@ window.addEventListener('submit', async (event) => {
     console.log("återställ");
     try {
         await postLogin();
-        if (!await isAuthenticated()) {
-            return window.location.assign(`${baseUrl}/error`);
-        }
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const redirectUrl = urlParams.get('redirect');
-        console.log(redirectUrl);
-
-        if (redirectUrl !== null) {
-            window.location.assign(`${baseUrl}${redirectUrl}`);
-        } else if (await isAdmin()) {
-            window.location.assign(`${baseUrl}/admin`);
-        } else if (await isUser()) {
-            window.location.assign(`${baseUrl}/seat/report`);
-        } else {
-            window.location.assign(`${baseUrl}/error`)
-        }
-        console.log("after verify");
+        const successMessage = document.querySelector(".success-message");
+        successMessage.innerHTML = "Lösenordet har ändrats.<br> <a href='/index'>Tryck för att logga in</a>";
+        successMessage.style.display = "block";
     } catch (e) {
         document.querySelector(".password-error").innerHTML = "Fel lösenord";
         document.querySelector(".password-error").style.display = "block";
