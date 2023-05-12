@@ -251,6 +251,12 @@ button[type="submit"]:hover {
 
 }
 
+.success-message{
+    color:  #7aa300;
+    font-size: large;
+
+}
+
 #returnLink {
     font-size: medium;
     margin-bottom: 0.5rem;
