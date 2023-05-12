@@ -50,11 +50,15 @@
 
         <div>
             <label for="seatUsed">Seatanvändning:</label>
-            <input id="seatUsed" name="seatUsed" required type="text" value="">
+            <input id="seatUsed" name="seatUsed" required type="number" value="">
         </div>
         <div>
-            <label for="Status">status:</label>
-            <input id="status" name="status" required type="text" value="">
+            <label for="status">Status:</label>
+            <select id="status" name="status" required>
+                <option value="FILL">Fyll</option>
+                <option value="REVIEW">Granska</option>
+                <option value="COMPLETE">Slutförd</option>
+            </select>
         </div>
 
         <div id="load">
@@ -67,10 +71,10 @@
             <button class="cancelButton" type="button">Gå tillbaka</button>
         </div>
 
+    </form>
 
 </div>
 
-</form>
 </body>
 <script src="../../../js/admin/seat/editSeat.js" type="module"></script>
 
