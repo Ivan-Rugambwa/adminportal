@@ -199,4 +199,10 @@ input[type="submit"]:hover {
 
 }
 
+.success-message{
+    color:  #7aa300;
+    font-size: large;
+
+}
+
 
