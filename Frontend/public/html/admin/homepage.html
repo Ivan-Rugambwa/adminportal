@@ -16,8 +16,29 @@
 
 <body>
     <div id="blur"></div>
+    
     <nav></nav>
-    <table>
+    <section>
+        <div id="seatTableHeader">
+            <div id="userTableTitle">
+                <h2>Seat-statistik</h2>
+                <button id="refresh" type="submit"><i class="fa-solid fa-arrow-rotate-right" id="refreshIcon"></i></button>
+            </div>
+          
+        </div>
+        <table class="Container" id="seatTable">
+            <thead>
+            <tr>
+                <th>Företagsnamn</th>
+                <th>Totalt antal platsrapporter</th>
+                <th>Totalt antal platsanvändningar</th>
+                <th>Genomsnittlig platsanvändning</th>
+            </tr>
+            </thead>
+            <tbody id="report-table"></tbody>
+        </table>
+    </section>
+    <!-- <table>
         <thead>
           <tr>
             <th>Företagsnamn</th>
@@ -28,10 +49,10 @@
         </thead>
         <tbody id="report-table">
         </tbody>
-      </table>
+      </table> -->
       
     <canvas id="myChart"></canvas>
-    <script src="../../js/admin/script2.js" type="module"></script>
+    <script src="../../js/admin/seatStatistics.js" type="module"></script>
     <script src="../../js/admin/navbar.js" type="module"></script>
     <script src="../../js/admin/homepage.js" type="module"></script>
 </body>
