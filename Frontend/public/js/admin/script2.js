@@ -1,5 +1,6 @@
 import { baseUrl, userApiUrl } from "../shared.js";
 import { isAuthenticatedWithRedirect } from "../auth/auth.js";
+const refresh = document.getElementById('refresh');
 
 window.addEventListener('load', async ev => {
   await isAuthenticatedWithRedirect();
@@ -30,16 +31,29 @@ async function fetchBusinesses() {
     const reportData = [];
 
     for (const business of businesses) {
-      const reportResponse = await fetch(`${userApiUrl}/api/user/seat/business/${business.name}`);
+      const reportResponse  = await fetch(`${userApiUrl}/api/user/seat/business/${business.name}`,{
+
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("jwt")}`
+        }
+
+      });
+      
+      
+      
       const reports = await reportResponse.json();
       console.log(reports);
 
       let totalReports = 0;
       let totalUsage = 0;
-
+  
       for (const report of reports) {
         totalReports++;
-        totalUsage += report.usage;
+        if(report.seatUsed === null){
+          continue;
+        }
+          
+        totalUsage += report.seatUsed;
       }
 
       const averageUsage = totalUsage / totalReports;
@@ -69,4 +83,32 @@ function displayReportData(reportData) {
     row.insertCell().textContent = report.totalUsage;
     row.insertCell().textContent = report.averageUsage.toFixed(2);
   }
+  const updateTables = async () => {
+    document.getElementById('report-table').innerHTML = '';
+    refresh.style.cursor = 'wait';
+    refresh.disabled = true;
+    const spinning = 'fa-solid fa-arrow-rotate-right fa-spin';
+    const still = 'fa-solid fa-arrow-rotate-right';
+    const refreshIcon = document.getElementById('refreshIcon');
+    refreshIcon.setAttribute('class', spinning);
+    refreshIcon.style.pointerEvents = 'none';
+
+    const business =  fetchBusinesses();
+    const promises = await Promise.all([business, new Promise(r => setTimeout(r, 400))])
+
+    const timer = new Promise(r => setTimeout(r, 1600));
+    displayReportData(promises[0]);
+
+    await Promise.all([timer]);
+    refreshIcon.setAttribute('class', still);
+    refreshIcon.style.pointerEvents = 'auto';
+    refresh.disabled = false;
+    refresh.style.cursor = 'pointer';
+}
+refresh.addEventListener('click', async ev => {
+  ev.target.disabled = true;
+  ev.preventDefault();
+  await updateTables();
+  ev.target.disabled = false;
+})
 }

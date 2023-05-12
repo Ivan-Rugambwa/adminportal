@@ -2,10 +2,12 @@ package almroth.kim.gamendo_user_api.passwordReset;
 
 import almroth.kim.gamendo_user_api.account.model.Account;
 import almroth.kim.gamendo_user_api.config.NotionConfigProperties;
-import almroth.kim.gamendo_user_api.error.customException.PasswordResetTimeoutException;
 import almroth.kim.gamendo_user_api.passwordReset.model.PasswordReset;
 import jakarta.mail.*;
-import jakarta.mail.internet.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
