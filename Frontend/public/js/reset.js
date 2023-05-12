@@ -1,14 +1,17 @@
 //import { json } from "body-parser";
-import {isAdmin, isAuthenticated, isUser} from "./auth/auth.js";
-import {baseUrl, userApiUrl} from "./shared.js";
+import {userApiUrl} from "./shared.js";
 
-const form = document.getElementById("reset-form");
+const form = document.getElementById("login-form");
 
 form.addEventListener('submit', async (event) => {
     // Prevent default form submission
     event.preventDefault();
-   
-    
+    document.getElementById('errorMessage').classList.add('none');
+    document.getElementById('successMessage').classList.add('none');
+    const loginText = document.getElementById('loginText');
+    const loadIcon = "fa-solid fa-arrow-rotate-right fa-spin".split(" ");
+    loginText.innerText = '';
+    loginText.classList.add(...loadIcon);
     // Get the email value
     const email = document.getElementById("email").value;
     const body = {
@@ -16,25 +19,29 @@ form.addEventListener('submit', async (event) => {
     }
     console.log(body)
     // Send a password reset link to the provided email address
-    const  apiUrl = `${userApiUrl}/api/auth/reset/start`;
-    const response = await fetch(apiUrl, {
-        method: "POST",
-        body:JSON.stringify(email),
-        headers: {
-            'Content-Type': "application/json",
-           // 'Authorization': `Bearer ${window.localStorage.getItem('jwt')}`
-        }
-        
-    });
+    const apiUrl = `${userApiUrl}/api/auth/reset/start`;
+    try {
+        const response = await fetch(apiUrl, {
+            method: "POST",
+            body: JSON.stringify(email),
+            headers: {
+                'Content-Type': "application/json"
+            }
+        });
 
-    //Check if the request was successful
-    if (response.ok) {
-        // Display success message to the user
-        console.log('An email with instructions on how to reset your password has been sent to your inbox.');
-    } else {
-        // Display error message to the user
-        console.log('There was an error processing your request. Please try again later.');
+        if (response.status === 204) {
+            document.getElementById('successMessage').classList.remove('none');
+            document.getElementById('successMessage').innerText = 'Om denna e-postadress finns registrerad kommer ett e-postmeddelande med instruktioner om hur du återställer ditt lösenord skickas till din inkorg.';
+        } else {
+            throw Error("Failed post of reset");
+        }
+    } catch (e) {
+        console.log(e)
+        document.getElementById('errorMessage').classList.remove('none');
+        document.getElementById('errorMessage').innerText = 'Det uppstod ett fel när din förfrågan behandlades. Vänligen försök igen senare eller kontakta support.';
     }
+    loginText.innerText = 'Skicka';
+    loginText.classList.remove(...loadIcon);
 
 });
 

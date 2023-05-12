@@ -56,6 +56,8 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1qrvtoa" sourceRef="Activity_0sdgfv1" targetRef="Event_1hx2jhd" />
     <bpmn:startEvent id="StartEvent_1" name="Create seat reports first day of every month">
+      <bpmn:documentation>0 0 8 */2 * * = every other day
+0 0 * * * * = every hour</bpmn:documentation>
       <bpmn:extensionElements>
         <zeebe:ioMapping>
           <zeebe:output source="=today()" target="forDate" />
@@ -63,7 +65,7 @@
       </bpmn:extensionElements>
       <bpmn:outgoing>Flow_0ei310r</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_14p4oqd">
-        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">0 0 8 */2 * *</bpmn:timeCycle>
+        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">0 0 8 * * *</bpmn:timeCycle>
       </bpmn:timerEventDefinition>
     </bpmn:startEvent>
     <bpmn:startEvent id="Event_1h6bgdr" name="Manual seat report creation requested">

@@ -1,4 +1,4 @@
-import {baseUrl, userApiUrl} from "../../shared.js";
+import {baseUrl, camundaApiUrl, userApiUrl} from "../../shared.js";
 import {isAuthenticatedWithRedirect} from "../../auth/auth.js";
 
 window.addEventListener('load', async () => {
@@ -20,21 +20,25 @@ const load = document.getElementById('load');
 const loadIcon = document.getElementById('loadIcon');
 form.addEventListener('submit', async ev => {
     ev.preventDefault();
-    load.innerText = '';
-    loadIcon.style.display = 'flex';
+    const loadText = document.getElementById('loadText');
+    const registerButton = document.getElementById('registerButton');
+    loadText.innerText = '';
+    loadText.classList.add('none');
+    loadIcon.classList.remove('none');
+    registerButton.style.pointerEvents = 'none';
+
     try {
         const post = postRegister();
         await Promise.all([post, new Promise(r => setTimeout(r, 1000))])
-        load.innerText = 'Seat har registrerats.'
-        load.style.color = '#99CC00'
-        form.elements['date-select'].value = '';
-        form.elements['business-select'].value = '';
+        loadText.innerText = 'Seatrapporten har skapats.';
+        loadText.style.color = 'green';
     } catch (e) {
-        load.innerText = 'kunde inte skapa seat, försök igen senare eller kontakta support.'
-        load.style.color = 'red';
-        console.log(e.message);
+        loadText.innerText = 'Kunde inte skapa seatrapporten. Försök igen senare eller kontakta admin.';
+        loadText.style.color = 'red';
     }
-    loadIcon.style.display = 'none';
+    loadText.classList.remove('none');
+    loadIcon.classList.add('none');
+    registerButton.style.pointerEvents = 'auto';
 
 })
 cancel.addEventListener('click', ev => {
@@ -68,7 +72,7 @@ const fillForm = (businesses) => {
     select.appendChild(currentBusiness);
     businesses.forEach(business => {
         const option = document.createElement('option');
-        option.setAttribute('value', business['name']);
+        option.setAttribute('value', business['uuid']);
         option.innerText = business['name'];
         select.appendChild(option);
     });
@@ -77,12 +81,12 @@ const fillForm = (businesses) => {
 const postRegister = async () => {
     const form = document.getElementById('form');
     const body = {
-        
-        date: form.elements['date-select'].value,
-        businessName: form.elements['business-select'].value
-       
+
+        forDate: form.elements['date-select'].value,
+        businessUuid: form.elements['business-select'].value
+
     }
-    const response = await fetch(`https://2598-31-208-229-4.eu.ngrok.io/api/camunda/start/single`, {
+    const response = await fetch(`${camundaApiUrl}/api/camunda/start/single`, {
         method: 'POST',
         headers: {
             'Content-Type': "application/json",
@@ -90,9 +94,8 @@ const postRegister = async () => {
         },
         body: JSON.stringify(body)
     });
-    const json = await response.json();
     if (response.status >= 300) {
+        const json = await response.json();
         throw Error('Something went wrong registering account: ' + json.message)
     }
-    return json;
 }

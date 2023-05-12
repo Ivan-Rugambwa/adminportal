@@ -31,6 +31,7 @@ public class SeatSingleFunction implements OutboundConnectorFunction {
 
     private SeatSingleResult executeConnector(final SeatSingleRequest request) {
 
+        System.out.println("Creating single seat...");
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(request.getApiUrl())
@@ -40,6 +41,7 @@ public class SeatSingleFunction implements OutboundConnectorFunction {
 
         SeatService service = retrofit.create(SeatService.class);
 
+        System.out.println("Logging in...");
         var loginRequest = LoginRequest.builder()
                 .email(request.getEmail())
                 .password(request.getPassword())
@@ -52,7 +54,8 @@ public class SeatSingleFunction implements OutboundConnectorFunction {
         } catch (IOException e) {
             throw new RuntimeException(e.getLocalizedMessage());
         }
-
+        System.out.println("Logged in successfully");
+        System.out.println("Creating seat report...");
         var splitDate = request.getForDate().split("-");
         var forYearMonth = splitDate[0] + "/" + splitDate[1];
 
@@ -67,6 +70,7 @@ public class SeatSingleFunction implements OutboundConnectorFunction {
             if (response.isSuccessful()) {
                 var seatSingleResult = new SeatSingleResult();
                 seatSingleResult.setSeatResponse(response.body());
+                System.out.println("Successfully created single seat report for business: " + seatSingleResult.getSeatResponse().getBusinessName());
                 return seatSingleResult;
 
             } else

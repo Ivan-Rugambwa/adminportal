@@ -25,7 +25,7 @@ async function postLogin() {
     if (response.status !== 200) {
         throw Error('Fel email eller lösenord')
 
-        
+
     }
     const json = await response.json();
     window.localStorage.setItem("jwt", json.accessToken);
@@ -35,33 +35,39 @@ async function postLogin() {
 window.addEventListener('submit', async (event) => {
     event.preventDefault();
     console.log("logging in");
-    try{
-    await postLogin();
-    if (await isAuthenticated() === false) return window.location.assign(`${baseUrl}/error`);
+    const loginText = document.getElementById('loginText');
+    const loadIcon = "fa-solid fa-arrow-rotate-right fa-spin".split(" ");
+    try {
+        loginText.innerText = '';
+        loginText.classList.add(...loadIcon);
+        const post = postLogin();
+        await Promise.all([post, new Promise(r => setTimeout(r, 200))])
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const redirectUrl = urlParams.get('redirect');
-    console.log(redirectUrl)
+        if (await isAuthenticated() === false) return window.location.assign(`${baseUrl}/error`);
 
-    if (redirectUrl !== null) {
-        window.location.assign(`${baseUrl}${redirectUrl}`);
-    } else if ((await isAdmin())) {
-        window.location.assign(`${baseUrl}/admin`);
-    } else if ((await isUser())) {
-        window.location.assign(`${baseUrl}/seat/report`);
-    } else {
-        window.location.assign(`${baseUrl}/error`)
-    }
-    console.log("after verify");
-    } catch(e){
-        document.querySelector(".password-error").innerHTML = "Email or Password not correct";
-        document.querySelector(".password-error").innerHTML = "Press if you forgot password & email";
-      document.querySelector(".password-error").style.display = "block";
-      
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectUrl = urlParams.get('redirect');
+        console.log(redirectUrl)
+
+        if (redirectUrl !== null) {
+            window.location.assign(`${baseUrl}${redirectUrl}`);
+        } else if ((await isAdmin())) {
+            window.location.assign(`${baseUrl}/admin`);
+        } else if ((await isUser())) {
+            window.location.assign(`${baseUrl}/seat/report`);
+        } else {
+            window.location.assign(`${baseUrl}/error`)
+        }
+        console.log("after verify");
+    } catch (e) {
+        document.querySelector(".password-error").innerText = "Fel användarnamn eller lösenord";
+        document.querySelector(".password-error").style.display = "block";
+
         console.log(e);
     }
+    loginText.innerText = 'Logga in';
+    loginText.classList.remove(...loadIcon);
 
-    
 });
 
 

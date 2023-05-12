@@ -20,5 +20,6 @@ public class EmailRequest {
     private String subject;
 
     private String text;
+    private String emailFrequency;
 
 }

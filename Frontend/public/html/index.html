@@ -1,34 +1,38 @@
 <!DOCTYPE html>
-<html lang="se">
+<html lang="se" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Apendo Seatportal</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <link rel="stylesheet" href="../css/index.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/6c0cfcbd8b.js"></script>
+    <link href="../css/index.css" rel="stylesheet">
 
 </head>
 <body>
 <div id="login-form-wrap">
     <div id="logoFrame">
-        <img id="logo" src="../images/apendo-logga-green-large.png" alt="Apendo logo">
+        <a href="/">
+        <img alt="Apendo logo" id="logo" src="../../images/apendo-logga-green-large.png">
         <h2 id="logoText">Caas-portal</h2>
+    </a>
     </div>
 
     <form id="login-form">
         <p>
             <label for="email"></label>
-            <input type="email" id="email" name="email" placeholder="Email" required><i
+            <input id="email" name="email" placeholder="Email" required type="email"><i
                 class="validation"><span></span><span></span></i>
-                <p class="email-error"></p>
+        <p class="email-error"></p>
         </p>
         <p>
             <label for="password"></label>
-            <input type="password" id="password" name="password" placeholder="Lösenord" required><i
-                class="validation"><span></span><span></span></i>
-                <p class="password-error"><a href="/auth/reset">Tryck om du glömt lösenord</a> </p>
+            <input id="password" name="password" placeholder="Lösenord" required type="password">
+            <i class="validation"><span></span><span></span></i>
+        <p class="password-reset"><a href="/auth/reset">Glömt lösenord?</a></p>
+        <p class="password-error"><a href="/auth/reset"></a></p>
         </p>
         <p>
-            <input type="submit" id="login" value="Logga in">
+            <button id="login" type="submit"><span id="loginText">Logga in</span></button>
         </p>
     </form>
     <div id="create-account-wrap">

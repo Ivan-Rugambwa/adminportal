@@ -1,5 +1,4 @@
-import {userApiUrl, baseUrl} from "../../shared.js";
-import {adminPage} from "../../auth/adminPage.js";
+import {baseUrl, userApiUrl} from "../../shared.js";
 import {isAuthenticatedWithRedirect} from "../../auth/auth.js";
 
 const cancel = document.querySelector('.cancelButton');

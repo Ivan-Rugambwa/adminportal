@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Registrera</title>
-    <link rel="stylesheet" href="../../css/auth/register.css">
+    <link href="../../css/auth/register.css" rel="stylesheet">
     <link href="../../../css/shared/form.css" rel="stylesheet">
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/6c0cfcbd8b.js"></script>
 </head>
@@ -22,13 +22,13 @@
         </div>
         <div>
             <label for="email">Email</label>
-            <input id="email" name="email" required type="email" disabled value="">
+            <input disabled id="email" name="email" required type="email" value="">
             <p class="error email-error"></p>
         </div>
 
         <div id="business-div">
             <label for="business">Företag</label>
-            <input id="business" name="business" required type="text" disabled value="">
+            <input disabled id="business" name="business" required type="text" value="">
         </div>
 
         <div>
@@ -42,7 +42,7 @@
             <input id="confirmPassword" name="confirmPassword" required type="password" value="">
         </div>
         <div id="load">
-            <i id="loadIcon" class="fa-solid fa-arrow-rotate-right fa-spin"></i>
+            <i class="fa-solid fa-arrow-rotate-right fa-spin none" id="loadIcon"></i>
         </div>
         <div class="buttons">
             <button id="registerButton" type="submit">Registrera</button>
@@ -50,6 +50,6 @@
         </div>
     </form>
 </div>
-<script type="module" src="../../js/auth/register.js"></script>
+<script src="../../js/auth/register.js" type="module"></script>
 </body>
 </html>
