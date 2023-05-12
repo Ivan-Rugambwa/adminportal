@@ -11,13 +11,29 @@
     <link href="../../css/admin/navbar.css" rel="stylesheet">
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/6c0cfcbd8b.js"></script>
     <title>Adminportal</title>
-</head>
-<body>
-<div id="blur"></div>
-<nav></nav>
-<p>Admin startsida</p>
 
-<script src="../../js/admin/navbar.js" type="module"></script>
-<script src="../../js/admin/homepage.js" type="module"></script>
+</head>
+
+<body>
+    <div id="blur"></div>
+    <nav></nav>
+    <table>
+        <thead>
+          <tr>
+            <th>Företagsnamn</th>
+            <th>Totalt antal platsrapporter</th>
+            <th>Totalt antal platsanvändningar</th>
+            <th>Genomsnittlig platsanvändning</th>
+          </tr>
+        </thead>
+        <tbody id="report-table">
+        </tbody>
+      </table>
+      
+    <canvas id="myChart"></canvas>
+    <script src="../../js/admin/script2.js" type="module"></script>
+    <script src="../../js/admin/navbar.js" type="module"></script>
+    <script src="../../js/admin/homepage.js" type="module"></script>
 </body>
+
 </html>
