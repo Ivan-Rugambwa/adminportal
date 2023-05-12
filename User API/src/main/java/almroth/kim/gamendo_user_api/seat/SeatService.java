@@ -94,11 +94,11 @@ public class SeatService {
 
     public Set<SeatResponse> GetAllSeatsByBusinessName(String name, String token) {
         var seats = repository.findAllByBusiness_Name(name).orElseThrow(() -> new IllegalArgumentException("No seats with business: " + name));
-        var claim = jwtService.extractClaim(token.substring(7), claims -> claims.get("organization")).toString();
+        var organization = jwtService.extractClaim(token.substring(7), claims -> claims.get("organization"));
 
         Set<SeatResponse> seatResponses = new HashSet<>();
         for (var seat : seats) {
-            if (Objects.equals(seat.getBusiness().getName(), claim))
+            if (jwtService.extractRoles(token.substring(7)).contains("ADMIN") || Objects.equals(seat.getBusiness().getName(), organization.toString()))
                 seatResponses.add(mapper.SEAT_RESPONSE(seat));
             else throw new IllegalArgumentException("Account business and Seat business does not match.");
         }
