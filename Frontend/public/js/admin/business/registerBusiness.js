@@ -1,5 +1,5 @@
 import {baseUrl, userApiUrl} from "../../shared.js";
-import {isAuthenticated, isAuthenticatedWithRedirect} from "../../auth/auth.js";
+import {isAuthenticatedWithRedirect} from "../../auth/auth.js";
 
 const cancel = document.querySelector('.cancelButton');
 const form = document.getElementById('form');

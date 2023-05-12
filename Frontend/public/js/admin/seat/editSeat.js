@@ -1,4 +1,4 @@
-import {userApiUrl, baseUrl} from "../../shared.js";
+import {baseUrl, userApiUrl} from "../../shared.js";
 import {isAuthenticatedWithRedirect} from "../../auth/auth.js";
 
 const cancel = document.querySelector('.cancelButton');
@@ -23,11 +23,25 @@ window.addEventListener('load', async ev => {
 
 window.addEventListener('submit', async ev => {
     ev.preventDefault();
-    const form = document.getElementById('form');
+    const loadText = document.getElementById('loadText');
+    loadText.innerText = '';
+    loadText.classList.add('none');
+    loadIcon.classList.remove('none');
+    registerButton.style.pointerEvents = 'none';
 
-    await putUpdate()
+    try {
+        const post = putUpdate();
+        await Promise.all([post, new Promise(r => setTimeout(r, 1000))])
+        loadText.innerText = 'Seatrapporten har uppdaterats.';
+        loadText.style.color = 'green';
+    } catch (e) {
+        loadText.innerText = 'Seatrapportuppdatering misslyckades. Försök igen senare eller kontakta admin.';
+        loadText.style.color = 'red';
+    }
+    loadText.classList.remove('none');
+    loadIcon.classList.add('none');
+    registerButton.style.pointerEvents = 'auto';
 })
-
 
 
 const getSeat = async () => {
@@ -48,14 +62,14 @@ const getSeat = async () => {
         .catch(error => {
             console.error(error);
         })
-        console.log(response);
+    console.log(response);
     return response;
 }
 
 const fillForm = (seat) => {
     document.getElementById('uuid').setAttribute('value', seat['uuid']);
     document.getElementById('businessBaseline').setAttribute('value', seat['businessBaseline']);
-    document.getElementById('businessName').setAttribute('value',seat['businessName']);
+    document.getElementById('businessName').setAttribute('value', seat['businessName']);
     document.getElementById('seatUsed').setAttribute('value', seat['seatUsed']);
     document.getElementById('completedByEmail').setAttribute('value', seat['completedByEmail']);
     document.getElementById('forYearMonth').setAttribute('value', seat['forYearMonth']);
@@ -81,9 +95,9 @@ const putUpdate = async () => {
         },
         body: JSON.stringify(body)
     })
-        // .then(response => )
-        // .catch(error => {
-        //     console.error(error);
-        //     throw Error('Something went wrong updating account: ' + error)
-        // });
+    // .then(response => )
+    // .catch(error => {
+    //     console.error(error);
+    //     throw Error('Something went wrong updating account: ' + error)
+    // });
 }

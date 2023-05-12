@@ -175,7 +175,6 @@ public class AuthenticationService {
                 .refreshToken(newToken.getToken())
                 .accessToken(jwtService.generateToken(refreshToken.getAccount()))
                 .build();
-
     }
 
     @Transactional
@@ -223,5 +222,6 @@ public class AuthenticationService {
         var encodedPassword = passwordEncoder.encode(request.getNewPassword());
         passwordReset.getAccount().setPassword(encodedPassword);
         accountRepository.save(passwordReset.getAccount());
+        passwordResetService.deletePasswordResetByUuid(passwordReset.getUuid());
     }
 }

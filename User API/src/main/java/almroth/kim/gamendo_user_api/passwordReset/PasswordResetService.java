@@ -2,11 +2,13 @@ package almroth.kim.gamendo_user_api.passwordReset;
 
 import almroth.kim.gamendo_user_api.account.model.Account;
 import almroth.kim.gamendo_user_api.config.NotionConfigProperties;
+import almroth.kim.gamendo_user_api.error.customException.PasswordResetTimeoutException;
 import almroth.kim.gamendo_user_api.passwordReset.model.PasswordReset;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Properties;
@@ -27,7 +29,7 @@ public class PasswordResetService {
     public PasswordReset createPasswordReset(Account account) {
         var passwordResetOld = passwordResetRepository.findByAccount_Uuid(account.getUuid());
         passwordResetOld.ifPresent(passwordResetRepository::delete);
-        
+
         var passwordReset = PasswordReset.builder()
                 .createdAtDate(Date.from(Instant.now()))
                 .account(account)
@@ -73,7 +75,16 @@ public class PasswordResetService {
     }
 
     public boolean doesResetPasswordExist(UUID resetPasswordUuid) {
-        return passwordResetRepository.existsById(resetPasswordUuid);
+        var passwordResetOptional = passwordResetRepository.getByUuid(resetPasswordUuid);
+        if (passwordResetOptional.isEmpty())
+            return false;
+        var passwordReset = passwordResetOptional.get();
+        var datePlus = passwordReset.getCreatedAtDate().toInstant().plus(Duration.ofMinutes(30));
+        if (Instant.now().isAfter(datePlus)) {
+            deletePasswordResetByUuid(passwordReset.getUuid());
+            return false;
+        } else
+            return true;
     }
 
     public PasswordReset getPasswordResetByUuid(UUID resetPasswordUuid) {

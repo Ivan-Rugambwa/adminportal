@@ -14,6 +14,13 @@ p {
     position: relative;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    outline: none;
+}
+
 a,
 a:link,
 a:visited,
@@ -49,7 +56,23 @@ a:active:hover {
     padding: 0 60px;
 }
 
-input {
+button {
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    overflow: visible;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    text-align: inherit;
+    cursor: pointer;
+    outline: none;
+}
+
+
+input, button {
     display: block;
     box-sizing: border-box;
     width: 100%;
@@ -87,21 +110,21 @@ input[type="email"]:focus:invalid {
     border-color: #cc1e2b;
 }
 
-input[type="password"]:valid~.validation,
-input[type="email"]:valid~.validation {
+input[type="password"]:valid ~ .validation,
+input[type="email"]:valid ~ .validation {
     display: block;
     border-color: #0C0;
 }
 
-input[type="password"]:valid~.validation span,
-input[type="email"]:valid~.validation span {
+input[type="password"]:valid ~ .validation span,
+input[type="email"]:valid ~ .validation span {
     background: #0C0;
     position: absolute;
     border-radius: 6px;
 }
 
-input[type="password"]:valid~.validation span:first-child,
-input[type="email"]:valid~.validation span:first-child {
+input[type="password"]:valid ~ .validation span:first-child,
+input[type="email"]:valid ~ .validation span:first-child {
     top: 30px;
     left: 14px;
     width: 20px;
@@ -109,8 +132,8 @@ input[type="email"]:valid~.validation span:first-child {
     transform: rotate(-45deg);
 }
 
-input[type="password"]:valid~.validation span:last-child,
-input[type="email"]:valid~.validation span:last-child {
+input[type="password"]:valid ~ .validation span:last-child,
+input[type="email"]:valid ~ .validation span:last-child {
     top: 35px;
     left: 8px;
     width: 11px;
@@ -128,7 +151,7 @@ input[type="email"]:valid~.validation span:last-child {
     top: 0;
 }
 
-input[type="submit"] {
+button[type="submit"] {
     border: none;
     display: block;
     background-color: #99CC00;
@@ -143,7 +166,7 @@ input[type="submit"] {
     text-align: center;
 }
 
-input[type="submit"]:hover {
+button[type="submit"]:hover {
     background-color: #7aa300;
     -webkit-transition: all 0.2s ease;
     transition: all 0.2s ease;
@@ -174,6 +197,7 @@ input[type="submit"]:hover {
 
 #logoText {
     margin-left: 3rem;
+    color: white;
 }
 
 #logo {
@@ -181,22 +205,53 @@ input[type="submit"]:hover {
     height: 5rem;
     margin-bottom: -1.75rem;
     margin-right: 2.3rem;
-    
+}
+
+.password-reset {
+    color: #D8000C;
+    font-size: medium;
 }
 
 .password-error {
-    color: #D8000C;
-    font-size: small;
-    
-    
-
+    color: red;
+    font-size: medium;
 }
 
 .email-error {
     color: #D8000C;
-    
-        
+}
+
+#errorFrame {
+    margin: 2rem 1rem;
+    font-size: x-large;
+}
+
+#loadFrame {
+    margin: 2rem 0;
+    font-size: 4rem;
+    color: #99CC00;
+}
+
+.link {
+    padding: 0.4rem 0;
+}
+
+.none {
+    display: none;
+}
+
+#errorMessage {
+    font-size: medium;
+    color: red;
+}
+
+#successMessage {
+    font-size: medium;
+    color: #99CC00;
 
 }
 
-
+#returnLink {
+    font-size: medium;
+    margin-bottom: 0.5rem;
+}

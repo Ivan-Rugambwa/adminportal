@@ -83,6 +83,7 @@
             <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
             <zeebe:input source="kim.almroth@apendo.se" target="to" />
             <zeebe:input source="Seatrapportering Påminnelse" target="subject" />
+            <zeebe:input source="=seat.emailFrequency" target="emailFrequency" />
             <zeebe:input source="=&#34;Seatrapporten har fortfarande inte fyllts i.&#34; + &#34;\n\nTryck på denna länk för att rapportera:\nhttp://localhost:3000/seat/report?uuid=&#34; + seat.uuid + &#34;\neller logga in på http://localhost:3000/&#34;" target="text" />
           </zeebe:ioMapping>
           <zeebe:taskHeaders>
@@ -119,6 +120,7 @@
             <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
             <zeebe:input source="kim.almroth@apendo.se" target="to" />
             <zeebe:input source="Seatrapportera" target="subject" />
+            <zeebe:input source="=seat.emailFrequency" target="emailFrequency" />
             <zeebe:input source="=&#34;Seatrapportera &#34; + user.firstName + &#34; &#34; + user.lastName + &#34;\nTryck på denna länk http://localhost:3000/seat/report?uuid=&#34; + seat.uuid + &#34;\nEller logga in på http://localhost:3000/&#34;" target="text" />
           </zeebe:ioMapping>
           <zeebe:taskHeaders>
@@ -141,6 +143,7 @@
           <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
           <zeebe:input source="kim.almroth@apendo.se" target="to" />
           <zeebe:input source="Seatrapport ej godkänd" target="subject" />
+          <zeebe:input source="MONTHLY" target="emailFrequency" />
           <zeebe:input source="=&#34;Seatrapporten har blivit nekad.\nAnledning: &#34; + denialReason + &#34;\n\nTryck på denna länk http://localhost:3000/seat/report?uuid=&#34; + seat.uuid + &#34;\nEller logga in på http://localhost:3000/&#34;" target="text" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
@@ -177,6 +180,7 @@
           <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
           <zeebe:input source="kim.almroth@apendo.se" target="to" />
           <zeebe:input source="Seat överanvändning" target="subject" />
+          <zeebe:input source="MONTHLY" target="emailFrequency" />
           <zeebe:input source="=&#34;Seat har blivit överanvänt av företaget &#34; + seat.businessName + &#34;\n\nDe har använt &#34; + string(seatUsedAmount - seat.businessBaseline) + &#34; extra.&#34;" target="text" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>

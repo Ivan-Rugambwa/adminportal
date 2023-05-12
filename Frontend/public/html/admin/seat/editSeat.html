@@ -8,69 +8,70 @@
     <link href="../../../css/admin/editUser.css" rel="stylesheet">
     <link href="../../../css/shared/form.css" rel="stylesheet">
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/6c0cfcbd8b.js"></script>
-    <title>Redigera Seatrapporter</title>
+    <title>Redigera Seatrapport</title>
 </head>
 
 <body>
-    <div id="formBox">
-        <form id="form">
-            <div id="title">
-                <p>Uppdatera Seat</p>
-            </div>
-            <div>
-                <label for="uuid">UUID:</label>
-                <input disabled id="uuid" name="uuid" required type="text" value="">
-            </div>
+<div id="formBox">
+    <form id="form">
+        <div id="title">
+            <p>Uppdatera Seat</p>
+        </div>
+        <div>
+            <label for="uuid">UUID:</label>
+            <input disabled id="uuid" name="uuid" required type="text" value="">
+        </div>
 
-            <div>
-                <label for="businessName">Företag:</label>
-                <input disabled id="businessName" name="businessName" required type="text" value="">
-            </div>
+        <div>
+            <label for="businessName">Företag:</label>
+            <input disabled id="businessName" name="businessName" required type="text" value="">
+        </div>
 
-            <div>
-                <label for="businessBaseline">Baseline:</label>
-                <input disabled id="businessBaseline" name="businessBaseline" required type="text" value="">
-            </div>
-
-            
-            <div>
-                <label for="completedByEmail">I fylld av:</label>
-                <input disabled id="completedByEmail" name="completedByEmail" required type="text" value="">
-            </div>
-
-            <div>
-                <label for="forYearMonth">För Datum:</label>
-                <input disabled id="forYearMonth" name="forYearMonth" required type="text" value="">
-            </div>
-
-            <div>
-                <label for="lastChangeDate">Ändringsdatum:</label>
-                <input disabled id="lastChangeDate" name="lastChangeDate" required type="text" value="">
-            </div>
-           
-            <div>
-                <label for="seatUsed">Seatanvändning:</label>
-                <input id="seatUsed" name="seatUsed" required type="text" value="">
-            </div>
-            <div>
-                <label for="Status">status:</label>
-                <input id="status" name="status" required type="text" value="">
-            </div>
-
-            <div id="load">
-                <i id="loadIcon" class="fa-solid fa-arrow-rotate-right fa-spin"></i>
-            </div>
-
-            <div class="buttons">
-                <button id="registerButton" type="submit">Uppdatera</button>
-                <button class="cancelButton" type="button">Gå tillbaka</button>
-            </div>
+        <div>
+            <label for="businessBaseline">Baseline:</label>
+            <input disabled id="businessBaseline" name="businessBaseline" required type="text" value="">
+        </div>
 
 
-    </div>
+        <div>
+            <label for="completedByEmail">I fylld av:</label>
+            <input disabled id="completedByEmail" name="completedByEmail" required type="text" value="">
+        </div>
 
-    </form>
+        <div>
+            <label for="forYearMonth">För Datum:</label>
+            <input disabled id="forYearMonth" name="forYearMonth" required type="text" value="">
+        </div>
+
+        <div>
+            <label for="lastChangeDate">Ändringsdatum:</label>
+            <input disabled id="lastChangeDate" name="lastChangeDate" required type="text" value="">
+        </div>
+
+        <div>
+            <label for="seatUsed">Seatanvändning:</label>
+            <input id="seatUsed" name="seatUsed" required type="text" value="">
+        </div>
+        <div>
+            <label for="Status">status:</label>
+            <input id="status" name="status" required type="text" value="">
+        </div>
+
+        <div id="load">
+            <div class="none" id="loadText"></div>
+            <i class="fa-solid fa-arrow-rotate-right fa-spin none" id="loadIcon"></i>
+        </div>
+
+        <div class="buttons">
+            <button id="registerButton" type="submit">Uppdatera</button>
+            <button class="cancelButton" type="button">Gå tillbaka</button>
+        </div>
+
+
+</div>
+
+</form>
 </body>
-<script type="module" src="../../../js/admin/seat/editSeat.js"></script>
+<script src="../../../js/admin/seat/editSeat.js" type="module"></script>
 
 </html>
