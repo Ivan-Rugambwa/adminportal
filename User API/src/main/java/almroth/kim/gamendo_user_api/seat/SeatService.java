@@ -102,6 +102,7 @@ public class SeatService {
                 seatResponses.add(mapper.SEAT_RESPONSE(seat));
             else throw new IllegalArgumentException("Account business and Seat business does not match.");
         }
+        
         return seatResponses;
     }
 
