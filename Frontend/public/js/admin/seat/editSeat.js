@@ -2,8 +2,6 @@ import {baseUrl, userApiUrl} from "../../shared.js";
 import {isAuthenticatedWithRedirect} from "../../auth/auth.js";
 
 const cancel = document.querySelector('.cancelButton');
-const form = document.getElementById('form');
-const load = document.getElementById('load');
 const loadIcon = document.getElementById('loadIcon');
 const registerButton = document.getElementById('registerButton');
 
@@ -12,7 +10,7 @@ cancel.addEventListener('click', ev => {
     window.location.assign(`${baseUrl}/admin/seat`);
 });
 
-window.addEventListener('load', async ev => {
+window.addEventListener('load', async () => {
     await isAuthenticatedWithRedirect();
     const seat = await getSeat();
 
@@ -70,10 +68,10 @@ const fillForm = (seat) => {
     document.getElementById('uuid').setAttribute('value', seat['uuid']);
     document.getElementById('businessBaseline').setAttribute('value', seat['businessBaseline']);
     document.getElementById('businessName').setAttribute('value', seat['businessName']);
-    document.getElementById('seatUsed').setAttribute('value', seat['seatUsed']);
-    document.getElementById('completedByEmail').setAttribute('value', seat['completedByEmail']);
+    document.getElementById('seatUsed').setAttribute('value', seat['seatUsed'] ?? '');
+    document.getElementById('completedByEmail').setAttribute('value', seat['completedByEmail'] ?? 'Ingen');
     document.getElementById('forYearMonth').setAttribute('value', seat['forYearMonth']);
-    document.getElementById('lastChangeDate').setAttribute('value', seat['lastChangeDate']);
+    document.getElementById('lastChangeDate').setAttribute('value', seat['lastChangeDate'] ?? 'Ingen');
     document.getElementById('status').setAttribute('value', seat['status']);
 
 
