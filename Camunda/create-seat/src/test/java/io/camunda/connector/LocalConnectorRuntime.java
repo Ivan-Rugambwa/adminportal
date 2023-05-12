@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 
 public class LocalConnectorRuntime {
 
-  public static void main(String[] args) {
-    SpringApplication.run(ConnectorRuntimeApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(ConnectorRuntimeApplication.class, args);
+    }
 }

@@ -103,6 +103,17 @@
       }
     },
     {
+      "label": "Email Frequency",
+      "description": "Email frequency",
+      "type": "String",
+      "feel": "optional",
+      "value": "=seat.emailFrequency",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "emailFrequency"
+      }
+    },
+    {
       "label": "Text",
       "description": "Email subject",
       "type": "Text",

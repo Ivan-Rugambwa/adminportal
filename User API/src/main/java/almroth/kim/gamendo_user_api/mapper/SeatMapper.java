@@ -15,16 +15,24 @@ public interface SeatMapper {
     @Mapping(target = "businessName", source = "business", qualifiedByName = "businessToBusinessName")
     @Mapping(target = "completedByEmail", source = "completedBy", qualifiedByName = "accountToAccountName")
     @Mapping(target = "businessBaseline", source = "business", qualifiedByName = "businessToBusinessBaseline")
+    @Mapping(target = "emailFrequency", source = "business", qualifiedByName = "businessToBusinessEmailFrequency")
     SeatResponse SEAT_RESPONSE(Seat seat);
 
     @Named("businessToBusinessName")
     default String businessToBusinessName(Business business) {
         return business.getName();
     }
+
     @Named("businessToBusinessBaseline")
     default Integer businessToBusinessBaseline(Business business) {
         return business.getSeatBaseline();
     }
+
+    @Named("businessToBusinessEmailFrequency")
+    default String businessToBusinessEmailFrequency(Business business) {
+        return business.getEmailFrequency();
+    }
+
     @Named("accountToAccountName")
     default String accountToAccountName(Account account) {
         if (account == null) return null;

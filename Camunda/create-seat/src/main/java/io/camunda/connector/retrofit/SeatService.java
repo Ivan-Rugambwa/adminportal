@@ -16,8 +16,10 @@ import java.util.Set;
 public interface SeatService {
     @GET("/api/admin/business")
     public Call<Set<BusinessResponse>> GET_BUSINESSES_CALL(@Header("Authorization") String token);
+
     @POST("/api/auth/authenticate")
     public Call<LoginResponse> LOGIN_CALL(@Body LoginRequest loginRequest);
+
     @POST("/api/admin/seat")
     public Call<CreateSeatResponse> CREATE_SEAT_RESPONSE_CALL(@Header("Authorization") String token, @Body CreateSeatRequest createSeatRequest);
 }

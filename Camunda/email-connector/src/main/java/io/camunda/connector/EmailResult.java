@@ -5,8 +5,7 @@ import lombok.Data;
 @Data
 public class EmailResult {
 
-  private String message;
-  private String user;
-  private String pass;
+    private String message;
+    private String result;
 
 }
