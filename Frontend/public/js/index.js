@@ -60,10 +60,13 @@ window.addEventListener('submit', async (event) => {
         }
         console.log("after verify");
     } catch (e) {
-        document.querySelector(".password-error").innerText = "Fel användarnamn eller lösenord";
-        document.querySelector(".password-error").style.display = "block";
-
-        console.log(e);
+        if (e instanceof TypeError) {
+            document.querySelector(".password-error").innerText = "Kunde inte logga in. Försök igen senare eller kontakta support.";
+            document.querySelector(".password-error").style.display = "block";
+        } else {
+            document.querySelector(".password-error").innerText = "Fel användarnamn eller lösenord";
+            document.querySelector(".password-error").style.display = "block";
+        }
     }
     loginText.innerText = 'Logga in';
     loginText.classList.remove(...loadIcon);

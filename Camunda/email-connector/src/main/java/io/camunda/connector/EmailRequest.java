@@ -14,12 +14,19 @@ public class EmailRequest {
     private String host;
     @Secret
     private String port;
-
     private String to;
-
     private String subject;
-
-    private String text;
-    private String emailFrequency;
+    private String emailFrequency = "";
+    private String firstName = "";
+    private String lastName = "";
+    private String reportUrl = "";
+    private String seatUuid = "";
+    private String type = "";
+    private String forDate = "";
+    private String denialMessage = "";
+    private String businessName = "";
+    private String baseline = "";
+    private String seatUsedAmount = "";
+    private String seatOverUsage = "";
 
 }

@@ -3,6 +3,8 @@ package io.camunda.connector;
 import io.camunda.connector.test.outbound.OutboundConnectorContextBuilder;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.FileSystems;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MyFunctionTest {
@@ -15,10 +17,20 @@ public class MyFunctionTest {
         input.setFrom("secrets.FROM");
         input.setPort("secrets.PORT");
         input.setPassword("secrets.PASSWORD");
-        input.setText("det h\\u00E4r \\u00E4r ett test & test");
+        input.setType("seat-report");
         input.setTo("kim.almroth@apendo.se");
         input.setSubject("test from test");
         input.setEmailFrequency("MONTHLY");
+        input.setFirstName("Kim");
+        input.setLastName("Almroth");
+        input.setReportUrl("http://camcaas.apendo.se/");
+        input.setSeatUuid("9262191e-02d9-4ffa-816c-d0b145af80bb");
+        input.setForDate("2023/06");
+        input.setDenialMessage("Ser inte bra ut");
+        input.setBusinessName("IKEA");
+        input.setBaseline("45");
+        input.setSeatOverUsage("3");
+        input.setSeatUsedAmount("48");
 
         var context = OutboundConnectorContextBuilder.create()
                 .secret("HOST", "mail.smtp2go.com")
@@ -33,11 +45,6 @@ public class MyFunctionTest {
 
         var result = function.execute(context);
         // then
-
-        assertThat(input)
-                .isInstanceOf(EmailRequest.class)
-                .extracting("text")
-                .isEqualTo("det här är ett test & test");
 
         assertThat(result)
                 .isInstanceOf(EmailResult.class)

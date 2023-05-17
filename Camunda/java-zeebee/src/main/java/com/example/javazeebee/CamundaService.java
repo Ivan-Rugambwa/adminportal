@@ -39,7 +39,12 @@ public class CamundaService {
                 .correlationKey(correlationKey)
                 .messageId(UUID.randomUUID().toString())
                 .timeToLive(Duration.ofSeconds(10))
-                .variables(Map.of("seatUsedAmount", request.getAmountOfSeatsUsed(), "filledByEmail", request.getEmail()))
+                .variables(Map.of(
+                        "seatUsedAmount", request.getAmountOfSeatsUsed(),
+                        "filledByEmail", request.getEmail(),
+                        "filledByFirstName", request.getFirstName(),
+                        "filledByLastName", request.getLastName()
+                ))
                 .send().join();
         System.out.println("Message published");
 

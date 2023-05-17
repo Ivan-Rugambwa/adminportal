@@ -73,7 +73,9 @@
       <bpmn:endEvent id="Event_0d39msb">
         <bpmn:incoming>Flow_04h50kq</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:serviceTask id="Activity_0qq0kr4" name="Send remainder mail" zeebe:modelerTemplate="apendo.send.email" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="https://icons-for-free.com/iconfiles/png/512/mail+email+mail+message+messagesent+online+send+icon-1320168115193956831.png">
+      <bpmn:sequenceFlow id="Flow_02vmihx" sourceRef="Event_1ngvksu" targetRef="Activity_0qq0kr4" />
+      <bpmn:sequenceFlow id="Flow_04h50kq" sourceRef="Activity_0qq0kr4" targetRef="Event_0d39msb" />
+      <bpmn:serviceTask id="Activity_0qq0kr4" name="Send remainder mail" zeebe:modelerTemplate="apendo.send.emailv2" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="https://icons-for-free.com/iconfiles/png/512/mail+email+mail+message+messagesent+online+send+icon-1320168115193956831.png">
         <bpmn:extensionElements>
           <zeebe:taskDefinition type="apendo:send-email:1" />
           <zeebe:ioMapping>
@@ -81,20 +83,20 @@
             <zeebe:input source="=&#34;secrets.PORT&#34;" target="port" />
             <zeebe:input source="=&#34;secrets.FROM_PASSWORD&#34;" target="password" />
             <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
-            <zeebe:input source="kim.almroth@apendo.se" target="to" />
+            <zeebe:input source="=user.email + &#34;, kim.almroth@apendo.se&#34;" target="to" />
             <zeebe:input source="Seatrapportering Påminnelse" target="subject" />
             <zeebe:input source="=seat.emailFrequency" target="emailFrequency" />
-            <zeebe:input source="=&#34;Seatrapporten har fortfarande inte fyllts i.&#34; + &#34;\n\nTryck på denna länk för att rapportera:\nhttp://localhost:3000/seat/report?uuid=&#34; + seat.uuid + &#34;\neller logga in på http://localhost:3000/&#34;" target="text" />
+            <zeebe:input source="remainder" target="type" />
+            <zeebe:input source="=user.firstName" target="firstName" />
+            <zeebe:input source="=user.lastName" target="lastName" />
+            <zeebe:input source="http://camcaas.apendo.se/" target="reportUrl" />
+            <zeebe:input source="=seat.uuid" target="seatUuid" />
+            <zeebe:input source="=seat.forYearMonth" target="forDate" />
           </zeebe:ioMapping>
-          <zeebe:taskHeaders>
-            <zeebe:header key="resultVariable" value="emailRemainderResult" />
-          </zeebe:taskHeaders>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_02vmihx</bpmn:incoming>
         <bpmn:outgoing>Flow_04h50kq</bpmn:outgoing>
       </bpmn:serviceTask>
-      <bpmn:sequenceFlow id="Flow_02vmihx" sourceRef="Event_1ngvksu" targetRef="Activity_0qq0kr4" />
-      <bpmn:sequenceFlow id="Flow_04h50kq" sourceRef="Activity_0qq0kr4" targetRef="Event_0d39msb" />
     </bpmn:subProcess>
     <bpmn:subProcess id="Activity_1rcue7n" name="Send mail to all customers in organization">
       <bpmn:incoming>Flow_1v7ztqs</bpmn:incoming>
@@ -110,7 +112,9 @@
       <bpmn:endEvent id="Event_17vio5p">
         <bpmn:incoming>Flow_0qwya3p</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:serviceTask id="Activity_1v92odq" name="Send mail to customers" zeebe:modelerTemplate="apendo.send.email" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="https://icons-for-free.com/iconfiles/png/512/mail+email+mail+message+messagesent+online+send+icon-1320168115193956831.png">
+      <bpmn:sequenceFlow id="Flow_0h9opl3" sourceRef="Event_09lceu5" targetRef="Activity_1v92odq" />
+      <bpmn:sequenceFlow id="Flow_0qwya3p" sourceRef="Activity_1v92odq" targetRef="Event_17vio5p" />
+      <bpmn:serviceTask id="Activity_1v92odq" name="Send mail to customers" zeebe:modelerTemplate="apendo.send.emailv2" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="https://icons-for-free.com/iconfiles/png/512/mail+email+mail+message+messagesent+online+send+icon-1320168115193956831.png">
         <bpmn:extensionElements>
           <zeebe:taskDefinition type="apendo:send-email:1" />
           <zeebe:ioMapping>
@@ -118,41 +122,20 @@
             <zeebe:input source="=&#34;secrets.PORT&#34;" target="port" />
             <zeebe:input source="=&#34;secrets.FROM_PASSWORD&#34;" target="password" />
             <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
-            <zeebe:input source="kim.almroth@apendo.se" target="to" />
+            <zeebe:input source="=user.email + &#34;, kim.almroth@apendo.se&#34;" target="to" />
             <zeebe:input source="Seatrapportera" target="subject" />
             <zeebe:input source="=seat.emailFrequency" target="emailFrequency" />
-            <zeebe:input source="=&#34;Seatrapportera &#34; + user.firstName + &#34; &#34; + user.lastName + &#34;\nTryck på denna länk http://localhost:3000/seat/report?uuid=&#34; + seat.uuid + &#34;\nEller logga in på http://localhost:3000/&#34;" target="text" />
+            <zeebe:input source="seat-report" target="type" />
+            <zeebe:input source="=user.firstName" target="firstName" />
+            <zeebe:input source="=user.lastName" target="lastName" />
+            <zeebe:input source="http://camcaas.apendo.se/" target="reportUrl" />
+            <zeebe:input source="=seat.uuid" target="seatUuid" />
           </zeebe:ioMapping>
-          <zeebe:taskHeaders>
-            <zeebe:header key="resultVariable" value="sendMailResult" />
-          </zeebe:taskHeaders>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_0h9opl3</bpmn:incoming>
         <bpmn:outgoing>Flow_0qwya3p</bpmn:outgoing>
       </bpmn:serviceTask>
-      <bpmn:sequenceFlow id="Flow_0h9opl3" sourceRef="Event_09lceu5" targetRef="Activity_1v92odq" />
-      <bpmn:sequenceFlow id="Flow_0qwya3p" sourceRef="Activity_1v92odq" targetRef="Event_17vio5p" />
     </bpmn:subProcess>
-    <bpmn:serviceTask id="Activity_03y9erc" name="Send reason of denial by mail" zeebe:modelerTemplate="apendo.send.email" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="https://icons-for-free.com/iconfiles/png/512/mail+email+mail+message+messagesent+online+send+icon-1320168115193956831.png">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="apendo:send-email:1" />
-        <zeebe:ioMapping>
-          <zeebe:input source="=&#34;secrets.FROM&#34;" target="from" />
-          <zeebe:input source="=&#34;secrets.PORT&#34;" target="port" />
-          <zeebe:input source="=&#34;secrets.FROM_PASSWORD&#34;" target="password" />
-          <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
-          <zeebe:input source="kim.almroth@apendo.se" target="to" />
-          <zeebe:input source="Seatrapport ej godkänd" target="subject" />
-          <zeebe:input source="MONTHLY" target="emailFrequency" />
-          <zeebe:input source="=&#34;Seatrapporten har blivit nekad.\nAnledning: &#34; + denialReason + &#34;\n\nTryck på denna länk http://localhost:3000/seat/report?uuid=&#34; + seat.uuid + &#34;\nEller logga in på http://localhost:3000/&#34;" target="text" />
-        </zeebe:ioMapping>
-        <zeebe:taskHeaders>
-          <zeebe:header key="resultVariable" value="emailDeniedResult" />
-        </zeebe:taskHeaders>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_02ujgqy</bpmn:incoming>
-      <bpmn:outgoing>Flow_0ubgth3</bpmn:outgoing>
-    </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity_1na6efp" name="Reset report status" zeebe:modelerTemplate="apendo.save.seat.template" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="https://icons-for-free.com/iconfiles/png/512/save+icon-1320167995084087448.png">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="apendo:save:1" />
@@ -169,26 +152,6 @@
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_04zucgt</bpmn:incoming>
       <bpmn:outgoing>Flow_02ujgqy</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_16c8uxu" name="Report to invoicer by mail" zeebe:modelerTemplate="apendo.send.email" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="https://icons-for-free.com/iconfiles/png/512/mail+email+mail+message+messagesent+online+send+icon-1320168115193956831.png">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="apendo:send-email:1" />
-        <zeebe:ioMapping>
-          <zeebe:input source="=&#34;secrets.FROM&#34;" target="from" />
-          <zeebe:input source="=&#34;secrets.PORT&#34;" target="port" />
-          <zeebe:input source="=&#34;secrets.FROM_PASSWORD&#34;" target="password" />
-          <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
-          <zeebe:input source="kim.almroth@apendo.se" target="to" />
-          <zeebe:input source="Seat överanvändning" target="subject" />
-          <zeebe:input source="MONTHLY" target="emailFrequency" />
-          <zeebe:input source="=&#34;Seat har blivit överanvänt av företaget &#34; + seat.businessName + &#34;\n\nDe har använt &#34; + string(seatUsedAmount - seat.businessBaseline) + &#34; extra.&#34;" target="text" />
-        </zeebe:ioMapping>
-        <zeebe:taskHeaders>
-          <zeebe:header key="resultVariable" value="emailOveruseResult" />
-        </zeebe:taskHeaders>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1ttei45</bpmn:incoming>
-      <bpmn:outgoing>Flow_16hs5a5</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity_04q1tda" name="Get customers for company" zeebe:modelerTemplate="apendo.get.data.template" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="https://icons-for-free.com/iconfiles/png/512/user+icon-1320183705947339583.png">
       <bpmn:extensionElements>
@@ -283,7 +246,7 @@
     <bpmn:boundaryEvent id="Event_1203gv0" name="Every 5 work days" cancelActivity="false" attachedToRef="Activity_0wo2whx">
       <bpmn:outgoing>Flow_1eayyd1</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_085lb1r">
-        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">R/P5D</bpmn:timeCycle>
+        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">R/P1D</bpmn:timeCycle>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_1eayyd1" sourceRef="Event_1203gv0" targetRef="Activity_0buswst" />
@@ -319,6 +282,51 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=seatUsedAmount &lt;= seat.businessBaseline</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0wigqtz" sourceRef="Activity_1nh3302" targetRef="Gateway_12423i2" />
+    <bpmn:serviceTask id="Activity_03y9erc" name="Send reason of denial by mail" zeebe:modelerTemplate="apendo.send.emailv2" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="https://icons-for-free.com/iconfiles/png/512/mail+email+mail+message+messagesent+online+send+icon-1320168115193956831.png">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="apendo:send-email:1" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=&#34;secrets.FROM&#34;" target="from" />
+          <zeebe:input source="=&#34;secrets.PORT&#34;" target="port" />
+          <zeebe:input source="=&#34;secrets.FROM_PASSWORD&#34;" target="password" />
+          <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
+          <zeebe:input source="=filledByEmail + &#34;, kim.almroth@apendo.se&#34;" target="to" />
+          <zeebe:input source="Seatrapport ej godkänd" target="subject" />
+          <zeebe:input source="MONTHLY" target="emailFrequency" />
+          <zeebe:input source="denial" target="type" />
+          <zeebe:input source="=filledByFirstName" target="firstName" />
+          <zeebe:input source="=filledByLastName" target="lastName" />
+          <zeebe:input source="http://camcaas.apendo.se/" target="reportUrl" />
+          <zeebe:input source="=seat.uuid" target="seatUuid" />
+          <zeebe:input source="=seat.forYearMonth" target="forDate" />
+          <zeebe:input source="=denialReason" target="denialMessage" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_02ujgqy</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ubgth3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_16c8uxu" name="Report to invoicer by mail" zeebe:modelerTemplate="apendo.send.emailv2" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="https://icons-for-free.com/iconfiles/png/512/mail+email+mail+message+messagesent+online+send+icon-1320168115193956831.png">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="apendo:send-email:1" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=&#34;secrets.FROM&#34;" target="from" />
+          <zeebe:input source="=&#34;secrets.PORT&#34;" target="port" />
+          <zeebe:input source="=&#34;secrets.FROM_PASSWORD&#34;" target="password" />
+          <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
+          <zeebe:input source="kim.almroth@apendo.se" target="to" />
+          <zeebe:input source="Seat överanvändning" target="subject" />
+          <zeebe:input source="MONTHLY" target="emailFrequency" />
+          <zeebe:input source="invoice" target="type" />
+          <zeebe:input source="=seat.forYearMonth" target="forDate" />
+          <zeebe:input source="=seat.businessName" target="businessName" />
+          <zeebe:input source="=seat.businessBaseline" target="baseline" />
+          <zeebe:input source="=seatUsedAmount" target="seatUsedAmount" />
+          <zeebe:input source="=string((seatUsedAmount - seat.businessBaseline))" target="seatOverUsage" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ttei45</bpmn:incoming>
+      <bpmn:outgoing>Flow_16hs5a5</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmn:message id="Message_263k152" name="report-response">
     <bpmn:extensionElements>
@@ -337,7 +345,7 @@
       <bpmndi:BPMNShape id="BPMNShape_12qi388" bpmnElement="Event_0d39msb">
         <dc:Bounds x="1142" y="422" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_07et137" bpmnElement="Activity_0qq0kr4">
+      <bpmndi:BPMNShape id="Activity_0dnw1r3_di" bpmnElement="Activity_0qq0kr4">
         <dc:Bounds x="980" y="400" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_1mt3yws" bpmnElement="Flow_02vmihx">
@@ -358,9 +366,8 @@
       <bpmndi:BPMNShape id="BPMNShape_11xb7iw" bpmnElement="Event_17vio5p">
         <dc:Bounds x="672" y="212" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0d9q2yg" bpmnElement="Activity_1v92odq">
+      <bpmndi:BPMNShape id="Activity_11x2tbw_di" bpmnElement="Activity_1v92odq">
         <dc:Bounds x="510" y="190" width="100" height="80" />
-        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_05ejemh" bpmnElement="Flow_0h9opl3">
         <di:waypoint x="456" y="230" />
@@ -370,15 +377,9 @@
         <di:waypoint x="610" y="230" />
         <di:waypoint x="672" y="230" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="BPMNShape_0m192jx" bpmnElement="Activity_03y9erc">
-        <dc:Bounds x="1260" y="80" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_17qxvh6" bpmnElement="Activity_1na6efp">
         <dc:Bounds x="1410" y="80" width="100" height="80" />
         <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0t9va3i" bpmnElement="Activity_16c8uxu">
-        <dc:Bounds x="1850" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1njdhkx" bpmnElement="Activity_04q1tda">
         <dc:Bounds x="250" y="190" width="100" height="80" />
@@ -443,6 +444,12 @@
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1619" y="262" width="81" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1fx45t7_di" bpmnElement="Activity_03y9erc">
+        <dc:Bounds x="1260" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0v70wlo_di" bpmnElement="Activity_16c8uxu">
+        <dc:Bounds x="1850" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_09az2nj" bpmnElement="Event_1203gv0">
         <dc:Bounds x="782" y="252" width="36" height="36" />

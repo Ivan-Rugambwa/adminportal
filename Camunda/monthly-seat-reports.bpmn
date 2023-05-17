@@ -32,25 +32,6 @@
       </bpmn:multiInstanceLoopCharacteristics>
     </bpmn:callActivity>
     <bpmn:sequenceFlow id="Flow_1bxao2i" sourceRef="Activity_0a6q3bz" targetRef="Activity_0sdgfv1" />
-    <bpmn:serviceTask id="Activity_0sdgfv1" name="Send mail that all reports are done" zeebe:modelerTemplate="apendo.send.email" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="https://icons-for-free.com/iconfiles/png/512/mail+email+mail+message+messagesent+online+send+icon-1320168115193956831.png">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="apendo:send-email:1" />
-        <zeebe:ioMapping>
-          <zeebe:input source="=&#34;secrets.FROM&#34;" target="from" />
-          <zeebe:input source="=&#34;secrets.PORT&#34;" target="port" />
-          <zeebe:input source="=&#34;secrets.FROM_PASSWORD&#34;" target="password" />
-          <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
-          <zeebe:input source="kim.almroth@apendo.se" target="to" />
-          <zeebe:input source="Monthly done" target="subject" />
-          <zeebe:input source="Monthly done" target="text" />
-        </zeebe:ioMapping>
-        <zeebe:taskHeaders>
-          <zeebe:header key="resultVariable" value="allDoneResult" />
-        </zeebe:taskHeaders>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1bxao2i</bpmn:incoming>
-      <bpmn:outgoing>Flow_1qrvtoa</bpmn:outgoing>
-    </bpmn:serviceTask>
     <bpmn:endEvent id="Event_1hx2jhd" name="All seat reports complete this month">
       <bpmn:incoming>Flow_1qrvtoa</bpmn:incoming>
     </bpmn:endEvent>
@@ -79,6 +60,24 @@
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_0fkp7qt" sourceRef="Event_1h6bgdr" targetRef="Gateway_1fmwrp6" />
     <bpmn:sequenceFlow id="Flow_029qd9s" sourceRef="Gateway_1fmwrp6" targetRef="Activity_0u4tizf" />
+    <bpmn:serviceTask id="Activity_0sdgfv1" name="Send mail that all reports are done" zeebe:modelerTemplate="apendo.send.emailv2" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="https://icons-for-free.com/iconfiles/png/512/mail+email+mail+message+messagesent+online+send+icon-1320168115193956831.png">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="apendo:send-email:1" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=&#34;secrets.FROM&#34;" target="from" />
+          <zeebe:input source="=&#34;secrets.PORT&#34;" target="port" />
+          <zeebe:input source="=&#34;secrets.FROM_PASSWORD&#34;" target="password" />
+          <zeebe:input source="=&#34;secrets.HOST&#34;" target="host" />
+          <zeebe:input source="kim.almroth@apendo.se" target="to" />
+          <zeebe:input source="Monthly done" target="subject" />
+          <zeebe:input source="MONTHLY" target="emailFrequency" />
+          <zeebe:input source="all-done" target="type" />
+          <zeebe:input source="=forDate" target="forDate" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1bxao2i</bpmn:incoming>
+      <bpmn:outgoing>Flow_1qrvtoa</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_15ghqno">
@@ -88,10 +87,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1ab4h28_di" bpmnElement="Activity_0a6q3bz">
         <dc:Bounds x="530" y="127" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1592ugy_di" bpmnElement="Activity_0sdgfv1">
-        <dc:Bounds x="690" y="127" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1hx2jhd_di" bpmnElement="Event_1hx2jhd">
@@ -114,6 +109,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1fmwrp6_di" bpmnElement="Gateway_1fmwrp6" isMarkerVisible="true">
         <dc:Bounds x="265" y="142" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_12d7v4x_di" bpmnElement="Activity_0sdgfv1">
+        <dc:Bounds x="690" y="127" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0ei310r_di" bpmnElement="Flow_0ei310r">
         <di:waypoint x="215" y="240" />

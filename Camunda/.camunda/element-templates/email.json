@@ -103,6 +103,23 @@
       }
     },
     {
+      "label": "E-mail type",
+      "description": "What type of email to send",
+      "type": "Dropdown",
+      "value": "metric",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "units"
+        },
+      "choices": [
+        { "name": "Remainder", "value": "remainder" },
+        { "name": "Denial", "value": "remainder" },
+        { "name": "Remainder", "value": "remainder" },
+        { "name": "Invoice", "value": "invoice" },
+        { "name": "All done", "value": "all-done" }
+      ]
+    },
+    {
       "label": "Email Frequency",
       "description": "Email frequency",
       "type": "String",
