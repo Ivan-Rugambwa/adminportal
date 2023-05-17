@@ -29,6 +29,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
@@ -198,8 +199,8 @@ public class AuthenticationService {
             return;
         var passwordReset = passwordResetService.createPasswordReset(account.get());
         try {
-            passwordResetService.sendPasswordResetEmail(account.get().getEmail(), passwordReset.getUuid().toString());
-        } catch (MessagingException e) {
+            passwordResetService.sendPasswordResetEmail(account.get().getEmail(), passwordReset.getUuid().toString(), account.get().getFirstName());
+        } catch (MessagingException | IOException e) {
             passwordResetService.deletePasswordResetByUuid(passwordReset.getUuid());
             throw new RuntimeException(e.getLocalizedMessage());
         }

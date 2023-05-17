@@ -1,0 +1,349 @@
+{
+  "$schema": "https://unpkg.com/@camunda/zeebe-element-templates-json-schema/resources/schema.json",
+  "name": "Send Email V2",
+  "id": "apendo.send.emailv2",
+  "description": "Send Email",
+  "version": 1,
+  "documentationRef": "https://docs.camunda.io/docs/components/connectors/out-of-the-box-connectors/available-connectors-overview/",
+  "icon": {
+    "contents": "https://icons-for-free.com/iconfiles/png/512/mail+email+mail+message+messagesent+online+send+icon-1320168115193956831.png"
+  },
+  "category": {
+    "id": "connectors",
+    "name": "Connectors"
+  },
+  "appliesTo": [
+    "bpmn:Task"
+  ],
+  "elementType": {
+    "value": "bpmn:ServiceTask"
+  },
+  "groups": [
+    {
+      "id": "type",
+      "label": "Email type"
+    },
+    {
+      "id": "authentication",
+      "label": "Email Authentication"
+    },
+    {
+      "id": "all",
+      "label": "Email"
+    },
+    {
+      "id": "data",
+      "label": "Data"
+    }
+  ],
+  "properties": [
+    {
+      "type": "Hidden",
+      "value": "apendo:send-email:1",
+      "binding": {
+        "type": "zeebe:taskDefinition:type"
+      }
+    },
+    {
+      "group": "authentication",
+      "label": "From",
+      "description": "Email sent from this address",
+      "type": "String",
+      "value": "=\"secrets.FROM\"",
+      "feel": "required",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "from"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "group": "authentication",
+      "label": "Port",
+      "description": "Port for smtp server",
+      "type": "String",
+      "value": "=\"secrets.PORT\"",
+      "feel": "required",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "port"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "group": "authentication",
+      "label": "Password",
+      "description": "Password for from account",
+      "type": "String",
+      "value": "=\"secrets.FROM_PASSWORD\"",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "password"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "group": "authentication",
+      "label": "Host",
+      "description": "Which smpt host to use",
+      "type": "String",
+      "value": "=\"secrets.HOST\"",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "host"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "group": "all",
+      "label": "To",
+      "description": "Email recepient",
+      "type": "String",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "to"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "group": "all",
+      "label": "Subject",
+      "description": "Email subject",
+      "type": "String",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "subject"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "group": "all",
+      "label": "Email Frequency",
+      "description": "Email frequency",
+      "type": "String",
+      "feel": "optional",
+      "value": "=seat.emailFrequency",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "emailFrequency"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "type",
+      "group": "type",
+      "label": "E-mail type",
+      "description": "What type of email to send",
+      "type": "Dropdown",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "type"
+        },
+      "choices": [
+        { "name": "Seat report", "value": "seat-report" },
+        { "name": "Denial", "value": "denial" },
+        { "name": "Remainder", "value": "remainder" },
+        { "name": "Invoice", "value": "invoice" },
+        { "name": "All done", "value": "all-done" }
+      ]
+    },
+    {
+      "label": "First Name",
+      "group": "data",
+      "type": "String",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "firstName"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "type",
+        "oneOf": ["seat-report", "denial", "remainder"]
+      }
+    },
+    {
+      "label": "Last Name",
+      "group": "data",
+      "type": "String",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "lastName"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "type",
+        "oneOf": ["seat-report", "denial", "remainder"]
+      }
+    },
+    {
+      "label": "Report URL",
+      "group": "data",
+      "description": "Base URL to website for user reports, example: http://camcaas.apendo.se/",
+      "value": "http://camcaas.apendo.se/",
+      "type": "String",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "reportUrl"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "type",
+        "oneOf": ["seat-report", "denial", "remainder"]
+      }
+    },
+    {
+      "label": "Seat Uuid",
+      "group": "data",
+      "description": "The uuid of the seat report",
+      "type": "String",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "seatUuid"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "type",
+        "oneOf": ["seat-report", "denial", "remainder"]
+      }
+    },
+    {
+      "label": "Report date",
+      "group": "data",
+      "description": "Month of the report",
+      "type": "String",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "forDate"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "type",
+        "oneOf": ["all-done", "denial", "invoice", "remainder"]
+      }
+    },
+    {
+      "label": "Reason for denial",
+      "group": "data",
+      "description": "Why the report got denied",
+      "type": "String",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "denialMessage"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "type",
+        "oneOf": ["denial"]
+      }
+    },
+    {
+      "label": "Business name",
+      "group": "data",
+      "description": "The name of the business",
+      "type": "String",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "businessName"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "type",
+        "oneOf": ["invoice"]
+      }
+    },
+    {
+      "label": "Business baseline",
+      "group": "data",
+      "description": "The repport baseline of the business, exmaple: 45",
+      "type": "String",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "baseline"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "type",
+        "oneOf": ["invoice"]
+      }
+    },
+    {
+      "label": "Used amount",
+      "group": "data",
+      "description": "The reported seat usage amount, example: 43",
+      "type": "String",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "seatUsedAmount"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "type",
+        "oneOf": ["invoice"]
+      }
+    },
+    {
+      "label": "Overused amount",
+      "group": "data",
+      "description": "The reported seat usage amount minus the business baseline, example: 50-45 = 5",
+      "type": "String",
+      "feel": "optional",
+      "value": "=seatUsedAmount - seat.businessBaseline",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "seatOverUsage"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "type",
+        "oneOf": ["invoice"]
+      }
+    }
+  ]
+}

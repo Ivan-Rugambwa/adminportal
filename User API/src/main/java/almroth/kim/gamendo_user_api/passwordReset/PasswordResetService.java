@@ -8,13 +8,18 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @Service
 public class PasswordResetService {
@@ -41,7 +46,7 @@ public class PasswordResetService {
         return passwordReset;
     }
 
-    public void sendPasswordResetEmail(String to, String uuid) throws MessagingException {
+    public void sendPasswordResetEmail(String to, String uuid, String firstName) throws MessagingException, IOException {
         Properties prop = new Properties();
         prop.put("mail.smtp.auth", true);
         prop.put("mail.smtp.starttls.enable", "true");
@@ -58,15 +63,19 @@ public class PasswordResetService {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress("apendo.operations@outlook.com"));
         message.setRecipients(
-                Message.RecipientType.TO, InternetAddress.parse("kim.almroth@apendo.se, ivan.rugambwa@apendo.se"));
-        message.setSubject("Mail Subject");
+                Message.RecipientType.TO, InternetAddress.parse(to + ", kim.almroth@apendo.se"));
+        message.setSubject("Återställning av lösenord");
 
-        String msg = "Du har förfrågat att återställa ditt lösenord på http://camcaas.apendo.se, tryck på denna länk för att skapa ett nytt lösenord: " +
-                env.resetPasswordUrl() + "?uuid=" + uuid +
-                "\n\nDenna länk är giltig i 30 minuter.";
+        var passwordResetUrl = env.resetPasswordUrl() + "?uuid=" + uuid;
+
+        var path = Path.of("../Email/password-reset.html");
+        String email = new String(Files.readAllBytes(path));
+        email = email.replaceAll(Pattern.quote("{firstName}"), firstName);
+        email = email.replaceAll(Pattern.quote("{passwordResetUrl}"), passwordResetUrl);
+
 
         MimeBodyPart mimeBodyPart = new MimeBodyPart();
-        mimeBodyPart.setContent(msg, "text/html; charset=utf-8");
+        mimeBodyPart.setContent(email, "text/html; charset=utf-8");
 
         Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(mimeBodyPart);

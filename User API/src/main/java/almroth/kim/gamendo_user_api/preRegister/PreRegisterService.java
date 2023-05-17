@@ -1,7 +1,6 @@
 package almroth.kim.gamendo_user_api.preRegister;
 
 import almroth.kim.gamendo_user_api.account.AccountService;
-import almroth.kim.gamendo_user_api.business.BusinessService;
 import almroth.kim.gamendo_user_api.config.JwtService;
 import almroth.kim.gamendo_user_api.config.NotionConfigProperties;
 import almroth.kim.gamendo_user_api.mapper.PreRegisterMapper;
@@ -18,14 +17,15 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.function.UnaryOperator.identity;
 
 @Service
 @RequiredArgsConstructor
@@ -87,8 +87,8 @@ public class PreRegisterService {
 
         repository.save(preRegister);
         try {
-            sendMail(request.getEmail(), preRegister.getUuid().toString());
-        } catch (MessagingException e) {
+            sendMail(request.getEmail(), request.getFirstName(), request.getLastName(), preRegister.getUuid().toString());
+        } catch (MessagingException | IOException e) {
             throw new RuntimeException(e.getLocalizedMessage());
         }
         return mapper.TO_RESPONSE(preRegister);
@@ -101,7 +101,7 @@ public class PreRegisterService {
         repository.delete(preRegister);
     }
 
-    public void sendMail(String toEmail, String uuid) throws MessagingException {
+    public void sendMail(String toEmail, String firstName, String lastName, String uuid) throws MessagingException, IOException {
         Properties prop = new Properties();
         prop.put("mail.smtp.auth", true);
         prop.put("mail.smtp.starttls.enable", "true");
@@ -118,13 +118,20 @@ public class PreRegisterService {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress("apendo.operations@outlook.com"));
         message.setRecipients(
-                Message.RecipientType.TO, InternetAddress.parse("kim.almroth@apendo.se"));
-        message.setSubject("Mail Subject");
+                Message.RecipientType.TO, InternetAddress.parse(toEmail + ", kim.almroth@apendo.se"));
+        message.setSubject("Slutför skapande av konto");
 
-        String msg = "Du har blivit tillfrågad att skapa ett konto på Apendos CaaS-Portal, http://camcaas.apendo.se/,\nVänligen tryck på denna länk för att skapa ditt konto: " + env.registerUrl() + "?uuid=" + uuid;
+        var registerUrl = env.registerUrl() + "?uuid=" + uuid;
+
+        var path = Path.of("../Email/register.html");
+        String email = new String(Files.readAllBytes(path));
+        email = email.replaceAll(Pattern.quote("{firstName}"), firstName);
+        email = email.replaceAll(Pattern.quote("{lastName}"), lastName);
+        email = email.replaceAll(Pattern.quote("{registerUrl}"), registerUrl);
+
 
         MimeBodyPart mimeBodyPart = new MimeBodyPart();
-        mimeBodyPart.setContent(msg, "text/html; charset=utf-8");
+        mimeBodyPart.setContent(email, "text/html; charset=utf-8");
 
         Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(mimeBodyPart);
@@ -163,8 +170,8 @@ public class PreRegisterService {
         repository.save(preRegister);
         if (mailUpdated) {
             try {
-                sendMail(request.getEmail(), uuid.toString());
-            } catch (MessagingException e) {
+                sendMail(request.getEmail(), request.getFirstName(), request.getLastName(), uuid.toString());
+            } catch (MessagingException | IOException e) {
                 System.out.println("Failed sending mail: " + e.getLocalizedMessage());
                 throw new RuntimeException(e.getLocalizedMessage());
             }

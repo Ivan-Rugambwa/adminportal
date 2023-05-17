@@ -85,10 +85,15 @@ services:
       - operate
     volumes:
       - "./get-data-test-with-dependencies.jar:/opt/app/get-data.jar"
-      - "./send-email-1.0.2-with-dependencies.jar:/opt/app/send-email.jar"
+      - "./send-email-1.1.6-with-dependencies.jar:/opt/app/send-email.jar"
       - "./create-seat-1.0.2-with-dependencies.jar:/opt/app/create-seat.jar"
       - "./save-data-test-with-dependencies.jar:/opt/app/save-seat.jar"
       - "./create-seat-single-1.0.1-with-dependencies.jar:/opt/app/create-seat-single.jar"
+      - "../../Email/seat-report.html:/opt/Email/seat-report.html"
+      - "../../Email/remainder.html:/opt/Email/remainder.html"
+      - "../../Email/denied.html:/opt/Email/denied.html"
+      - "../../Email/invoice.html:/opt/Email/invoice.html"
+      - "../../Email/all-done.html:/opt/Email/all-done.html"
 
   elasticsearch: # https://hub.docker.com/_/elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}

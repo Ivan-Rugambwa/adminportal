@@ -2,7 +2,6 @@ import {baseUrl, camundaApiUrl, userApiUrl} from "../shared.js";
 import {getJwtPayload, isAuthenticatedWithRedirect, isUser} from "../auth/auth.js";
 
 const cancel = document.querySelector('.cancelButton');
-const form = document.getElementById('form');
 const loadText = document.getElementById('loadText');
 const loadIcon = document.getElementById('loadIcon');
 const registerButton = document.getElementById('registerButton');
@@ -45,6 +44,7 @@ window.addEventListener('load', async () => {
     fillForm(seat);
 });
 const postReport = async () => {
+    const jwt = await getJwtPayload();
     const uuid = document.getElementById('uuid').innerText;
     const changedBy = document.getElementById('changedBy').innerText;
     const forYearMonth = document.getElementById('forYearMonth').innerText;
@@ -56,7 +56,9 @@ const postReport = async () => {
         "forYearMonth": forYearMonth,
         "business": business,
         "seatUuid": uuid,
-        "amountOfSeatsUsed": seatAmount
+        "amountOfSeatsUsed": seatAmount,
+        "firstName": jwt['firstName'],
+        "lastName": jwt['lastName']
     }
     let response;
 

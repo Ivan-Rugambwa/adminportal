@@ -35,11 +35,11 @@ window.addEventListener('submit', async (event) => {
     loginText.innerText = '';
     loginText.classList.add(...loadIcon);
     try {
-
         await postLogin();
         const successMessage = document.querySelector(".success-message");
-        successMessage.innerHTML = "Lösenordet har ändrats.<br> <a href='/index'>Tryck för att logga in</a>";
+        successMessage.innerHTML = "Lösenordet har ändrats.<br> <a href='/'>Tryck för att logga in</a>";
         successMessage.style.display = "block";
+        
     } catch (e) {
         document.querySelector(".password-error").innerHTML = "Något gick fel";
         document.querySelector(".password-error").style.display = "block";
