@@ -15,38 +15,37 @@
 </head>
 
 <body>
-    <div id="blur"></div>
-    
-    <nav></nav>
-    <section>
-        <div id="seatTableHeader">
-            <div id="userTableTitle">
-                <h2>Seat-statistik</h2>
-                <button id="refresh" type="submit"><i class="fa-solid fa-arrow-rotate-right" id="refreshIcon"></i></button>
-            </div>
-          
-        </div>
-        <table class="Container" id="seatTable">
-            <thead>
-            <tr>
-                <th>Företagsnamn</th>
-                <th>Totalt antal Seatrapporter</th>
-                <th>Totalt antal Seatanvändningar</th>
-                <th>antal seatrapporter som granskas</th>
-                <th>antal godkända seatrapporter</th>
-                <th>antal ej ifyllda seatrapporter</th>
-                <th> genomsnittlig antal seatrapporter</th>
+<div id="blur"></div>
 
-            </tr>
-            </thead>
-            <tbody id="report-table"></tbody>
-        </table>
-    </section>
-      
-    <canvas id="myChart"></canvas>
-    <script src="../../js/admin/seatStatistics.js" type="module"></script>
-    <script src="../../js/admin/navbar.js" type="module"></script>
-    <script src="../../js/admin/homepage.js" type="module"></script>
+<nav></nav>
+<section>
+    <div id="seatTableHeader">
+        <div id="userTableTitle">
+            <h2>Seat-statistik</h2>
+            <button id="refresh" type="submit"><i class="fa-solid fa-arrow-rotate-right" id="refreshIcon"></i></button>
+        </div>
+
+    </div>
+    <table class="Container" id="seatTable">
+        <thead>
+        <tr>
+            <th>Företagsnamn</th>
+            <th>Totalt antal Seatrapporter</th>
+            <th>Totalt antal Seatanvändningar</th>
+            <th>Seatrapporter (ej ifylld)</th>
+            <th>Seatrapporter (granskas)</th>
+            <th>Seatrapporter (godkända)</th>
+            <th>Seatanvänding genomsnitt (godkända)</th>
+
+        </tr>
+        </thead>
+        <tbody id="report-table"></tbody>
+    </table>
+</section>
+
+<canvas id="myChart"></canvas>
+<script src="../../js/admin/seatStatistics.js" type="module"></script>
+<script src="../../js/admin/navbar.js" type="module"></script>
 </body>
 
 </html>

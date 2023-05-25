@@ -31,50 +31,46 @@ async function fetchBusinesses() {
 
         for (const business of businesses) {
             const reportResponse = await fetch(`${userApiUrl}/api/user/seat/business/${business.name}`, {
-
                 headers: {
                     Authorization: `Bearer ${window.localStorage.getItem("jwt")}`
                 }
-
             });
-
 
             const reports = await reportResponse.json();
 
             let totalReports = 0;
-            let totalUsage = 0;
+            let totalUsageAll = 0;
+            let totalUsageCompleted = 0;
             let pendingReports = 0;
             let approvedReports = 0;
             let emptyReports = 0;
 
             for (const report of reports) {
                 totalReports++;
-                if (report.seatUsed === null) {
+                if (report.status === "FILL") {
                     emptyReports++;
                     continue;
                 }
 
-                totalUsage += report.seatUsed;
 
                 if (report.status === "REVIEW") {
-                    // Seat report being reviewed
                     pendingReports++;
-                } else if (report.status === "COMPLETE") {
-                    // Approved seat report
-                    approvedReports++;
+                    totalUsageAll += report.seatUsed;
 
-                } else if (report.status === "FILL") {
-                    emptyReports++
+                } else if (report.status === "COMPLETE") {
+                    approvedReports++;
+                    totalUsageCompleted += report.seatUsed;
+
                 }
             }
 
-            const averageUsage = approvedReports > 0 ? totalUsage / approvedReports : 0;
+            const averageUsageCompleted = approvedReports > 0 ? totalUsageCompleted / approvedReports : 0;
 
             reportData.push({
                 businessName: business.name,
                 totalReports: totalReports,
-                totalUsage: totalUsage,
-                averageUsage: averageUsage,
+                totalUsage: totalUsageAll,
+                averageUsage: averageUsageCompleted,
                 pendingReports: pendingReports,
                 approvedReports: approvedReports,
                 emptyReports: emptyReports,
@@ -96,9 +92,9 @@ function displayReportData(reportData) {
         row.insertCell().textContent = report.businessName;
         row.insertCell().textContent = report.totalReports;
         row.insertCell().textContent = report.totalUsage;
+        row.insertCell().textContent = report.emptyReports;
         row.insertCell().textContent = report.pendingReports;
         row.insertCell().textContent = report.approvedReports;
-        row.insertCell().textContent = report.emptyReports;
         row.insertCell().textContent = report.averageUsage.toFixed(2);
     }
     const updateTables = async () => {
