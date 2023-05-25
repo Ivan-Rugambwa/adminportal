@@ -21,7 +21,6 @@ const getBusinesses = async () => {
         if (b['name'] === null) return -1;
         return a['name'].localeCompare(b['name'])
     });
-    console.log(businesses);
     return businesses;
 }
 
@@ -123,7 +122,6 @@ const toggleBlur = () => {
 window.addEventListener('load', async () => {
     await isAuthenticatedWithRedirect();
     await updateTables()
-    console.log("loading tables");
 })
 
 
@@ -135,7 +133,6 @@ businessTable.addEventListener('click', async ev => {
     if (ev.target.getAttribute('class').includes('deleteButton')) {
         ev.preventDefault();
         const uuid = ev.target.getAttribute('uuid');
-        console.log(uuid)
         document.getElementById('confirm').setAttribute('uuid', uuid);
         toggleBlur();
     }

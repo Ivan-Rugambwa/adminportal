@@ -4,7 +4,6 @@ import {userApiUrl} from "./shared.js";
 const form = document.getElementById("login-form");
 
 form.addEventListener('submit', async (event) => {
-    // Prevent default form submission
     event.preventDefault();
     document.getElementById('errorMessage').classList.add('none');
     document.getElementById('successMessage').classList.add('none');
@@ -12,14 +11,9 @@ form.addEventListener('submit', async (event) => {
     const loadIcon = "fa-solid fa-arrow-rotate-right fa-spin".split(" ");
     loginText.innerText = '';
     loginText.classList.add(...loadIcon);
-    // Get the email value
     const email = document.getElementById("email").value;
-    const body = {
-        email: form.elements['email'].value
-    }
-    console.log(body)
-    // Send a password reset link to the provided email address
     const apiUrl = `${userApiUrl}/api/auth/reset/start`;
+
     try {
         const response = await fetch(apiUrl, {
             method: "POST",
@@ -36,7 +30,6 @@ form.addEventListener('submit', async (event) => {
             throw Error("Failed post of reset");
         }
     } catch (e) {
-        console.log(e)
         document.getElementById('errorMessage').classList.remove('none');
         document.getElementById('errorMessage').innerText = 'Det uppstod ett fel när din förfrågan behandlades. Vänligen försök igen senare eller kontakta support.';
     }

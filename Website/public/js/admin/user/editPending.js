@@ -6,8 +6,6 @@ window.addEventListener('load', async () => {
     const user = await getUser();
     let businesses = await getBusinesses();
     businesses = businesses.filter(business => business['name'] !== user['businessName'])
-    console.log(user)
-    console.log(businesses)
     fillForm(user, businesses);
 
 });
@@ -19,7 +17,6 @@ const loadIcon = document.getElementById('loadIcon');
 const registerButton = document.getElementById('registerButton');
 window.addEventListener('submit', async ev => {
     ev.preventDefault();
-    console.log(form.elements['business-select'].value ?? null);
     load.innerText = '';
     loadIcon.style.display = 'flex';
     registerButton.style.pointerEvents = 'none';
@@ -31,7 +28,6 @@ window.addEventListener('submit', async ev => {
     } catch (e) {
         load.innerText = 'Kunde inte uppdatera, försök igen senare eller kontakta support.';
         load.style.color = 'red';
-        console.log(e);
     }
     loadIcon.style.display = 'none';
     registerButton.style.pointerEvents = 'auto';
@@ -113,7 +109,6 @@ const putUpdate = async () => {
         lastName: form.elements['lastName'].value,
         business: form.elements['business-select'].value
     }
-    console.log(body)
     return await fetch(`${userApiUrl}/api/admin/user/${form.elements['uuid'].value}`, {
         method: 'PATCH',
         headers: {

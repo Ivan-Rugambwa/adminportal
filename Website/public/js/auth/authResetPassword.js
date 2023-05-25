@@ -28,7 +28,6 @@ async function postLogin() {
 
 window.addEventListener('submit', async (event) => {
     event.preventDefault();
-    console.log("återställ");
     const loginText = document.getElementById('loginText');
     const loadIcon = "fa-solid fa-arrow-rotate-right fa-spin".split(" ");
     loginText.innerText = '';
@@ -42,7 +41,6 @@ window.addEventListener('submit', async (event) => {
     } catch (e) {
         document.querySelector(".password-error").innerHTML = "Något gick fel";
         document.querySelector(".password-error").style.display = "block";
-        console.log(e);
     }
     loginText.innerText = 'Skicka';
     loginText.classList.remove(...loadIcon);
@@ -68,7 +66,6 @@ window.addEventListener('load', async () => {
         document.getElementById('loadFrame').classList.add('none');
         document.getElementById('loginFrame').classList.remove('none');
     } catch (e) {
-        console.log(e.name)
         if (e instanceof TypeError) {
             document.getElementById('errorText').innerText = 'Vi kan inte hantera din förfrågan just nu, vänligen försök igen senare eller kontakta support.';
             document.getElementById('loadFrame').classList.add('none');

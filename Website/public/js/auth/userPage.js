@@ -15,6 +15,5 @@ const userPage = async () => {
     const role = payload['role'];
     if (role.some(role => role['name'] !== 'USER')) {
         window.location.assign(`${baseUrl}/auth/unauthorized`);
-        console.log('Not authorized for user pages');
     }
 }

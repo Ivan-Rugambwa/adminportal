@@ -34,7 +34,6 @@ async function postLogin() {
 
 window.addEventListener('submit', async (event) => {
     event.preventDefault();
-    console.log("logging in");
     const loginText = document.getElementById('loginText');
     const loadIcon = "fa-solid fa-arrow-rotate-right fa-spin".split(" ");
     try {
@@ -47,7 +46,6 @@ window.addEventListener('submit', async (event) => {
 
         const urlParams = new URLSearchParams(window.location.search);
         const redirectUrl = urlParams.get('redirect');
-        console.log(redirectUrl)
 
         if (redirectUrl !== null) {
             window.location.assign(`${baseUrl}${redirectUrl}`);
@@ -58,7 +56,6 @@ window.addEventListener('submit', async (event) => {
         } else {
             window.location.assign(`${baseUrl}/error`)
         }
-        console.log("after verify");
     } catch (e) {
         if (e instanceof TypeError) {
             document.querySelector(".password-error").innerText = "Kunde inte logga in. Försök igen senare eller kontakta support.";

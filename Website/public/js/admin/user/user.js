@@ -198,7 +198,6 @@ tables.addEventListener('click', async ev => {
         ev.preventDefault();
         const uuid = ev.target.getAttribute('uuid');
         const type = ev.target.getAttribute('type');
-        console.log(uuid)
         document.getElementById('confirm').setAttribute('uuid', uuid);
         document.getElementById('confirm').setAttribute('type', type);
         toggleBlur();

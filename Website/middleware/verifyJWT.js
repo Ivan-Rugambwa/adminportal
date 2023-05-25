@@ -1,6 +1,5 @@
 const verifyJWT = async (req, res, next) => {
     const jwt = req.header('Authorization');
-    console.log(jwt)
     if (jwt === undefined) return res.redirect('/auth/unauthorized');
 
     const data = {token: jwt};

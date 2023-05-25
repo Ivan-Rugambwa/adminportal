@@ -19,14 +19,10 @@ function updateBusiness() {
         body: JSON.stringify(payload)
     })
         .then(response => response.json())
-        .then(data => {
-            console.log(payload);
-            console.log(data);
-            // handle the response data as needed
+        .then(() => {
         })
         .catch(error => {
             console.error('Error:', error);
-            // handle errors as needed
         });
 }
  

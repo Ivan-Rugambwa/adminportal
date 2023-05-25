@@ -201,7 +201,6 @@ window.addEventListener('submit', async (event) => {
     await fill();
 })
 window.addEventListener('load', async () => {
-    console.log(window.location.search);
     if (!(await isUser())) {
         window.location.assign(`${baseUrl}/auth/unauthorized`)
     }

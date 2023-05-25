@@ -8,7 +8,6 @@ window.addEventListener('load', async () => {
 
     try {
         const businesses = await fetchBusinesses();
-        console.log(businesses);
         displayReportData(businesses);
     } catch (error) {
         console.error(error);
@@ -28,7 +27,6 @@ async function fetchBusinesses() {
         }
 
         const businesses = await response.json();
-        console.log(businesses);
         const reportData = [];
 
         for (const business of businesses) {
@@ -42,7 +40,6 @@ async function fetchBusinesses() {
 
 
             const reports = await reportResponse.json();
-            console.log(reports);
 
             let totalReports = 0;
             let totalUsage = 0;
@@ -67,11 +64,8 @@ async function fetchBusinesses() {
                     approvedReports++;
 
                 } else if (report.status === "FILL") {
-                    //Empty seat report
                     emptyReports++
                 }
-                console.log(report);
-
             }
 
             const averageUsage = approvedReports > 0 ? totalUsage / approvedReports : 0;

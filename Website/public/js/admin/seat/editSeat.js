@@ -60,7 +60,6 @@ const getSeat = async () => {
         .catch(error => {
             console.error(error);
         })
-    console.log(response);
     return response;
 }
 
@@ -84,7 +83,6 @@ const putUpdate = async () => {
         status: form.elements['status'].value
 
     }
-    console.log(body)
     await fetch(`${userApiUrl}/api/admin/seat/${form.elements['uuid'].value}`, {
         method: 'PATCH',
         headers: {

@@ -35,7 +35,6 @@ form.addEventListener('submit', async ev => {
     } catch (e) {
         load.innerText = 'Kunde inte registrera, försök igen senare eller kontakta support.'
         load.style.color = 'red';
-        console.log(e.message);
     }
     loadIcon.style.display = 'none';
 

@@ -22,7 +22,6 @@ window.addEventListener('submit', async ev => {
     } catch (e) {
         loadText.innerText = 'Kunde inte skicka rapporten, försök igen senare eller kontakta support.';
         loadText.style.color = 'red';
-        console.log(e);
     }
     loadText.classList.remove('none');
     loadIcon.classList.add('none');

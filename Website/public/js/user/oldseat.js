@@ -6,16 +6,12 @@ window.addEventListener('load', async () => {
         window.location.assign(`${baseUrl}/unauthorized`)
     }
     const statusCode = await verifyJwt();
-    console.log(statusCode)
     if (statusCode !== 200) {
         window.location.assign(`${baseUrl}/unauthorized`)
     } else {
         await setName();
         const seat = await getSeat();
-        console.log(seat)
         fillSeat(seat);
-
-
     }
 })
 
