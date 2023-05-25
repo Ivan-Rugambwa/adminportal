@@ -1,0 +1,96 @@
+{
+  "$schema": "https://unpkg.com/@camunda/zeebe-element-templates-json-schema/resources/schema.json",
+  "name": "Get Users by Business",
+  "id": "apendo.get.data.template",
+  "description": "Get Users by Business",
+  "version": 1,
+  "documentationRef": "https://docs.camunda.io/docs/components/connectors/out-of-the-box-connectors/available-connectors-overview/",
+  "icon": {
+    "contents": "https://icons-for-free.com/iconfiles/png/512/user+icon-1320183705947339583.png"
+  },
+  "category": {
+    "id": "connectors",
+    "name": "Connectors"
+  },
+  "appliesTo": [
+    "bpmn:Task"
+  ],
+  "elementType": {
+    "value": "bpmn:ServiceTask"
+  },
+  
+  "properties": [
+    {
+      "type": "Hidden",
+      "value": "apendo:get-users-by-business:1",
+      "binding": {
+        "type": "zeebe:taskDefinition:type"
+      }
+    },
+    {
+      "label": "Url",
+      "description": "The url to the api",
+      "type": "String",
+      "value": "=\"secrets.API_URL\"",
+      "feel": "required",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "apiUrl"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Email",
+      "description": "The email to use",
+      "type": "String",
+      "value": "=\"secrets.EMAIL\"",
+      "feel": "required",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "email"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Password",
+      "description": "The password to use",
+      "type": "String",
+      "value": "=\"secrets.PASSWORD\"",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "password"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Business name",
+      "description": "The name of the business the user belongs to",
+      "type": "String",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "businessName"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Result Variable",
+      "description": "Name of variable to store the response in",
+      "group": "output",
+      "type": "String",
+      "binding": {
+        "type": "zeebe:taskHeader",
+        "key": "resultVariable"
+      }
+    }
+  ]
+}

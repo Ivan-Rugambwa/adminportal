@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="se">
+<head>
+    <meta charset="UTF-8">
+    <title>Skapa Företag</title>
+    <link href="../../../css/menu.css" rel="stylesheet" type="text/css">
+    <link href="../../../css/shared/form.css" rel="stylesheet">
+    <link href="../../../css/admin/admin.css" rel="stylesheet" type="text/css">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/6c0cfcbd8b.js"></script>
+</head>
+<body>
+<header>
+    <h1>Business</h1>
+</header>
+<div id="formBox">
+
+    <form id="form">
+        <div id="title">
+            <p id="titleText">Registrera</p>
+        </div>
+
+        <div>
+            <label for="seatBaseline">Seat Baseline:</label>
+            <input id="seatBaseline" name="seatBaseline" required type="number" value="">
+        </div>
+
+        <div>
+            <label for="business-name">Företags Namn:</label>
+            <input id="business-name" name="business-name">
+        </div>
+        <div>
+            <label for="email-frequency">Emailfrekvens</label>
+            <select id="email-frequency" name="email-frequency" required>
+                <option disabled selected value="">Välj ett värde</option>
+                <option value="MONTHLY">Månadsvis</option>
+                <option value="QUARTERLY">Kvartalsvis</option>
+                <option value="SEMI">Halvårsvis</option>
+                <option value="ANNUALLY">Årsvis</option>
+            </select>
+        </div>
+        <div id="load">
+            <div class="none" id="loadText"></div>
+            <i class="fa-solid fa-arrow-rotate-right fa-spin none" id="loadIcon"></i>
+        </div>
+        <div class="buttons">
+            <button id="registerButton" type="submit">Registrera</button>
+            <button class="cancelButton" type="button">Gå tillbaka</button>
+        </div>
+    </form>
+</div>
+<script src="../../../js/admin/business/registerBusiness.js" type="module"></script>
+<script src="../../../js/auth/adminPage.js" type="module"></script>
+</body>
+</html>
