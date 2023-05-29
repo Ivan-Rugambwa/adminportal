@@ -107,20 +107,20 @@ public class PreRegisterService {
 
     public void sendMail(String toEmail, String firstName, String lastName, String uuid) throws MessagingException, IOException {
         Properties prop = new Properties();
-        prop.put("mail.smtp.auth", true);
-        prop.put("mail.smtp.starttls.enable", "true");
-        prop.put("mail.smtp.host", "mail.smtp2go.com");
-        prop.put("mail.smtp.port", "2525");
+        prop.put("mail.smtp.auth", env.smtp_auth());
+        prop.put("mail.smtp.starttls.enable", env.smtp_starttls_enable());
+        prop.put("mail.smtp.host", env.smtp_host());
+        prop.put("mail.smtp.port", env.smtp_port());
 
         Session session = Session.getInstance(prop, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(env.email(), env.password());
+                return new PasswordAuthentication(env.smtp_auth_email(), env.smtp_auth_password());
             }
         });
 
         Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress("apendo.operations@outlook.com"));
+        message.setFrom(new InternetAddress(env.mail_from()));
         message.setRecipients(
                 Message.RecipientType.TO, InternetAddress.parse(toEmail));
         message.setSubject("Slutför skapande av konto");
